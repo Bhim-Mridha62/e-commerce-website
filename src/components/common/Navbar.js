@@ -1,3 +1,4 @@
+import { Badge } from 'antd';
 import React from 'react'
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { TfiMenu } from "react-icons/tfi";
@@ -13,8 +14,10 @@ function Navbar() {
             </div>}
         <div>
         <ul className='flex items-center text-3xl gap-5'>
-                    <li><RiShoppingCart2Fill /></li>
-                    <li><TfiMenu /></li>
+                    <Badge count={888} overflowCount={9}  style={{background:'green'}}>
+                      <RiShoppingCart2Fill />
+                    </Badge>
+                   <TfiMenu />
                 </ul>
         </div>
     </div>
