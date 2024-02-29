@@ -11,6 +11,17 @@ const ProductCard = ({ product}) => {
         console.log(id, "id");
         router.push(`/${id}`);
       };
+    const HandelAddtoCart=(productId)=>{
+      let updatedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      let productIndex = updatedCart.findIndex(item => item.id === productId);
+      if (productIndex !== -1) {
+        updatedCart[productIndex].count = 2;
+      } else {
+        updatedCart.push({ id: productId, count: 1 });
+      }
+    
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    }  
   return (
     <div onClick={() => Productdetails(product.id)} className={stylehome.Productshow}>
       <img className={stylehome.ProductshowImg} src={product.thumbnail} alt="Image here" />
@@ -32,7 +43,7 @@ const ProductCard = ({ product}) => {
       </p>
       <div className={stylehome.buyandadddiv}>
         <button style={{ background: 'rgb(235 154 101)' }} onClick={() => buynowbutton({ product, count: 1 })}>Buy now</button>
-        <button onClick={() => HandelAddtoCart(product)} className={stylehome.Productaddbutton}>
+        <button onClick={() => HandelAddtoCart(product.id)} className={stylehome.Productaddbutton}>
           Add to <RiShoppingCart2Fill />
         </button>
       </div>

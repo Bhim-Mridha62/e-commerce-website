@@ -1,7 +1,6 @@
 import Homecard from "@/components/home/homecard";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { Badge } from "antd";
 import Categories from "@/components/home/categorySection/category";
 import Homecarousel from "@/components/home/CarouselImage/CarouselImage";
 

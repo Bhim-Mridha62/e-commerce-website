@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import axios from "axios";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { calculateDiscountedPrice } from "@/utils/discountUtils";
+import { useRouter } from "next/router";
 
 const ProductDetail = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const router = useRouter();
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
   };
+  const handleBuyNow=(productId)=>{
+    router.push({
+      pathname: '/cart/address',
+      query: { productId: productId }
+    });
+  }
   console.log(product,"product");
   return (
     <div className="flex px-5 w-full">
@@ -40,7 +48,7 @@ const ProductDetail = ({ product }) => {
           <button className="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Add to Cart
           </button>
-          <button className="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          <button onClick={()=>handleBuyNow(product.id)} className="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Buy Now
           </button>
         </div>
