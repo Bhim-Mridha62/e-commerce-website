@@ -20,6 +20,14 @@ const UserSchema = new mongoose.Schema({
     otp :{
         type: Number,
         required :false
+    },
+    otpVerify :{
+        type: Boolean,
+        required :false
+    },
+    SecretToken:{
+        type:String,
+        required:false
     }
 });
 // const User = mongoose.model("User", UserSchema);

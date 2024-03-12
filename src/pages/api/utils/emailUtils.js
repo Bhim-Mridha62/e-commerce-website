@@ -4,8 +4,8 @@ const SERVICE_EMAIL = process.env.SERVICE_EMAIL;
 const SERVICE_EMAIL_PASSWORD= process.env.SERVICE_EMAIL_PASSWORD;
 export async function sendOTPByEmail(email, otp) {
 
-    // console.log(email,otp,"qwertyuiop");
-    var transporter = nodemailer.createTransport({
+    try {
+      var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: SERVICE_EMAIL,
@@ -19,7 +19,6 @@ export async function sendOTPByEmail(email, otp) {
         subject: 'Very otp',
         text: `Very otp${otp}` 
       };
-      
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);
@@ -27,4 +26,8 @@ export async function sendOTPByEmail(email, otp) {
           console.log('Email sent: ' + info.response);
         }
       });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+
 }

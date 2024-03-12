@@ -44,7 +44,8 @@ function Navbar() {
         />
       </div>
       <div>
-        <ul className="flex items-center text-3xl gap-5">
+        <ul className="flex items-center gap-5">
+          <Link href='/login'>Sign in/up</Link>
           <Link href={`/cart`}>
           <Badge count={cartCount} overflowCount={9} style={{ background: "green" }}>
             <RiShoppingCart2Fill className="text-3xl cursor-pointer"/>
