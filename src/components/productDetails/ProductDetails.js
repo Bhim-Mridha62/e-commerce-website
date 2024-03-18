@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { message } from "antd";
+import { Rate, message } from "antd";
 import { calculateDiscountedPrice } from "@/utils/discountUtils";
+import { BsCurrencyRupee } from "react-icons/bs";
 
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,7 +22,7 @@ const ProductDetail = () => {
         .get(`https://dummyjson.com/products/${id}`)
         .then((response) => {
           setProduct(response?.data);
-          console.log(response);
+          // console.log(response);
         })
         .catch((error) => {
           console.log(error);
@@ -41,10 +42,7 @@ const ProductDetail = () => {
       query: { productId: productId },
     });
   };
-  console.log(
-    Product && Product.images ? Product.images[0] : productId,
-    "abcd"
-  );
+  // console.log(Product);
   return (
     <div className="flex flex-wrap px-5 w-full">
       <div className="p-4 w-1/2">
@@ -87,24 +85,42 @@ const ProductDetail = () => {
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-between w-1/2">
-        <div>
+        <div className="my-auto">
           <h2 className="text-2xl font-bold mb-4">{Product.title}</h2>
+          <h2 className=" font-bold mb-4">Brand: {Product.brand}</h2>
+          <h3 className=" mb-4">Category: {Product.category}</h3>
           <p className="text-lg text-gray-700 mb-4">{Product.description}</p>
-          <div className="flex mb-4">
-            <p className="text-xl font-bold mr-2">
-              $
+          <div className="mb-4">
+            <Rate allowHalf disabled value={Product.rating} /> {Product.rating}
+          </div>
+          <div className="text-lg mb-4 text-[#26a541]">
+            Number of Stock: <span className="text-black">{Product.stock}</span>
+          </div>
+          <p className="inline text-lg mb-4">
+            <span className="text-black">
+              <BsCurrencyRupee className="inline text-black" />
               {calculateDiscountedPrice(
                 Product.price,
                 Product.discountPercentage
               )}
-            </p>
-            {Product.discountPercentage > 0 && (
-              <p className="text-sm text-gray-500 line-through">
-                ${Product.price}
-              </p>
-            )}
+            </span>
+            <del className="text-black ml-2 font-bold">
+              {/* <BsCurrencyRupee className='inline text-black'/> */}
+              {Product.price}
+            </del>
+            <span className="text-[#26a541] ml-2 font-bold">
+              {Math.round(Product.discountPercentage)}%OFF
+            </span>
+          </p>
+          <div className="flex items-center gap-2  p-4 rounded-lg ">
+            <button className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded">
+              -
+            </button>
+            <span className="text-lg font-semibold">Quantity: 22</span>
+            <button className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded">
+              +
+            </button>
           </div>
-          <p className="text-lg mb-4">Rating: {Product.rating}</p>
         </div>
       </div>
     </div>
