@@ -27,7 +27,7 @@ function Homecard() {
     router.push(`/${id}`);
   };
   return (
-    <div className="flex flex-wrap min-h-screen justify-center gap-35 bg-white sm:gap-20">
+    <div className="flex flex-wrap min-h-screen justify-center md:gap-12 bg-white Msm:gap-2">
       {loading ? (
         <Productskeleton />
       ) : (

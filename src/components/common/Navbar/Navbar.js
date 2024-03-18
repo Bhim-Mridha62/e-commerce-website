@@ -2,12 +2,14 @@ import SidebarContent from "@/components/Sidebar/SidebarContent";
 import { Badge, Button, Drawer, Space } from "antd";
 import Search from "antd/es/input/Search";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { TfiMenu } from "react-icons/tfi";
 function Navbar() {
   const [visible, setVisible] =useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const router=useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -25,8 +27,8 @@ function Navbar() {
   }
   return (
     <>
-    <div className="w-full justify-between items-center h-16 bg-slate-700 flex text-black px-10">
-      <div>Name logo</div>
+    <div className="w-full sticky top-0 z-[999] justify-between items-center h-16 bg-slate-700 flex text-black px-10">
+      <div onClick={()=>router.push('/')} className="cursor-pointer">Name logo</div>
       {false && (
         <div>
           <ul className="flex gap-5">
