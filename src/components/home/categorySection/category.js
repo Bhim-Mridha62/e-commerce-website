@@ -9,8 +9,8 @@ function Categories() {
     router.push(`/category/${category}`);
   };
   return (
-    <div className="Categories overflow-hidden hide-scrollbar">
-      <div className=" Categories flex w-full overflow-x-auto gap-1 lsm:gap-8 mdb:gap-16 ">
+    <div className=" HideScroll overflow-hidden hide-scrollbar">
+      <div className=" HideScroll flex w-full overflow-x-auto gap-1 lsm:gap-8 mdb:gap-16 ">
         {productsData.map((product, index) => (
           <div
             onClick={() => handleCategory(product.category)}

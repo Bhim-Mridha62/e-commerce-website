@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Rate, message } from "antd";
 import { calculateDiscountedPrice } from "@/utils/discountUtils";
 import { BsCurrencyRupee } from "react-icons/bs";
+import ReviewSection from "./ReviewSection";
 
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -37,12 +38,13 @@ const ProductDetail = () => {
     setCurrentImageIndex(index);
   };
   const handleBuyNow = (productId) => {
+    console.log(productId, "from product");
     router.push({
       pathname: "/cart/address",
       query: { productId: productId },
     });
   };
-  // console.log(Product);
+  console.log(router, "router");
   return (
     <div className="flex flex-wrap px-5 w-full">
       <div className="p-4 w-1/2">
@@ -84,27 +86,27 @@ const ProductDetail = () => {
           </button>
         </div>
       </div>
-      <div className="flex-1 flex flex-col justify-between w-1/2">
-        <div className="my-auto">
-          <h2 className="text-2xl font-bold mb-4">{Product.title}</h2>
-          <h2 className=" font-bold mb-4">Brand: {Product.brand}</h2>
-          <h3 className=" mb-4">Category: {Product.category}</h3>
-          <p className="text-lg text-gray-700 mb-4">{Product.description}</p>
-          <div className="mb-4">
+      <div className="HideScroll flex-1 flex flex-col h-[88vh] overflow-y-auto w-1/2">
+        <div className="">
+          <p className="text-lg text-gray-700 mb-2">{Product.description}</p>
+          <h2 className="text-2xl font-bold mb-2">{Product.title}</h2>
+          <h2 className=" font-bold mb-2">Brand: {Product.brand}</h2>
+          <h3 className=" mb-2">Category: {Product.category}</h3>
+          <div className="mb-2">
             <Rate allowHalf disabled value={Product.rating} /> {Product.rating}
           </div>
-          <div className="text-lg mb-4 text-[#26a541]">
+          <div className="text-lg mb-2 text-[#26a541]">
             Number of Stock: <span className="text-black">{Product.stock}</span>
           </div>
-          <p className="inline text-lg mb-4">
-            <span className="text-black">
-              <BsCurrencyRupee className="inline text-black" />
+          <p className="inline ">
+            <BsCurrencyRupee className="inline text-xl font-semibold text-black" />
+            <span className="text-xl text-black">
               {calculateDiscountedPrice(
                 Product.price,
                 Product.discountPercentage
               )}
             </span>
-            <del className="text-black ml-2 font-bold">
+            <del className="text-black ml-2 font-normal ">
               {/* <BsCurrencyRupee className='inline text-black'/> */}
               {Product.price}
             </del>
@@ -112,7 +114,7 @@ const ProductDetail = () => {
               {Math.round(Product.discountPercentage)}%OFF
             </span>
           </p>
-          <div className="flex items-center gap-2  p-4 rounded-lg ">
+          <div className="flex items-center mt-2 gap-2 rounded-lg ">
             <button className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded">
               -
             </button>
@@ -122,6 +124,7 @@ const ProductDetail = () => {
             </button>
           </div>
         </div>
+        <ReviewSection id={Product.id} />
       </div>
     </div>
   );
