@@ -1,4 +1,4 @@
-import connectDB from './database/db';
+import connectDB from '../../database/db';
 // import express from 'express';
 // import authRouter from './routes/Auth.js';
 // Connect to MongoDB

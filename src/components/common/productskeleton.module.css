@@ -1,61 +1,62 @@
 .ProductCantainer {
-    display: flex;
-    flex-wrap: wrap;
-    min-height: 100vh;
-    justify-content: center;
-    gap: 35px;
-    background: rgb(255, 255, 255);
-  }
-  
-  .Productshow {
-    border: 1px solid #ccc;
-    width: 200px;
-    height: max-content;
-  }
-  
-  .ProductshowImg {
-    width: 100% !important;
-    height: 100px !important;
-    margin-bottom: 5px;
-    aspect-ratio: 5/4;
-    object-fit: cover;
-  }
-  
-  .productTitle {
-    font-size: 16px;
-    width: 100%;
-    font-weight: bold;
-    overflow: hidden;
-    /* margin-bottom: 10px; */
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .productBrand,
-  .productPrice,
-  .productRating,
-  .productCategory {
-    margin-bottom: 5px;
-  }
-  
-  .Productaddbutton {
-    background-color: #008080;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .Productaddbutton:hover {
-    background-color: #006666;
-  }
-  .BannerImg{
-    width: 100%;
-  }
-  .buyandadddiv{
-    width: auto;
-    display: flex;
-    gap: 5px;
-    margin-top: 5px;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  justify-content: center;
+  gap: 35px;
+  background: rgb(255, 255, 255);
+}
+
+.Productshow {
+  border: 1px solid #ccc;
+  min-width: 200px;
+  /* width: 200px; */
+  height: max-content;
+}
+
+.ProductshowImg {
+  width: 100% !important;
+  height: 100px !important;
+  margin-bottom: 5px;
+  aspect-ratio: 5/4;
+  object-fit: cover;
+}
+
+.productTitle {
+  font-size: 16px;
+  width: 100%;
+  font-weight: bold;
+  overflow: hidden;
+  /* margin-bottom: 10px; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productBrand,
+.productPrice,
+.productRating,
+.productCategory {
+  margin-bottom: 5px;
+}
+
+.Productaddbutton {
+  background-color: #008080;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.Productaddbutton:hover {
+  background-color: #006666;
+}
+.BannerImg {
+  width: 100%;
+}
+.buyandadddiv {
+  width: auto;
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+  justify-content: center;
+  margin-bottom: 10px;
+}

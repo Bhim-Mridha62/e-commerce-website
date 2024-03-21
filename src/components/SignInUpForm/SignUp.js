@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Formik, useFormik } from "formik";
 import { Input, Modal, message } from "antd";
 import { SignUpSchema } from "@/Schemas/FormSchema";
-import { HandelSignUp } from "@/service/Auth";
+import { HandelSignUp, HandelverifyOTP } from "@/service/Auth";
 const SignUpForm = ({ onSignUp }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);

@@ -1,4 +1,4 @@
-import { emailRegex, nameRegex, passwordRegex } from '@/utils/regEx';
+import { emailRegex, nameRegex, passwordRegex } from '@/utils/client/regEx';
 import * as Yup from 'yup';
 export const SignUpSchema =Yup.object().shape({
     FirstName:Yup.string().matches(nameRegex,'Enter a valid First Name').required( "First Name is required!"),

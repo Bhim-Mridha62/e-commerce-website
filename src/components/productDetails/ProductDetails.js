@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Rate, message } from "antd";
-import { calculateDiscountedPrice } from "@/utils/discountUtils";
+import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { BsCurrencyRupee } from "react-icons/bs";
 import ReviewSection from "./ReviewSection";
 

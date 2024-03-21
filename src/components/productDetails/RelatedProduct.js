@@ -21,7 +21,13 @@ function RelatedProduct() {
   }, []);
   return (
     <div className="">
-      <div className="flex gap-3 overflow-x-auto w-max">
+      <div className="text-xl flex justify-between p-4 font-semibold">
+        <div>Reateted product</div>
+        <div className="underline underline-offset-2 hover:text-blue-600 cursor-pointer">
+          See More
+        </div>
+      </div>
+      <div className="HideScroll flex gap-8 overflow-auto w-[98vw] pl-3">
         {loading ? (
           <Productskeleton />
         ) : (
@@ -32,7 +38,14 @@ function RelatedProduct() {
             ))
         )}
       </div>
-      <div className="flex gap-3 overflow-x-auto w-max">
+      <div className="text-xl flex justify-between p-4 font-semibold">
+        <div>Reateted product</div>
+        <div className="underline underline-offset-2 hover:text-blue-600 cursor-pointer">
+          See More
+        </div>
+      </div>
+
+      <div className="HideScroll flex gap-8 overflow-auto w-[98vw] pl-3">
         {loading ? (
           <Productskeleton />
         ) : (
@@ -43,23 +56,19 @@ function RelatedProduct() {
             ))
         )}
       </div>
-      <div className="flex gap-3 overflow-x-auto w-max">
-        {loading ? (
-          <Productskeleton />
-        ) : (
-          products
-            ?.slice(20, 30)
-            .map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))
-        )}
+      <div className="text-xl flex justify-between p-4 font-semibold">
+        <div>Reateted product</div>
+        <div className="underline underline-offset-2 hover:text-blue-600 cursor-pointer">
+          See More
+        </div>
       </div>
-      <div className="flex gap-3 overflow-x-auto w-max">
+
+      <div className="HideScroll flex gap-8 overflow-auto w-[98vw] pl-3">
         {loading ? (
           <Productskeleton />
         ) : (
           products
-            ?.slice(0, 10)
+            ?.slice(10, 20)
             .map((product) => (
               <ProductCard key={product.id} product={product} />
             ))

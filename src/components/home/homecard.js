@@ -2,7 +2,7 @@ import { Card, Rate, Skeleton } from "antd";
 import Meta from "antd/es/card/Meta";
 import { useState, useEffect } from "react";
 import Productskeleton from "../common/productskeleton";
-import { calculateDiscountedPrice } from "@/utils/discountUtils";
+import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
 import ProductCard from "../common/productcard/productcard";
 function Homecard() {
@@ -32,10 +32,7 @@ function Homecard() {
         <Productskeleton />
       ) : (
         products?.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-          />
+          <ProductCard key={product.id} product={product} />
         ))
       )}
     </div>

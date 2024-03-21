@@ -25,6 +25,6 @@ body {
     text-wrap: balance;
   }
 }
-.HideScroll::-webkit-scrollbar{
+.HideScroll::-webkit-scrollbar {
   display: none;
 }

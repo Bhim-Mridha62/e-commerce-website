@@ -3,7 +3,7 @@ import { Rate } from "antd";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import stylehome from "./ProductCard.module.css";
-import { calculateDiscountedPrice } from "@/utils/discountUtils";
+import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
 const ProductCard = ({ product }) => {
   const router = useRouter();
