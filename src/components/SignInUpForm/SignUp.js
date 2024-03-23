@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Formik, useFormik } from "formik";
 import { Input, Modal, message } from "antd";
-import { SignUpSchema } from "@/Schemas/FormSchema";
+import { SignUpSchema } from "@/Schemas/client/FormSchema";
 import { HandelSignUp, HandelverifyOTP } from "@/service/Auth";
 const SignUpForm = ({ onSignUp }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -29,9 +29,9 @@ const SignUpForm = ({ onSignUp }) => {
       }
     },
   });
-  const handleOk = async() => {
-   const res= await HandelverifyOTP({otp,email:formik.values.email});
-   console.log(res,"res");
+  const handleOk = async () => {
+    const res = await HandelverifyOTP({ otp, email: formik.values.email });
+    console.log(res, "res");
   };
   const handleCancel = () => {
     setIsotp(!isotp);
@@ -135,7 +135,7 @@ const SignUpForm = ({ onSignUp }) => {
         >
           <div className="flex flex-wrap justify-center">
             <input
-              onChange={(e)=>setOtp(e.target.value)}
+              onChange={(e) => setOtp(e.target.value)}
               type="number"
               placeholder="Enter OTP"
               maxLength="6"

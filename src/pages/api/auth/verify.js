@@ -1,13 +1,13 @@
-import User from "../models/UserSchema";
-import CreateToken from "../utils/SecretToken";
+import User from "../../../Schemas/server/UserSchema";
+import CreateToken from "../../../utils/server/SecretToken";
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "method not allow" });
   }
   const { email, otp } = req.body;
   try {
-    const user=await User.findOne({email});
-    console.log(user,"sdfgh");
+    const user = await User.findOne({ email });
+    console.log(user, "sdfgh");
     if (!user) {
       res.status(400).json({ message: "Email already exists" }).end();
     }

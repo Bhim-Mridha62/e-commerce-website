@@ -1,7 +1,7 @@
 import { Button, Input, Modal, message } from "antd";
 import { useState } from "react";
 import { useFormik } from "formik";
-import { SignInSchema } from "@/Schemas/FormSchema";
+import { SignInSchema } from "@/Schemas/client/FormSchema";
 import axios from "axios";
 const SignInForm = ({ onSignIn }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -38,7 +38,7 @@ const SignInForm = ({ onSignIn }) => {
       const res = await axios.post("/api/auth/reset-password", { email, otp });
       if (res.status === 200) {
         message.success(res?.data?.message);
-        setStep(3)
+        setStep(3);
       }
     } catch (error) {
       message.error(error?.response?.data?.message);
@@ -46,11 +46,14 @@ const SignInForm = ({ onSignIn }) => {
   };
   const handleResetPassword = async () => {
     try {
-      const res = await axios.post("/api/auth/reset-password", { email, password });
+      const res = await axios.post("/api/auth/reset-password", {
+        email,
+        password,
+      });
       if (res.status === 200) {
         message.success(res?.data?.message);
-        setStep(1)
-        setShowModel(false)
+        setStep(1);
+        setShowModel(false);
       }
     } catch (error) {
       message.error(error?.response?.data?.message);

@@ -1,6 +1,6 @@
-import User from "../models/UserSchema";
-import { sendOTPByEmail } from "../utils/emailUtils";
-import bcrypt from "bcrypt"
+import User from "../../../Schemas/server/UserSchema";
+import { sendOTPByEmail } from "../../../utils/server/emailUtils";
+import bcrypt from "bcrypt";
 export default async function handler(req, res) {
   try {
     const { email, otp, password } = req.body;
@@ -28,7 +28,9 @@ export default async function handler(req, res) {
     sendOTPByEmail(email, generatedOTP);
     existingUser.otp = generatedOTP;
     await existingUser.save();
-    return res.status(200).json({ message: "OTP sent. Please verify your OTP." });
+    return res
+      .status(200)
+      .json({ message: "OTP sent. Please verify your OTP." });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Server error" });
