@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['cdn.dummyjson.com'],
+    domains: ["cdn.dummyjson.com"],
   },
   transpilePackages: [
     "antd",
@@ -15,6 +15,9 @@ const nextConfig = {
     "rc-tree",
     "rc-table",
   ],
+  publicRuntimeConfig: {
+    env:process.env,
+  },
 };
 
 export default nextConfig;

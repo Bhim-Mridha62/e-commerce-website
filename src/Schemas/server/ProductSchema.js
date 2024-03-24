@@ -5,6 +5,8 @@ const reviewSchema = new mongoose.Schema({
   username: { type: String, default: '' },
   userImage: { type: String, default:'' },
   rating: { type: Number, default: 0 },
+  like:{type:Number,default:0},
+  dislike:{type:Number,default:0},
   comment: { type: String, default: '' },
   postdAt: { type: Date, default: Date.now },
 });

@@ -5,16 +5,15 @@ import Productskeleton from "../common/productskeleton";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
 import ProductCard from "../common/productcard/productcard";
+import { GetAllProduct } from "@/service/Product";
 function Homecard() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   async function fetchData() {
     try {
-      const response = await fetch("https://dummyjson.com/products");
-      const data = await response.json();
-      setProducts(data.products);
-      setLoading(false);
+      const response = await GetAllProduct();
+      console.log(response,"response");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
