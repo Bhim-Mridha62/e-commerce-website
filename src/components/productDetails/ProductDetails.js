@@ -5,6 +5,7 @@ import { Rate, message } from "antd";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { BsCurrencyRupee } from "react-icons/bs";
 import ReviewSection from "./ReviewSection";
+import { FetchProductDetail } from "@/service/Product";
 
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -13,22 +14,16 @@ const ProductDetail = () => {
   const { productId } = router.query;
   useEffect(() => {
     if (productId) {
+      console.log(productId, "dfghjkl;'");
       getProductDetail(productId);
       // console.log(productId,"productid");
     }
   }, [productId]);
   const getProductDetail = async (id) => {
     try {
-      await axios
-        .get(`https://dummyjson.com/products/${id}`)
-        .then((response) => {
-          setProduct(response?.data);
-          // console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-          message.error(error.response.data.message);
-        });
+      const data = await FetchProductDetail(id);
+      console.log(data?.data?.data, "data");
+      setProduct(data?.data?.data);
     } catch (error) {
       console.error("Error fetching product:", error);
     }
@@ -38,13 +33,11 @@ const ProductDetail = () => {
     setCurrentImageIndex(index);
   };
   const handleBuyNow = (productId) => {
-    console.log(productId, "from product");
     router.push({
       pathname: "/cart/address",
       query: { productId: productId },
     });
   };
-  console.log(router, "router");
   return (
     <div className="flex flex-wrap px-5 w-full">
       <div className="p-4 w-1/2">
@@ -79,7 +72,7 @@ const ProductDetail = () => {
             Add to Cart
           </button>
           <button
-            onClick={() => handleBuyNow(Product.id)}
+            onClick={() => handleBuyNow(Product._id)}
             className="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
             Buy Now
@@ -124,7 +117,7 @@ const ProductDetail = () => {
             </button>
           </div>
         </div>
-        <ReviewSection id={Product.id} />
+        <ReviewSection reviews={Product?.reviews} />
       </div>
     </div>
   );

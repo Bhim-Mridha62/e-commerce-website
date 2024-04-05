@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
   };
   return (
     <div
-      onClick={() => Productdetails(product.id)}
+      onClick={() => Productdetails(product._id)}
       className={stylehome.Productshow}
     >
       <img

@@ -31,7 +31,6 @@ const SignUpForm = ({ onSignUp }) => {
   });
   const handleOk = async () => {
     const res = await HandelverifyOTP({ otp, email: formik.values.email });
-    console.log(res, "res");
   };
   const handleCancel = () => {
     setIsotp(!isotp);

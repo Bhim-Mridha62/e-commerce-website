@@ -12,7 +12,6 @@ function AddCardItem(props) {
     title,
     description,
   } = props.cartItems;
-  console.log(props.cartItems, "props");
   return (
     <div className="border-b mt-4">
       <div className="flex gap-2">

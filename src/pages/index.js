@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return (
 <>
-<Head><title>Esey shop</title></Head>
+<Head><title>Easy Shop</title></Head>
 <div className="px-10">
     <Categories/>
     <Homecarousel/>
