@@ -9,8 +9,8 @@
 
 .Productshow {
   border: 1px solid #ccc;
-  min-width: 200px;
-  width: 200px;
+  /* min-width: 200px; */
+  width: 150px;
   height: max-content;
 }
 
@@ -68,9 +68,6 @@
 .BannerImg {
   width: 100%;
 }
-.ratingText {
-  color: black;
-}
 .buyandadddiv {
   width: auto;
   display: flex;
@@ -78,19 +75,8 @@
   justify-content: center;
   margin-bottom: 10px;
 }
-/* @media (max-width: 530px) {
-    .ProductCantainer {
-      gap: 20px;
-    }
-    .Productshow{
-      width: 150px;
-    }
-    .ratingText ul{
-      font-size: 15px;
-    }
-    .buyandadddiv button {
-      padding: 3px;
-      font-size: 15px;
-      border-radius: 2px;
-    }
-  } */
+@media (min-width: 768px) {
+  .Productshow {
+    width: 200px;
+  }
+}

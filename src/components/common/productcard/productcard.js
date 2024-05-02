@@ -5,8 +5,10 @@ import { RiShoppingCart2Fill } from "react-icons/ri";
 import stylehome from "./ProductCard.module.css";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
+import isMobile from "@/utils/client/isMobile";
 const ProductCard = ({ product }) => {
   const router = useRouter();
+  const Mobile = isMobile();
   const Productdetails = (id) => {
     router.push(`/product/${id}`);
   };
@@ -24,16 +26,16 @@ const ProductCard = ({ product }) => {
   return (
     <div
       onClick={() => Productdetails(product._id)}
-      className={stylehome.Productshow}
+      className="md:w-[200px] w-[150px] h-auto border border-gray-300"
     >
       <img
         className={stylehome.ProductshowImg}
         src={product.thumbnail}
         alt="Image here"
       />
-      <p className={stylehome.productTitle}>{product.title}</p>
-      <p className={stylehome.ratingText}>
-        <Rate allowHalf disabled value={product.rating} />
+      <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">{product.title}</p>
+      <p className="text-black text-[15px] md:text-[20px]">
+        <Rate style={{fontSize:Mobile ?15 :20}} allowHalf disabled value={product.rating} />
         <span>{product.rating}</span>
       </p>
       <p className="inline text-sm">
