@@ -7,12 +7,14 @@ import { BiSolidLike } from "react-icons/bi";
 import { FaCommentDots } from "react-icons/fa6";
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { TbShare3 } from "react-icons/tb";
-function ReviewSection({id}) {
+function ReviewSection({ reviews }) {
   const [review, setReview] = useState([]);
-  const router=useRouter()
+  const router = useRouter();
   useEffect(() => {
+    setReview(reviews)
+    // console.log(reviews, "reviews");
     getReviewData();
-  }, []);
+  }, [reviews]);
   const getReviewData = async () => {
     axios
       .get("https://dummyjson.com/comments")
@@ -27,13 +29,12 @@ function ReviewSection({id}) {
       {text}
     </Space>
   );
-  const HandelAllReview=()=>{
-  //  router.push({
-  //   pathname:"/product/allreview",
-  //   query:{id:id},
-  //  })
-  }
-  console.log(id, "revire");
+  const HandelAllReview = () => {
+    //  router.push({
+    //   pathname:"/product/allreview",
+    //   query:{id:id},
+    //  })
+  };
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800 my-4">
@@ -50,7 +51,14 @@ function ReviewSection({id}) {
             pageSize: 4,
           }}
           dataSource={review}
-          footer={<p onClick={HandelAllReview} className=" cursor-pointer text-base hover:text-blue-700">See All review</p>}
+          footer={
+            <p
+              onClick={HandelAllReview}
+              className=" cursor-pointer text-base hover:text-blue-700"
+            >
+              See All review
+            </p>
+          }
           renderItem={(data) => (
             <List.Item
               className="p-0"
@@ -80,7 +88,7 @@ function ReviewSection({id}) {
                 }
                 title={
                   <p>
-                    {data.user.username}{" "}
+                    {data?.user?.username}{" "}
                     <span className="ml-1 text-xs text-gray-400">20/12/20</span>
                   </p>
                 }

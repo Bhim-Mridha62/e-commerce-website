@@ -3,10 +3,11 @@ import { BiCategory } from "react-icons/bi";
 import { HiShoppingBag } from "react-icons/hi2";
 import { FaCartArrowDown ,FaRegCircleUser} from "react-icons/fa6";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { PiNotePencil } from "react-icons/pi";
 function SidebarContent({opensidebar}) {
   return (
     <div>
-      <ul className="list-none">
+      <ul className="list-none text-black">
         <li onClick={opensidebar} className="mb-4 text-lg cursor-pointer">
           <Link href={`/category`}><span><BiCategory className="inline mr-3 text-3xl" /></span> All Categories</Link>
         </li>
@@ -24,6 +25,12 @@ function SidebarContent({opensidebar}) {
         <li onClick={opensidebar} className="mb-4 text-lg cursor-pointer">
           <Link href={`/mywishlist`}>
           <span><IoMdHeartEmpty className="inline mr-3 text-3xl" /></span> My Wishlist
+          </Link>
+        </li>
+        <hr className="my-2" />
+        <li onClick={opensidebar} className="mb-4 text-lg cursor-pointer">
+          <Link href={`/Note`}>
+          <span><PiNotePencil className="inline mr-3 text-3xl" /></span> Note
           </Link>
         </li>
         <hr className="my-2" />

@@ -6,11 +6,9 @@ const SignInUpForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
 
   const handleSignIn = (formData) => {
-    console.log('Sign In Data:', formData);
   };
 
   const handleSignUp = (formData) => {
-    console.log('Sign Up Data:', formData);
   };
 
   return (
