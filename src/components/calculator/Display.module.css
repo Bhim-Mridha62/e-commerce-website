@@ -21,7 +21,7 @@
   
   .input,
   .value {
-    padding: 10px;
+    padding: 5px;
     text-align: right;
     background-color: transparent;
     color: white;
@@ -30,11 +30,11 @@
   }
   
   .input {
-    font-size: 35px;
+    font-size: 25px;
   }
   
   .value {
-    font-size: 15px;
+    font-size: 10px;
   }
   
   .input::placeholder,

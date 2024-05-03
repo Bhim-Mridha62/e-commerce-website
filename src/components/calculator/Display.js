@@ -19,7 +19,7 @@ const Display = ({ input, setInput, answer }) => {
               type="text"
               name="input"
               className={styles.input}
-              style={{ padding: "29px" }}
+              // style={{ padding: "29px" }}
               value={input}
               placeholder="0"
               maxLength={12}
