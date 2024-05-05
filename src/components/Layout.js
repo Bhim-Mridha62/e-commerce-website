@@ -10,11 +10,6 @@ function Layout({ children }) {
   const showModal = () => {
     setIsModalVisible(true);
   };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -29,7 +24,7 @@ function Layout({ children }) {
       <Modal
         title="Calculator"
         visible={isModalVisible}
-        onOk={handleOk}
+        onOk={handleCancel}
         onCancel={handleCancel}
         okButtonProps={{ style: { backgroundColor: 'darkblue', color: 'white' } }}
         cancelButtonProps={{ style: { display: 'none' } }}
