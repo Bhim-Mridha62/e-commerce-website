@@ -16,7 +16,7 @@ function Layout({ children }) {
   return (
     <div>
       <Navbar />
-      <div className="z-[999] fixed top-36 right-0 bg-gray-800 p-2 rounded-l-md text-white">
+      <div className="hidden z-[999] fixed top-36 right-0 bg-gray-800 p-2 rounded-l-md text-white">
         <FaCalculator onClick={showModal} className="text-2xl msm:text-3xl cursor-pointer" />
       </div>
       <main>{children}</main>

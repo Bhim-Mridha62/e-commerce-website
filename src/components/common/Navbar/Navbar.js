@@ -26,7 +26,6 @@ function Navbar() {
   const opensidebar = () => {
     setVisible(!visible);
   };
-  console.log(Mobile, "isMobile");
   return (
     <>
       <div className="w-full sticky top-0 z-[999] justify-between items-center h-16 bg-slate-700 flex text-white p-1 md:px-10">
