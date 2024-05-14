@@ -11,7 +11,7 @@ function TouchWithUs() {
   const SERVICE_PHONE = process.env.NEXT_PUBLIC_SERVICE_PHONE;
   const SERVICE_EMAIL = process.env.NEXT_PUBLIC_SERVICE_EMAIL;
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 bg-white rounded-lg shadow-md text-black">
       {/* <ToastContainer position="top-center" theme="light" /> */}
       <div className="contactdiv" data-aos="fade-right">
         <h3 className="text-2xl font-bold mb-4">Get In Touch With Us</h3>

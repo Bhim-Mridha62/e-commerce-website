@@ -11,7 +11,7 @@ function Contactus() {
   const handleSubmit = () => {};
   const handleChange = () => {};
   return (
-      <div className="p-6 bg-white rounded-lg shadow-md">
+      <div className="p-6 bg-white rounded-lg shadow-md text-black">
         <h2 className="text-2xl font-bold mb-4">Contact Form</h2>
 
         <form className="form" onSubmit={handleSubmit}>
