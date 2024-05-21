@@ -1,11 +1,14 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
-import {districts} from "@/utils/client/districts.js"
+import { districts } from "@/utils/client/districts.js";
+import PriceDetails from "@/components/common/PriceDetails";
+import { Collapse } from "antd";
+import { useRouter } from "next/router";
 const index = () => {
+  const router=useRouter()
   const initialValues = {
     name: "",
-    alternateName: "",
     phone: "",
     alternatePhone: "",
     pincode: "",
@@ -17,10 +20,22 @@ const index = () => {
 
   const handleSubmit = (values, { resetForm }) => {
     alert(JSON.stringify(values, null, 2));
+    router.push("/cart/address/payment/?id=jbefkjewfjk")
     resetForm();
   };
   return (
     <div className="m-4">
+      <Collapse
+        ghost
+        items={[
+          {
+            key: "1",
+            label: "Price Details",
+            children: <PriceDetails />,
+          },
+        ]}
+        // bordered={false}
+      />
       <p className="text-xl text-black font-bold mb-1">
         Enter Delivery Address
       </p>
@@ -46,21 +61,6 @@ const index = () => {
                 name="name"
                 component="div"
                 className="text-red-500 text-sm mt-1"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="alternateName"
-                className="text-gray-700 font-semibold"
-              >
-                Alternate Name
-              </label>
-              <Field
-                type="text"
-                id="alternateName"
-                name="alternateName"
-                placeholder="Enter alternate name"
-                className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
               />
             </div>
           </div>
@@ -204,7 +204,6 @@ const index = () => {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              // disabled={isSubmitting}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Submit

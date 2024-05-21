@@ -10,7 +10,7 @@
 .Productshow {
   border: 1px solid #ccc;
   min-width: 200px;
-  /* width: 200px; */
+  width: 200px;
   height: max-content;
 }
 

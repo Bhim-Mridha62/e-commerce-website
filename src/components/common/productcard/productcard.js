@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
   return (
     <div
       onClick={() => Productdetails(product._id)}
-      className="md:w-[200px] w-[150px] h-auto border border-gray-300"
+      className=" md:w-[200px] md:min-w-[200px] w-[150px] min-w-[150px] h-auto border border-gray-300"
     >
       <img
         className={stylehome.ProductshowImg}

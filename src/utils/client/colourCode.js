@@ -39,9 +39,9 @@ export const getRatingSpan = (rating) => {
       colorCode = '#15803D'; // Tailwind color code for text-green-700
       break;
     default:
-      text = 'Unknown';
+      text = 'Good';
       colorCode = '#6B7280'; // Tailwind color code for text-gray-500
   }
 
-  return <span style={{ color: colorCode }} className="font-semibold">{text}</span>;
+  return <span style={{ color: colorCode }} className="font-semibold ml-2">{text}</span>;
 };

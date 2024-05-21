@@ -90,7 +90,7 @@ const ProductCard = ({ product }) => {
     router.push(`/product/${"fhfkjefsjgsgsgr6562566559"}`);
   }
   return (
-    <div className="flex items-start justify-between p-1 md:p-4  md:border-gray-200 rounded-lg shadow-sm mb-4">
+    <div className="flex items-start justify-between p-1 md:px-52  md:border-gray-200 rounded-lg shadow-sm mb-4">
       <div className=" md:flex-row flex-col flex">
         <img
         onClick={(e)=>handelProductDetails(e)}
