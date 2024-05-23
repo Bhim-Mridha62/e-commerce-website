@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Radio, Space, Divider, Button, Collapse } from "antd";
 import PriceDetails from "@/components/common/PriceDetails";
 import { useRouter } from "next/router";
-
+import { decodeData } from "@/utils/client/encoding";
 const PaymentOptions = () => {
   const router=useRouter()
-  console.log(router);
+  useEffect(() => {
+    const { data, address } = router.query;
+    const priceDetails =decodeData(data)
+    const addressDetails =decodeData(address)
+    console.log(priceDetails,"priceDetails");
+    console.log(addressDetails,"addressDetails");
+  }, [])
+  
   return (
     <>
       <Collapse

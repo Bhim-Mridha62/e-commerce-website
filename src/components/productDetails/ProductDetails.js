@@ -136,9 +136,7 @@ const ProductDetail = () => {
   const { productId } = router.query;
   useEffect(() => {
     if (productId) {
-      console.log(productId, "dfghjkl;'");
       getProductDetail(productId);
-      // console.log(productId,"productid");
     }
   }, [productId]);
   const getProductDetail = async (id) => {

@@ -1,6 +1,10 @@
 import React from "react";
-import MyOrderContent from "@/components/MyOrderContent/MyOrderContent";
-
+import dynamic from "next/dynamic";
+import Loading from "@/components/Loading/Loading";
+const MyOrderContent = dynamic(
+  () => import("@/components/MyOrderContent/MyOrderContent"),
+  { loading: () => <Loading /> }
+);
 function MyOrder() {
   return <MyOrderContent />;
 }

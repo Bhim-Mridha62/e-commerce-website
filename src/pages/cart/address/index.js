@@ -5,8 +5,12 @@ import { districts } from "@/utils/client/districts.js";
 import PriceDetails from "@/components/common/PriceDetails";
 import { Collapse } from "antd";
 import { useRouter } from "next/router";
+import { decodeData, encodeData } from "@/utils/client/encoding";
 const index = () => {
-  const router=useRouter()
+  const router = useRouter();
+  const { data } = router.query;
+  console.log(data);
+  const priceDetails = decodeData(data);
   const initialValues = {
     name: "",
     phone: "",
@@ -19,8 +23,11 @@ const index = () => {
   };
 
   const handleSubmit = (values, { resetForm }) => {
-    alert(JSON.stringify(values, null, 2));
-    router.push("/cart/address/payment/?id=jbefkjewfjk")
+    const addressData = {
+      ...values,
+    };
+    const encodedAddressData = encodeData(addressData);
+    router.push(`/cart/address/payment?data=${data}&address=${encodedAddressData}`);
     resetForm();
   };
   return (
@@ -31,7 +38,15 @@ const index = () => {
           {
             key: "1",
             label: "Price Details",
-            children: <PriceDetails />,
+            children: priceDetails && (
+              <PriceDetails
+                totalItems={priceDetails?.totalItems}
+                totalPrice={priceDetails?.totalPrice}
+                totalDiscount={priceDetails?.totalDiscount}
+                totalAmount={priceDetails?.totalAmount}
+                totalSavings={priceDetails?.totalSavings}
+              />
+            ),
           },
         ]}
         // bordered={false}

@@ -61,11 +61,6 @@ function Footer() {
             />
           </div>
         </div>
-        <div className="flex flex-row justify-center Msm:mt-5 sm:mt-0">
-          &copy;&nbsp;<span>{new Date().getFullYear()}</span> &nbsp;
-          <div className="sm:block hidden"> All rights reserved</div>&nbsp;
-          <div> name</div>
-        </div>
       </div>
     </>
   );
