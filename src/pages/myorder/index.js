@@ -5,8 +5,8 @@ const MyOrderContent = dynamic(
   () => import("@/components/MyOrderContent/MyOrderContent"),
   { loading: () => <Loading /> }
 );
-function MyOrder() {
+const MyOrder = () => {
   return <MyOrderContent />;
-}
+};
 
 export default MyOrder;

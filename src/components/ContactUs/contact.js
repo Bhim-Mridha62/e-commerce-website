@@ -26,11 +26,10 @@ export default function Contact() {
       })
       .catch((error) => alert(error.message));
   }
-
   return (
     <section id="contact" className="relative bg-[#111827]">
-      <div className="container px-5 py-10 mx-auto flex  flex-wrap">
-        <div className="lg:w-2/3 md:w-1/2 bg-gray-900 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
+      <div className="w-full px-5 py-10 mx-auto flex  flex-wrap">
+        <div className=" md:w-1/2 bg-gray-900 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
           <iframe
             width="100%"
             height="100%"
