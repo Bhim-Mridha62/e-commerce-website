@@ -45,15 +45,6 @@ const SidebarContent = ({ opensidebar }) => {
         </li>
         <hr className="my-2" />
         <li onClick={opensidebar} className="mb-4 text-lg cursor-pointer">
-          <Link href={`/Note`}>
-            <span>
-              <PiNotePencil className="inline mr-3 text-3xl" />
-            </span>{" "}
-            Note
-          </Link>
-        </li>
-        <hr className="my-2" />
-        <li onClick={opensidebar} className="mb-4 text-lg cursor-pointer">
           <Link href={`/account`}>
             <span>
               <FaRegCircleUser className="inline mr-3 text-3xl" />

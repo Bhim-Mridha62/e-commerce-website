@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Divider, Rate } from "antd";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import { useState } from "react";
 
 const ProductCard = ({ product }) => {
+  const [quantity,setQuantity]=useState(1)
   return (
     <>
     <div className="mb-4 p-2 md:p-4">
@@ -18,6 +20,8 @@ const ProductCard = ({ product }) => {
               Qty:
             </span>
             <input
+              value={quantity}
+              onChange={(e)=>setQuantity(e?.target?.value)}
               min={1}
               type="number"
               className="pl-[40px] outline-none border border-gray-400 border-opacity-40 rounded-md w-full"

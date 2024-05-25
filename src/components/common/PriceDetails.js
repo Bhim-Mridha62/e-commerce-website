@@ -14,17 +14,17 @@ function PriceDetails({
   const isAddress =
     router.pathname?.split("/")[2]?.toLocaleLowerCase() === "address";
 
-    const handlePlaceOrder = () => {
-      const query = {
-        totalItems,
-        totalPrice,
-        totalDiscount,
-        totalAmount,
-        totalSavings
-      };
-      const encodedQuery = encodeData(query);
-      router.push(`/cart/address?data=${encodedQuery}`);
+  const handlePlaceOrder = () => {
+    const query = {
+      totalItems,
+      totalPrice,
+      totalDiscount,
+      totalAmount,
+      totalSavings,
     };
+    const encodedQuery = encodeData(query);
+    router.push(`/cart/address?data=${encodedQuery}`);
+  };
 
   return (
     <div className="max-w-md text-black mx-auto p-4 bg-white shadow-md rounded-md">
@@ -42,7 +42,7 @@ function PriceDetails({
       <div className="mb-2 flex justify-between">
         <span>Delivery Charges</span>
         <span>
-          <span className="line-through">₹{totalItems*40}</span>
+          <span className="line-through">₹{totalItems * 40}</span>
           <span className="text-green-600 ml-2">FREE Delivery</span>
         </span>
       </div>
@@ -54,27 +54,23 @@ function PriceDetails({
       <div className="mb-4 text-green-600">
         <span>You will save ₹{totalSavings} on this order</span>
       </div>
-      <div
-        className={`${
-          isAddress ? "hidden" : "flex"
-        } justify-between items-center`}
-      >
-        <div>
-          <span className="line-through text-gray-500">
-            ₹{totalPrice}
-          </span>
-          <span className="text-2xl text-green-600 font-semibold ml-2">
-            ₹{totalAmount}
-          </span>
+      {!isAddress && (
+        <div className="flex justify-between items-center">
+          <div>
+            <span className="line-through text-gray-500">₹{totalPrice}</span>
+            <span className="text-2xl text-green-600 font-semibold ml-2">
+              ₹{totalAmount}
+            </span>
+          </div>
+          <Button
+            onClick={handlePlaceOrder}
+            type="primary"
+            className="bg-blue-400 text-black border-none rounded-md"
+          >
+            Place order
+          </Button>
         </div>
-        <Button
-          onClick={handlePlaceOrder}
-          type="primary"
-          className="bg-blue-400 text-black border-none rounded-md"
-        >
-          Place order
-        </Button>
-      </div>
+      )}
     </div>
   );
 }

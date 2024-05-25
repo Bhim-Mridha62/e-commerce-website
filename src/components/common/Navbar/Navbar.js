@@ -50,22 +50,7 @@ function Navbar() {
             // size="small"
             loading={false}
           />
-          {/* )} */}
         </div>
-        {false && (
-          <div>
-            <ul className="flex gap-5">
-              <li
-                className="cursor-pointer"
-                onClick={() => router.push("/allproduct")}
-              >
-                Add product
-              </li>
-              <li>All product</li>
-            </ul>
-            <div className="text-2xl msm:text-3xl"></div>
-          </div>
-        )}
         <div>
           <ul className="flex items-center gap-1 md:gap-5">
             <Link href="/login" className="">

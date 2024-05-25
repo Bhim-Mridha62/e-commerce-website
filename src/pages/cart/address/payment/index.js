@@ -1,18 +1,48 @@
-import React, { useEffect } from "react";
-import { Radio, Space, Divider, Button, Collapse } from "antd";
+import React, { useEffect, useState, useMemo } from "react";
+import { Radio, Space, Divider, Collapse, Modal } from "antd";
 import PriceDetails from "@/components/common/PriceDetails";
+import DeliverDetails from "@/components/common/DeliverDetails";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/router";
-import { decodeData } from "@/utils/client/encoding";
+import { decodeData, encodeData } from "@/utils/client/encoding";
+import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
+import { districts } from "@/utils/client/districts.js";
+
 const PaymentOptions = () => {
-  const router=useRouter()
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const router = useRouter();
+  const { data, address } = router.query;
+  const priceDetails = useMemo(() => decodeData(data), [data]);
+
+  const decodedAddressDetails = useMemo(() => decodeData(address), [address]);
+  const [addressDetails, setAddressDetails] = useState(decodedAddressDetails);
+
   useEffect(() => {
-    const { data, address } = router.query;
-    const priceDetails =decodeData(data)
-    const addressDetails =decodeData(address)
-    console.log(priceDetails,"priceDetails");
-    console.log(addressDetails,"addressDetails");
-  }, [])
-  
+    if (decodedAddressDetails) {
+      setAddressDetails(decodedAddressDetails);
+    }
+  }, [decodedAddressDetails]);
+
+  const handleChange = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const handleSubmit = (values) => {
+    setAddressDetails(values);
+    console.log(values, "value");
+    setIsModalVisible(false);
+
+    // Encode the updated address details and update the URL
+    const encodedAddress = encodeData(values);
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        address: encodedAddress,
+      },
+    });
+  };
+
   return (
     <>
       <Collapse
@@ -21,7 +51,17 @@ const PaymentOptions = () => {
           {
             key: "1",
             label: "Price Details",
-            children: <PriceDetails />,
+            children: priceDetails ? (
+              <PriceDetails
+                totalItems={priceDetails?.totalItems}
+                totalPrice={priceDetails?.totalPrice}
+                totalDiscount={priceDetails?.totalDiscount}
+                totalAmount={priceDetails?.totalAmount}
+                totalSavings={priceDetails?.totalSavings}
+              />
+            ) : (
+              <div>No Price Details yet</div>
+            ),
           },
         ]}
       />
@@ -31,7 +71,14 @@ const PaymentOptions = () => {
           {
             key: "1",
             label: "Delivery Address",
-            children: <PriceDetails />,
+            children: addressDetails ? (
+              <DeliverDetails
+                addressDetails={addressDetails}
+                HandelChange={handleChange}
+              />
+            ) : (
+              <div>Add address</div>
+            ),
           },
         ]}
       />
@@ -73,11 +120,199 @@ const PaymentOptions = () => {
         </Radio.Group>
       </div>
       <div className="text-center my-5">
-        {/* <Button className='px-6 bg-[#3daf3d] text-xl'>CONFIRM ORDER</Button> */}
         <button className="text-white border border-solid border-gray-400 px-8 py-4 text-lg rounded-md bg-gray-800">
           CONFIRM ORDER
         </button>
       </div>
+      {addressDetails && (
+        <Modal
+          title="Update Delivery Address"
+          open={isModalVisible}
+          onCancel={handleChange}
+          footer={null}
+        >
+          <Formik
+            initialValues={addressDetails || {}}
+            validationSchema={DeliveryAddressSchema}
+            onSubmit={handleSubmit}
+            enableReinitialize
+          >
+            <Form>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="text-gray-700 font-semibold">
+                    <span className="text-red-500">*</span> Name
+                  </label>
+                  <Field
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2"
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="text-gray-700 font-semibold"
+                  >
+                    <span className="text-red-500">*</span> Phone Number
+                  </label>
+                  <Field
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  />
+                  <ErrorMessage
+                    name="phone"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="alternatePhone"
+                    className="text-gray-700 font-semibold"
+                  >
+                    Alternate Phone Number
+                  </label>
+                  <Field
+                    type="text"
+                    id="alternatePhone"
+                    name="alternatePhone"
+                    placeholder="Enter alternate phone number"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="pincode"
+                    className="text-gray-700 font-semibold"
+                  >
+                    <span className="text-red-500">*</span> Pin Code
+                  </label>
+                  <Field
+                    type="text"
+                    id="pincode"
+                    name="pincode"
+                    placeholder="Enter your pin code"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  />
+                  <ErrorMessage
+                    name="pincode"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="state"
+                    className="text-gray-700 font-semibold"
+                  >
+                    <span className="text-red-500">*</span> State
+                  </label>
+                  <Field
+                    type="text"
+                    id="state"
+                    name="state"
+                    placeholder="Enter your state"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  />
+                  <ErrorMessage
+                    name="state"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="district"
+                    className="text-gray-700 font-semibold"
+                  >
+                    <span className="text-red-500">*</span> District
+                  </label>
+                  <Field
+                    as="select"
+                    id="district"
+                    name="district"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  >
+                    <option value="" disabled>
+                      --- Select District ---
+                    </option>
+                    {districts?.map((district) => (
+                      <option key={district} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage
+                    name="district"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="Villege"
+                    className="text-gray-700 font-semibold"
+                  >
+                    <span className="text-red-500">*</span> Villege
+                  </label>
+                  <Field
+                    type="text"
+                    id="Villege"
+                    name="Villege"
+                    placeholder="Enter your Villege"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  />
+                  <ErrorMessage
+                    name="Villege"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="buildingAddress"
+                    className="text-gray-700 font-semibold"
+                  >
+                    Building Address
+                  </label>
+                  <Field
+                    as="textarea"
+                    id="buildingAddress"
+                    name="buildingAddress"
+                    placeholder="Enter your building address"
+                    rows="3"
+                    className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
+                  />
+                  <ErrorMessage
+                    name="buildingAddress"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+              </div>
+              <div className="mt-4 text-right">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                >
+                  Save Address
+                </button>
+              </div>
+            </Form>
+          </Formik>
+        </Modal>
+      )}
     </>
   );
 };

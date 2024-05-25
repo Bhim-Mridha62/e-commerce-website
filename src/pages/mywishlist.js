@@ -1,9 +1,11 @@
-import React from 'react'
-
+import dynamic from "next/dynamic";
+import React from "react";
 function mywishlist() {
   return (
-    <div>mywishlist</div>
-  )
+    <div>
+      <wishlistContent />
+    </div>
+  );
 }
 
-export default mywishlist
+export default mywishlist;
