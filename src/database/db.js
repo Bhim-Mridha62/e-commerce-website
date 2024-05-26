@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 require("dotenv").config();
 
-const MONGODB_URL = process.env.MONGODB_URL;
+const MONGODB_URL =
+  process.env.MONGODB_URL ||
+  "mongodb+srv://bhimmridha62:2XoL4CGww3b8mZCI@cluster0.pfzffae.mongodb.net/?retryWrites=true&w=majority";
 
 const connectDB = async () => {
   try {
