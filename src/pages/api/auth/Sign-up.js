@@ -5,15 +5,15 @@ import { sendOTPByEmail } from "../../../utils/server/emailUtils";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).end();
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 
   const { FirstName, LastName, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      res.status(400).json({ message: "Email already exists" });
+    if (existingUser?.otpVerify) {
+      res.status(409).json({ message: "Email already exists" });
     } else {
       const otp = Math.floor(100000 + Math.random() * 900000);
       sendOTPByEmail(email, otp);

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { SignInSchema } from "@/Schemas/client/FormSchema";
 import axios from "axios";
+import { useAuthData } from "@/service/Auth";
 const SignInForm = ({ onSignIn }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [step, setStep] = useState(1);
@@ -11,15 +12,27 @@ const SignInForm = ({ onSignIn }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showModel, setShowModel] = useState(false);
-
+  const { LoginUser } = useAuthData();
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: SignInSchema,
-    onSubmit: (values) => {
-      onSignIn(values);
+    onSubmit: async (values) => {
+      try {
+        const res = await LoginUser(values);
+        if (res?.status === 201) {
+          message.success(res?.data?.message);
+          window.localStorage.setItem(
+            "Authorization",
+            res?.data?.user?.SecretToken
+          );
+          window.localStorage.setItem("User",JSON.stringify(res?.data?.user));
+        }
+      } catch (error) {
+        message.error(error?.response?.data?.message);
+      }
     },
   });
   const handleSendOTP = async () => {
@@ -61,7 +74,10 @@ const SignInForm = ({ onSignIn }) => {
   };
   return (
     <>
-      <form className="px-0 tsm:px-8 py-6" onSubmit={formik.handleSubmit}>
+      <form
+        className="px-0 tsm:px-8 py-6 text-black"
+        onSubmit={formik.handleSubmit}
+      >
         <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
         <div className="mb-4">
           <input

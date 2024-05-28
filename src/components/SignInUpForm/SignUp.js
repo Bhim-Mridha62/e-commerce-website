@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Formik, useFormik } from "formik";
 import { Input, Modal, message } from "antd";
 import { SignUpSchema } from "@/Schemas/client/FormSchema";
-import { HandelSignUp, HandelverifyOTP } from "@/service/Auth";
+import { useAuthData } from "@/service/Auth";
 const SignUpForm = ({ onSignUp }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
   const [isotp, setIsotp] = useState(false);
+  const { HandelSignUp, HandelverifyOTP } = useAuthData();
   const [otp, setOtp] = useState(null);
   const formik = useFormik({
     initialValues: {
@@ -20,8 +21,8 @@ const SignUpForm = ({ onSignUp }) => {
     onSubmit: async (values) => {
       try {
         const res = await HandelSignUp(values);
-        if (res.status === 201) {
-          message.success(res.data.message);
+        if (res?.status === 201) {
+          message.success(res?.data?.message);
           setIsotp(true);
         }
       } catch (error) {
@@ -30,14 +31,31 @@ const SignUpForm = ({ onSignUp }) => {
     },
   });
   const handleOk = async () => {
-    const res = await HandelverifyOTP({ otp, email: formik.values.email });
+    try {
+      const res = await HandelverifyOTP({ otp, email: formik.values.email });
+      console.log(res, "res");
+      if (res?.status == 201) {
+        message.success(res?.data?.message);
+        window.localStorage.setItem(
+          "Authorization",
+          res?.data?.user?.SecretToken
+        );
+        window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
+        setIsotp(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleCancel = () => {
     setIsotp(!isotp);
   };
   return (
     <>
-      <form className="px-0 tsm:px-8 py-6" onSubmit={formik.handleSubmit}>
+      <form
+        className="px-0 tsm:px-8 py-6 text-black"
+        onSubmit={formik.handleSubmit}
+      >
         <h1 className="text-2xl font-semibold mb-4">Create Account</h1>
         <div className="mb-4">
           <input

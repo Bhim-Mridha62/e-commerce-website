@@ -4,13 +4,6 @@ import SignUpForm from '@/components/SignInUpForm/SignUp';
 
 const SignInUpForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-
-  const handleSignIn = (formData) => {
-  };
-
-  const handleSignUp = (formData) => {
-  };
-
   return (
     <div className="flex justify-center h-screen bg-gray-100">
       <div className="container p-4 bg-white shadow-md rounded-lg overflow-hidden">
@@ -33,9 +26,9 @@ const SignInUpForm = () => {
           </button>
         </div>
         {isSignUp ? (
-          <SignUpForm onSignUp={handleSignUp} />
+          <SignUpForm/>
         ) : (
-          <SignInForm onSignIn={handleSignIn} />
+          <SignInForm/>
         )}
       </div>
     </div>

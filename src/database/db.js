@@ -1,23 +1,41 @@
-import mongoose from "mongoose";
-require("dotenv").config();
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const MONGODB_URL =
-  process.env.MONGODB_URL ||
-  "mongodb+srv://bhimmridha62:2XoL4CGww3b8mZCI@cluster0.pfzffae.mongodb.net/?retryWrites=true&w=majority";
+dotenv.config();
+
+const MONGODB_URL = process.env.MONGODB_URL;
+
+if (!MONGODB_URL) {
+  throw new Error('Please define the MONGODB_URL environment variable inside .env.local');
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 const connectDB = async () => {
-  try {
-    // console.log(MONGODB_URL,"mongo db url");
-    await mongoose.connect(MONGODB_URL, {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      bufferCommands: false, // Disable mongoose buffering in serverless environment
+    }).then((mongoose) => {
+      console.log("Connected to MongoDB");
+      return mongoose;
+    }).catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+      throw error;
     });
-
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.log(MONGODB_URL, "ert");
-    console.error(error, "Error connecting to MongoDB:");
   }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
 
-module.exports = connectDB;
+export default connectDB;
