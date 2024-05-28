@@ -1,9 +1,12 @@
 import bcrypt from "bcrypt";
 import User from "../../../Schemas/server/UserSchema";
 import { sendOTPByEmail } from "../../../utils/server/emailUtils";
+import connectDB from "@/database/db";
 // Make sure the path to User model is correct based on your project structure
 
 export default async function handler(req, res) {
+  await connectDB();
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }

@@ -16,7 +16,6 @@ const Errors = (res) => {
 };
 const Apimethod = async (url, method, body, auth) => {
   console.log(url, method, body, auth, "url, method, body, auth");
-  console.log(Cookie(), "Cookie()");
   const data = auth
     ? await Axios.request({
         url: url ? url : "",
@@ -45,8 +44,14 @@ export const HandelverifyOTP = (data) => {
 const LoginUser = async (loginUser) => {
   return Apimethod("/api/auth/Sign-in", "post", loginUser, true);
 };
-const AddToCart = async (productId) => {
-  return Apimethod("/api/cart", "post", { productId }, false);
+const AddToCart = async (data) => {
+  return Apimethod("/api/cart", "post",data, false);
+};
+const AllCartData = async () => {
+  return Apimethod("/api/cart", "get",{}, false);
+};
+const RemoveCartData = async (id) => {
+  return Apimethod("/api/cart", "DELETE",id, false);
 };
 const FetchProductDetail = async (id) => {
   return Apimethod(`/api/product/ProductDetails?id=${id}`, "get", {}, true);
@@ -57,4 +62,6 @@ export const useAuthData = () => ({
   LoginUser,
   AddToCart,
   FetchProductDetail,
+  AllCartData,
+  RemoveCartData
 });

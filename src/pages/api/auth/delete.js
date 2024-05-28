@@ -1,6 +1,9 @@
+import connectDB from "@/database/db";
 import User from "../../../Schemas/server/UserSchema";
 
 export default async function handler(req, res) {
+  await connectDB();
+
   const { email } = req.body;
   try {
     console.log(email, "email");

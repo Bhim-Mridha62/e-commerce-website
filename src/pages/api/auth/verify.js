@@ -1,6 +1,9 @@
+import connectDB from "@/database/db";
 import User from "../../../Schemas/server/UserSchema";
 import CreateToken from "../../../utils/server/SecretToken";
 export default async function handler(req, res) {
+  await connectDB();
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "method not allow" });
   }

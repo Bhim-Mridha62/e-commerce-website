@@ -2,8 +2,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../../../Schemas/server/UserSchema";
 import CreateToken from "../../../utils/server/SecretToken";
+import connectDB from "@/database/db";
 
 export default async function handler(req, res) {
+  await connectDB();
+
   if (req.method !== "POST") {
     return res.status(405).end();
   }

@@ -4,21 +4,21 @@ import axios from "axios";
 import { useEffect } from "react";
 
 export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api");
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("/api");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
-  
+  //   fetchData();
+  // }, []);
+
   return (
     <Layout>
       <Component {...pageProps} />
     </Layout>
-  )
+  );
 }

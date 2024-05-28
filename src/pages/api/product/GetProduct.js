@@ -1,6 +1,8 @@
 import Product from "@/Schemas/server/ProductSchema";
+import connectDB from "@/database/db";
 
 export default async function handler(req, res) {
+  await connectDB();
   if (req.method !== "GET") {
     res.status(405).json({ message: "Method Not Allowed" });
   } else {

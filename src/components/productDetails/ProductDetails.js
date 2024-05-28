@@ -11,6 +11,8 @@ import { useAuthData } from "@/service/Auth";
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [Product, setProduct] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(null);
   const router = useRouter();
   const { AddToCart, FetchProductDetail } = useAuthData();
   const { productId } = router.query;
@@ -37,8 +39,37 @@ const ProductDetail = () => {
       query: { productId: productId },
     });
   };
-  const HandelAddToCart = (id) => {
-    AddToCart(id);
+  const HandelAddToCart = async (id) => {
+    try {
+      const res = await AddToCart({
+        Size: selectedSize,
+        productId: id,
+        quantity: quantity,
+      });
+      if (res?.status === 200) {
+        router.push("/cart");
+      }else{
+        message.error("Somthing please try again")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const HandelMinusQuantity = () => {
+    if (!selectedSize) {
+      message.info("Please Select Size");
+      return;
+    }
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+  const HandeAddQuantity = () => {
+    if (selectedSize) {
+      setQuantity(quantity + 1);
+    } else {
+      message.info("Please Select Size");
+    }
   };
   return (
     <div className="flex flex-col md:flex-row flex-wrap px-2 md:px-5 w-full">
@@ -98,44 +129,18 @@ const ProductDetail = () => {
               <p className="rounded p-2 bg-[#80808029]">3XL</p>
             </div> */}
             <Select
-              style={{
-                width: 200,
-              }}
-              placeholder=" Select Size"
+              style={{ width: 200 }}
+              placeholder="Select Size"
               optionFilterProp="children"
-              // filterOption={(input, option) =>
-              //   (option?.label ?? "").includes(input)
-              // }
-              // filterSort={(optionA, optionB) =>
-              //   (optionA?.label ?? "")
-              //     .toLowerCase()
-              //     .localeCompare((optionB?.label ?? "").toLowerCase())
-              // }
+              value={selectedSize}
+              onChange={(value) => setSelectedSize(value)}
               options={[
-                {
-                  value: "1",
-                  label: "S",
-                },
-                {
-                  value: "2",
-                  label: "M",
-                },
-                {
-                  value: "3",
-                  label: "L",
-                },
-                {
-                  value: "4",
-                  label: "XL",
-                },
-                {
-                  value: "5",
-                  label: "2XL",
-                },
-                {
-                  value: "6",
-                  label: "3XL",
-                },
+                { value: "S", label: "S" },
+                { value: "M", label: "M" },
+                { value: "L", label: "L" },
+                { value: "XL", label: "XL" },
+                { value: "2XL", label: "2XL" },
+                { value: "3XL", label: "3XL" },
               ]}
             />
           </div>
@@ -167,11 +172,17 @@ const ProductDetail = () => {
             </span>
           </p>
           <div className="flex items-center mt-2 gap-2 rounded-lg ">
-            <button className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded">
+            <button
+              onClick={HandelMinusQuantity}
+              className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded"
+            >
               -
             </button>
-            <span className="text-lg font-semibold">Quantity: 22</span>
-            <button className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded">
+            <span className="text-lg font-semibold">Quantity: {quantity}</span>
+            <button
+              onClick={HandeAddQuantity}
+              className="quantity-button bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded"
+            >
               +
             </button>
           </div>
