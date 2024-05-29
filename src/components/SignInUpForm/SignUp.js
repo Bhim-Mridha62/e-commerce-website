@@ -3,12 +3,14 @@ import { Formik, useFormik } from "formik";
 import { Input, Modal, message } from "antd";
 import { SignUpSchema } from "@/Schemas/client/FormSchema";
 import { useAuthData } from "@/service/Auth";
+import { useRouter } from "next/router";
 const SignUpForm = ({ onSignUp }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
   const [isotp, setIsotp] = useState(false);
   const { HandelSignUp, HandelverifyOTP } = useAuthData();
   const [otp, setOtp] = useState(null);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       FirstName: "",
@@ -42,6 +44,7 @@ const SignUpForm = ({ onSignUp }) => {
         );
         window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
         setIsotp(false);
+        router.back();
       }
     } catch (error) {
       console.log(error);

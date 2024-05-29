@@ -33,8 +33,6 @@ const getCart = async (req, res) => {
     const cartDetails = await Product.find({
       _id: { $in: AllProductId },
     }).select("_id title price discountPercentage rating thumbnail");
-    console.log(cartDetails);
-    console.log(user.cart);
     const mergedCart = user.cart
       .map((cartItem) => {
         const productDetails = cartDetails.find(
@@ -46,7 +44,6 @@ const getCart = async (req, res) => {
           return {
             ...plainProductDetails,
             quantity: cartItem.quantity,
-            cartID: cartItem._id,
             Size: cartItem?.Size || "",
           };
         }

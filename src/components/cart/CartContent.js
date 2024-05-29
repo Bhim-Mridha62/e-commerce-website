@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import PriceDetails from "../common/PriceDetails";
 import { useAuthData } from "@/service/Auth";
+import EmptyCart from "./EmptyCart";
 
 const productData = [
   {
@@ -27,6 +28,7 @@ const productData = [
 const CartContent = () => {
   const [productData, setProductData] = useState([]);
   const { AddToCart, AllCartData, RemoveCartData } = useAuthData();
+  const [user, setUser] = useState(null);
   const fetchData = async () => {
     try {
       const res = await AllCartData();
@@ -39,6 +41,11 @@ const CartContent = () => {
     }
   };
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserString = localStorage.getItem("User");
+      const storedUser = storedUserString ? JSON.parse(storedUserString) :"";
+      setUser(storedUser);
+    }
     fetchData();
   }, []);
   const HandelRemove = async (id) => {
@@ -66,22 +73,33 @@ const CartContent = () => {
   const totalAmount = (totalPrice - totalDiscount).toFixed(0);
   const totalSavings = totalDiscount;
   console.log(productData, "productData");
+  console.log(user, "user");
   return (
     <div className="container mx-auto mt-4">
-      {productData.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          HandelRemove={HandelRemove}
-        />
-      ))}
-      <PriceDetails
-        totalItems={totalItems}
-        totalPrice={totalPrice}
-        totalDiscount={totalDiscount}
-        totalAmount={totalAmount}
-        totalSavings={totalSavings}
-      />
+      {user ? (
+        productData.length ? (
+          <>
+            {productData.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                HandelRemove={HandelRemove}
+              />
+            ))}
+            <PriceDetails
+              totalItems={totalItems}
+              totalPrice={totalPrice}
+              totalDiscount={totalDiscount}
+              totalAmount={totalAmount}
+              totalSavings={totalSavings}
+            />
+          </>
+        ) : (
+          <EmptyCart IsLogin={true} />
+        )
+      ) : (
+        <EmptyCart IsLogin={false} />
+      )}
     </div>
   );
 };

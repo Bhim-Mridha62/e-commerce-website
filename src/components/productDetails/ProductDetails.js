@@ -41,15 +41,19 @@ const ProductDetail = () => {
   };
   const HandelAddToCart = async (id) => {
     try {
-      const res = await AddToCart({
-        Size: selectedSize,
-        productId: id,
-        quantity: quantity,
-      });
-      if (res?.status === 200) {
-        router.push("/cart");
-      }else{
-        message.error("Somthing please try again")
+      if (!selectedSize) {
+        message.info("Please Select Size");
+      } else {
+        const res = await AddToCart({
+          Size: selectedSize,
+          productId: id,
+          quantity: quantity,
+        });
+        if (res?.status === 200) {
+          router.push("/cart");
+        } else {
+          message.error("Somthing please try again");
+        }
       }
     } catch (error) {
       console.log(error);

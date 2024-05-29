@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { SignInSchema } from "@/Schemas/client/FormSchema";
 import axios from "axios";
 import { useAuthData } from "@/service/Auth";
+import { useRouter } from "next/router";
 const SignInForm = ({ onSignIn }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [step, setStep] = useState(1);
@@ -13,6 +14,7 @@ const SignInForm = ({ onSignIn }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showModel, setShowModel] = useState(false);
   const { LoginUser } = useAuthData();
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -29,6 +31,7 @@ const SignInForm = ({ onSignIn }) => {
             res?.data?.user?.SecretToken
           );
           window.localStorage.setItem("User",JSON.stringify(res?.data?.user));
+          router.back();
         }
       } catch (error) {
         message.error(error?.response?.data?.message);
