@@ -20,10 +20,10 @@ export default async function handler(req, res) {
       return res.status(401).json({ message: "invalid Password" });
     }
     const stringValue = await user._id.toString();
+    console.log(stringValue,"stringValue");
     const jwtToken = CreateToken(stringValue);
     console.log(jwtToken,"jwtToken");
     user.SecretToken = jwtToken;
-    await user.save();
     const sanitizedUser = {
       _id: user._id,
       FirstName: user.FirstName,
@@ -33,6 +33,7 @@ export default async function handler(req, res) {
       wishlist: user.wishlist,
       SecretToken: user.SecretToken,
     };
+    await user.save();
     res.status(201).json({ message: "Sign sucessfully", user: sanitizedUser });
   } catch (error) {
     res.status(500).json({ message: "Server Error occurred" });
