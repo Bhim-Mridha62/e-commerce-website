@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import User from "../../../Schemas/server/UserSchema";
 import CreateToken from "../../../utils/server/SecretToken";
 import connectDB from "@/database/db";
@@ -20,7 +19,9 @@ export default async function handler(req, res) {
     if (!isMatch) {
       return res.status(401).json({ message: "invalid Password" });
     }
+    console.log(user._id.toString(), "stringValue", user._id);
     const stringValue = await user._id.toString();
+    console.log(stringValue, "stringValue");
     const jwtToken = CreateToken(stringValue);
     user.SecretToken = jwtToken;
     await user.save();
@@ -35,6 +36,6 @@ export default async function handler(req, res) {
     };
     res.status(201).json({ message: "Sign sucessfully", user: sanitizedUser });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error occurred" });
   }
 }
