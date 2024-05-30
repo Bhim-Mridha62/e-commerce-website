@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import SignInForm from '@/components/SignInUpForm/SignIn';
 import SignUpForm from '@/components/SignInUpForm/SignUp';
+import Head from 'next/head';
 
 const SignInUpForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   return (
+    <>
+    <Head>
+        <title>Sign in-out</title>
+      </Head>
     <div className="flex justify-center h-screen bg-gray-100">
       <div className="container p-4 bg-white shadow-md rounded-lg overflow-hidden">
         <div className="flex gap-3 justify-center mb-4">
@@ -32,6 +37,7 @@ const SignInUpForm = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

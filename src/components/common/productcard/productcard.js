@@ -1,41 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { Rate } from "antd";
 import { BsCurrencyRupee } from "react-icons/bs";
-import { RiShoppingCart2Fill } from "react-icons/ri";
+import { FcLike } from "react-icons/fc";
 import stylehome from "./ProductCard.module.css";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
 import isMobile from "@/utils/client/isMobile";
+import { FaRegHeart } from "react-icons/fa6";
+import { useAuthData } from "@/service/Auth";
 const ProductCard = ({ product }) => {
+  const [islike, setLslike] = useState(false);
+  const { Postwishlist } = useAuthData();
+
+  const handleAddwishlist = async (event, id) => {
+    event.stopPropagation();
+    setLslike(!islike);
+    try {
+      await Postwishlist({ productId: id });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const router = useRouter();
   const Mobile = isMobile();
   const Productdetails = (id) => {
     router.push(`/product/${id}`);
   };
-  const HandelAddtoCart = (productId) => {
-    let updatedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    let productIndex = updatedCart.findIndex((item) => item.id === productId);
-    if (productIndex !== -1) {
-      updatedCart[productIndex].count = 2;
-    } else {
-      updatedCart.push({ id: productId, count: 1 });
-    }
 
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
   return (
     <div
       onClick={() => Productdetails(product._id)}
-      className=" md:w-[200px] md:min-w-[200px] w-[150px] min-w-[150px] h-auto border border-gray-300"
+      className=" md:w-[200px] md:min-w-[200px] w-[150px] min-w-[150px] h-auto border border-gray-300 relative"
     >
+      <span
+        className="absolute right-1 top-1"
+        onClick={(event) => handleAddwishlist(event, product._id)}
+      >
+        {islike ? (
+          <FcLike className="text-black text-2xl" />
+        ) : (
+          <FaRegHeart className="text-black text-2xl" />
+        )}
+      </span>
       <img
         className={stylehome.ProductshowImg}
         src={product.thumbnail}
         alt="Image here"
       />
-      <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">{product.title}</p>
+      <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">
+        {product.title}
+      </p>
       <p className="text-black text-[15px] md:text-[20px]">
-        <Rate style={{fontSize:Mobile ?15 :20}} allowHalf disabled value={product.rating} />
+        <Rate
+          style={{ fontSize: Mobile ? 15 : 20 }}
+          allowHalf
+          disabled
+          value={product.rating}
+        />
         <span>{product.rating}</span>
       </p>
       <p className="inline text-sm">

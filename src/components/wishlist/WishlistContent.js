@@ -1,9 +1,85 @@
-import React from 'react'
-
-const wishlistContent = () => {
+import { useAuthData } from "@/service/Auth";
+import { Rate } from "antd";
+import React, { useEffect, useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
+const WishlistContent = () => {
+  const [wishlist, setWishlist] = useState([]);
+  const { Getwishlist, Deletewishlist } = useAuthData();
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      const res = await Getwishlist();
+      if (res?.status === 200) {
+        setWishlist(res?.data?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleRemove = async (id) => {
+    try {
+      const res = await Deletewishlist({ productId: id });
+      if (res?.status === 200) {
+        fetchData()
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
-    <div>wishlistContent</div>
-  )
-}
+    <div className="text-black">
+      <div className="p-1 tsm:p-4">
+        <h1 className="text-xl font-bold mb-4">
+          My Wishlist ({wishlist.length})
+        </h1>
+        <div className="space-y-4">
+          {wishlist.map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-row items-center justify-between p-1 tsm:p-4 border rounded-lg shadow space-y-4 sm:space-y-0"
+            >
+              <img
+                src={item.thumbnail}
+                alt={item.title}
+                className="w-20 h-20 object-cover"
+              />
+              <div className="flex-grow mx-4 text-left">
+                <h2 className="text-lg font-semibold">{item.title}</h2>
+                <div className="flex flex-row items-center justify-start space-y-2 sm:space-y-0 sm:space-x-2">
+                  <span className="text-green-500 font-bold">
+                    ₹{item.price}
+                  </span>
+                    <div className="flex items-center space-x-2">
+                      <span className="line-through text-gray-500">
+                        ₹{item.price}
+                      </span>
+                      <span className="text-green-500">
+                        {item.discountPercentage}% off
+                      </span>
+                    </div>
+                </div>
+                <div className="flex items-center mb-2">
+              <Rate className="text-xs" value={item?.rating} disabled />
+              <span className="ml-2 text-sm">(55)</span>
+            </div>
+                {item.availability && (
+                  <div className="text-red-500">{item.availability}</div>
+                )}
+              </div>
+              <button
+                onClick={() => handleRemove(item._id)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <FaTrashAlt />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default wishlistContent
+export default WishlistContent;

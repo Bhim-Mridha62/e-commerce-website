@@ -45,16 +45,25 @@ const LoginUser = async (loginUser) => {
   return Apimethod("/api/auth/Sign-in", "post", loginUser, true);
 };
 const AddToCart = async (data) => {
-  return Apimethod("/api/cart", "post",data, false);
+  return Apimethod("/api/cart", "post", data, false);
 };
 const AllCartData = async () => {
-  return Apimethod("/api/cart", "get",{}, false);
+  return Apimethod("/api/cart", "get", {}, false);
 };
 const RemoveCartData = async (id) => {
-  return Apimethod("/api/cart", "DELETE",id, false);
+  return Apimethod("/api/cart", "DELETE", id, false);
 };
 const FetchProductDetail = async (id) => {
   return Apimethod(`/api/product/ProductDetails?id=${id}`, "get", {}, true);
+};
+const Getwishlist = async () => {
+  return Apimethod(`api/wishlist`, "get", {}, false);
+};
+const Deletewishlist = async (data) => {
+  return Apimethod(`api/wishlist`, "DELETE", data, false);
+};
+const Postwishlist = async (data) => {
+  return Apimethod(`api/wishlist`, "post", data, false);
 };
 export const useAuthData = () => ({
   HandelSignUp,
@@ -63,5 +72,8 @@ export const useAuthData = () => ({
   AddToCart,
   FetchProductDetail,
   AllCartData,
-  RemoveCartData
+  RemoveCartData,
+  Getwishlist,
+  Deletewishlist,
+  Postwishlist,
 });

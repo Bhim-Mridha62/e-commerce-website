@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Easy Shop</title>
+        <title>mkgzest</title>
       </Head>
       <div className="px-1 msm:px-10">
         <Categories />

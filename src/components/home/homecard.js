@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import Productskeleton from "../common/productskeleton";
+// import Productskeleton from "../common/productskeleton";
 import ProductCard from "../common/productcard/productcard";
 import { GetAllProduct } from "@/service/Product";
+import Loading from "../Loading/Loading";
 
 function Homecard() {
   const [products, setProducts] = useState([]);
@@ -39,9 +40,9 @@ function Homecard() {
 
 
   return (
-    <div className="checksixe flex flex-wrap min-h-screen justify-center md:gap-12 bg-white Msm:gap-2">
+    <div className="checksixe flex flex-wrap mt-12 min-h-screen justify-center md:gap-12 bg-white Msm:gap-2">
       {loading ? (
-        <Productskeleton />
+        <Loading />
       ) : (
         products.map((product) => (
           <ProductCard key={product._id} product={product} />
