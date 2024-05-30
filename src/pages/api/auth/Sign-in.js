@@ -19,10 +19,10 @@ export default async function handler(req, res) {
     if (!isMatch) {
       return res.status(401).json({ message: "invalid Password" });
     }
-    console.log(user._id.toString(),"user._id.toString()");
-    const stringValue = await user._id.toString();
-    console.log(stringValue,"stringValue");
-    const jwtToken = CreateToken(stringValue);
+    // console.log(user._id.toString(),"user._id.toString()");
+    // const stringValue = await user._id.toString();
+    // console.log(stringValue,"stringValue");
+    const jwtToken = CreateToken(user._id);
     console.log(jwtToken,"jwtToken");
     user.SecretToken = jwtToken;
     const sanitizedUser = {
