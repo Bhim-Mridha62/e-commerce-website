@@ -72,8 +72,6 @@ const CartContent = () => {
     .toFixed(0);
   const totalAmount = (totalPrice - totalDiscount).toFixed(0);
   const totalSavings = totalDiscount;
-  console.log(productData, "productData");
-  console.log(user, "user");
   return (
     <div className="container mx-auto mt-4">
       {user ? (

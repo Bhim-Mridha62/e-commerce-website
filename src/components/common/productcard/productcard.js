@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Rate } from "antd";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { FcLike } from "react-icons/fc";
@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import isMobile from "@/utils/client/isMobile";
 import { FaRegHeart } from "react-icons/fa6";
 import { useAuthData } from "@/service/Auth";
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product ,user }) => {
   const [islike, setLslike] = useState(false);
   const { Postwishlist } = useAuthData();
 
@@ -32,16 +32,18 @@ const ProductCard = ({ product }) => {
       onClick={() => Productdetails(product._id)}
       className=" md:w-[200px] md:min-w-[200px] w-[150px] min-w-[150px] h-auto border border-gray-300 relative"
     >
-      <span
-        className="absolute right-1 top-1"
-        onClick={(event) => handleAddwishlist(event, product._id)}
-      >
-        {islike ? (
-          <FcLike className="text-black text-2xl" />
-        ) : (
-          <FaRegHeart className="text-black text-2xl" />
-        )}
-      </span>
+      {user && (
+        <span
+          className="absolute right-1 top-1"
+          onClick={(event) => handleAddwishlist(event, product._id)}
+        >
+          {islike ? (
+            <FcLike className="text-black text-2xl" />
+          ) : (
+            <FaRegHeart className="text-black text-2xl" />
+          )}
+        </span>
+      )}
       <img
         className={stylehome.ProductshowImg}
         src={product.thumbnail}

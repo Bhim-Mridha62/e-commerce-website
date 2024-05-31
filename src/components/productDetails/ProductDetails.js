@@ -7,20 +7,39 @@ import { BsCurrencyRupee } from "react-icons/bs";
 import ReviewSection from "./ReviewSection";
 // import { FetchProductDetail } from "@/service/Product";
 import { useAuthData } from "@/service/Auth";
+import { FcLike } from "react-icons/fc";
+import { FaRegHeart } from "react-icons/fa6";
 
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [Product, setProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [user, setUser] = useState(false);
+  const [islike, setLslike] = useState(false);
+
   const router = useRouter();
-  const { AddToCart, FetchProductDetail } = useAuthData();
+  const { AddToCart, FetchProductDetail, Postwishlist } = useAuthData();
   const { productId } = router.query;
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserString = localStorage.getItem("User");
+      const storedUser = storedUserString ? JSON.parse(storedUserString) : "";
+      setUser(storedUser ? true : false);
+    }
+
     if (productId) {
       getProductDetail(productId);
     }
   }, [productId]);
+  const handleAddwishlist = async (id) => {
+    setLslike(!islike);
+    try {
+      await Postwishlist({ productId: id });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const getProductDetail = async (id) => {
     try {
       const data = await FetchProductDetail(id);
@@ -96,7 +115,19 @@ const ProductDetail = () => {
                 />
               ))}
           </div>
-          <div className='"w-[80%] h-100%'>
+          <div className='"w-[80%] h-100% relative'>
+            {user && (
+              <span
+                className="absolute right-1 top-1"
+                onClick={() => handleAddwishlist(Product._id)}
+              >
+                {islike ? (
+                  <FcLike className="text-black text-2xl" />
+                ) : (
+                  <FaRegHeart className="text-black text-2xl" />
+                )}
+              </span>
+            )}
             <img
               src={Product?.images?.[currentImageIndex]}
               alt={Product?.title}

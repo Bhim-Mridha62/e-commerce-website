@@ -22,8 +22,6 @@ const connectDB = async () => {
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       bufferCommands: false, // Disable mongoose buffering in serverless environment
     }).then((mongoose) => {
       console.log("Connected to MongoDB");

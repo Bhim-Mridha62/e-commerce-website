@@ -35,7 +35,6 @@ export default async function handler(req, res) {
       .status(200)
       .json({ message: "OTP sent. Please verify your OTP." });
   } catch (error) {
-    console.error("Error:", error);
     return res.status(500).json({ message: "Server error" });
   }
 }
