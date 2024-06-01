@@ -12,7 +12,7 @@ const EmptyWishlist = ({ IsLogin }) => {
     }
   };
   return (
-    <div className="text-center text-black mb-16">
+    <div className="text-center text-black my-4">
       <BsBagHeartFill
         className="inline-block text-[10rem] cursor-pointer"
         onClick={handleButtonClick}

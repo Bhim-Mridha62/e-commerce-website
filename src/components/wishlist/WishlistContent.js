@@ -4,29 +4,34 @@ import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import EmptyWishlist from "./EmptyWishlist";
 import { useRouter } from "next/router";
+import Loading from "../Loading/Loading";
+import { useUser } from "@/context/authContext";
+
 const WishlistContent = () => {
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { Getwishlist, Deletewishlist } = useAuthData();
-  const [user, setUser] = useState(false);
   const router = useRouter();
+  const { user} = useUser();
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUserString = localStorage.getItem("User");
-      const storedUser = storedUserString ? JSON.parse(storedUserString) : "";
-      setUser(storedUser ?true :false);
-    }
     fetchData();
   }, []);
+
   const fetchData = async () => {
     try {
+      setLoading(true); // Start loading
       const res = await Getwishlist();
       if (res?.status === 200) {
         setWishlist(res?.data?.data);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
+
   const handleRemove = async (id) => {
     try {
       const res = await Deletewishlist({ productId: id });
@@ -37,15 +42,23 @@ const WishlistContent = () => {
       console.error(error);
     }
   };
+
   const Productdetails = (id) => {
     router.push(`/product/${id}`);
   };
+
+  if (loading) {
+    return <Loading className="mt-4"/>;
+  }
   if (!user) {
-    return <EmptyWishlist IsLogin={user}/>;
+    return <EmptyWishlist IsLogin={user} />;
   }
+
+
   if (!wishlist?.length) {
-    return <EmptyWishlist IsLogin={user}/>;
+    return <EmptyWishlist IsLogin={user} />;
   }
+
   return (
     <div className="text-black">
       <div className="p-1 tsm:p-4">

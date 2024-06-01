@@ -10,7 +10,7 @@ const Errors = (res) => {
   console.log(res, "Errors");
   if (res?.status == 401) {
     window.localStorage.clear();
-  } else if (res?.status == 409 || res?.status == 422) {
+  } else if (res?.status == 409 || res?.status == 422 || res?.status == 404) {
     message.error(res?.data?.message);
   }
 };
@@ -37,6 +37,9 @@ const Apimethod = async (url, method, body, auth) => {
 };
 const HandelSignUp = (data) => {
   return Apimethod("/api/auth/Sign-up", "post", data, true);
+};
+const PostResetPassword = (data) => {
+  return Apimethod("/api/auth/reset-password", "post", data, true);
 };
 export const HandelverifyOTP = (data) => {
   return Apimethod("/api/auth/verify", "post", data, true);
@@ -76,4 +79,5 @@ export const useAuthData = () => ({
   Getwishlist,
   Deletewishlist,
   Postwishlist,
+  PostResetPassword,
 });

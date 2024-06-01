@@ -48,13 +48,15 @@ function Homecard() {
   }, [skip]);
 
   return (
-    <div className="checksixe flex flex-wrap mt-12 min-h-screen justify-center md:gap-12 bg-white Msm:gap-2">
+    <div>
       {loading ? (
-        <Loading />
+        <Loading className="my-8"/>
       ) : (
-        products.map((product) => (
-          <ProductCard key={product._id} product={product} user={user} />
-        ))
+        <div className="mt-12 checksixe flex flex-wrap min-h-screen justify-center md:gap-12 bg-white Msm:gap-2">
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} user={user} />
+          ))}
+        </div>
       )}
     </div>
   );

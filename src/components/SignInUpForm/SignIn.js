@@ -2,7 +2,6 @@ import { Button, Input, Modal, message } from "antd";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { SignInSchema } from "@/Schemas/client/FormSchema";
-import axios from "axios";
 import { useAuthData } from "@/service/Auth";
 import { useRouter } from "next/router";
 const SignInForm = ({ onSignIn }) => {
@@ -13,7 +12,7 @@ const SignInForm = ({ onSignIn }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showModel, setShowModel] = useState(false);
-  const { LoginUser } = useAuthData();
+  const { LoginUser, PostResetPassword } = useAuthData();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -21,27 +20,30 @@ const SignInForm = ({ onSignIn }) => {
       password: "",
     },
     validationSchema: SignInSchema,
-    onSubmit: async (values) => {
-      try {
-        const res = await LoginUser(values);
-        if (res?.status === 201) {
-          message.success(res?.data?.message);
-          window.localStorage.setItem(
-            "Authorization",
-            res?.data?.user?.SecretToken
-          );
-          window.localStorage.setItem("User",JSON.stringify(res?.data?.user));
-          router.back();
-        }
-      } catch (error) {
-        message.error(error?.response?.data?.message);
-      }
+    onSubmit:(values) => {
+      HandelLogin(values)
     },
   });
+  const HandelLogin=async(values)=>{
+    try {
+      const res = await LoginUser(values);
+      if (res?.status === 201) {
+        message.success(res?.data?.message);
+        window.localStorage.setItem(
+          "Authorization",
+          res?.data?.user?.SecretToken
+        );
+        window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
+        router.push("/")
+      }
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+    }
+  }
   const handleSendOTP = async () => {
     try {
-      const res = await axios.post("/api/auth/reset-password", { email });
-      if (res.status === 200) {
+      const res = await PostResetPassword({ email: email });
+      if (res?.status === 200) {
         message.success(res?.data?.message);
         setStep(2);
       }
@@ -51,8 +53,8 @@ const SignInForm = ({ onSignIn }) => {
   };
   const handleVerifyOTP = async () => {
     try {
-      const res = await axios.post("/api/auth/reset-password", { email, otp });
-      if (res.status === 200) {
+      const res = await PostResetPassword({ email: email, otp: otp });
+      if (res?.status === 200) {
         message.success(res?.data?.message);
         setStep(3);
       }
@@ -61,19 +63,11 @@ const SignInForm = ({ onSignIn }) => {
     }
   };
   const handleResetPassword = async () => {
-    try {
-      const res = await axios.post("/api/auth/reset-password", {
-        email,
-        password,
-      });
-      if (res.status === 200) {
-        message.success(res?.data?.message);
-        setStep(1);
-        setShowModel(false);
-      }
-    } catch (error) {
-      message.error(error?.response?.data?.message);
+    if (password != confirmPassword) {
+      message.info("Password no match");
+      return;
     }
+    HandelLogin({ email: email, password: password })
   };
   return (
     <>
@@ -158,6 +152,7 @@ const SignInForm = ({ onSignIn }) => {
         {step === 3 && (
           <div>
             <Input.Password
+              className="mb-4"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

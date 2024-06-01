@@ -1,12 +1,16 @@
-import WishlistContent from "@/components/wishlist/WishlistContent";
+import Loading from "@/components/Loading/Loading";
 import dynamic from "next/dynamic";
 import React from "react";
-function mywishlist() {
+const WishlistContent = dynamic(() => import("@/components/wishlist/WishlistContent"), {
+  loading: () => <Loading />,
+});
+
+function MyWishlist() {
   return (
     <div>
-      <WishlistContent/>
+      <WishlistContent />
     </div>
   );
 }
 
-export default mywishlist;
+export default MyWishlist;
