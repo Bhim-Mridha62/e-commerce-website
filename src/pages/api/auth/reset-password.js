@@ -1,7 +1,10 @@
+import connectDB from "@/database/db";
 import User from "../../../Schemas/server/UserSchema";
 import { sendOTPByEmail } from "../../../utils/server/emailUtils";
 import bcrypt from "bcrypt";
 export default async function handler(req, res) {
+  await connectDB();
+
   try {
     const { email, otp, password } = req.body;
     const existingUser = await User.findOne({ email });
@@ -32,7 +35,6 @@ export default async function handler(req, res) {
       .status(200)
       .json({ message: "OTP sent. Please verify your OTP." });
   } catch (error) {
-    console.error("Error:", error);
     return res.status(500).json({ message: "Server error" });
   }
 }

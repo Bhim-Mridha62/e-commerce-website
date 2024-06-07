@@ -1,18 +1,14 @@
 import connectDB from '../../database/db';
-// import express from 'express';
-// import authRouter from './routes/Auth.js';
-// Connect to MongoDB
-// const app=express();
-// app.use('/auth', authRouter);
-// app.use('/api/auth',(req,res)=>{
-  //   res.status(200).json({message:'Welcome to the API'})
-  // })
-  // export default app;
-  export default function handler(req, res) {
-    if (req.method === 'GET') {
-    connectDB();
-    res.status(200).json({ message: 'This is a GET request' });
+
+export default async function handler(req, res) {
+  if (req.method === 'GET') {
+    try {
+      await connectDB();
+      res.status(200).json({ message: 'This is a GET request' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error connecting to the database', error: error.message });
+    }
   } else {
-    res.status(405).json({ message: 'somthing wrong' });
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }

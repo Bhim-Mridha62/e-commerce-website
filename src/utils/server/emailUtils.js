@@ -12,13 +12,12 @@ export async function sendOTPByEmail(email, otp) {
           pass: SERVICE_EMAIL_PASSWORD
         }
       });
-      
       var mailOptions = {
         from: SERVICE_EMAIL,
         to: email,
-        subject: 'Very otp',
-        text: `Very otp${otp}` 
-      };
+        subject: 'Your OTP Code',
+        text: `Your one-time password (OTP) is: ${otp}`
+    };
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);

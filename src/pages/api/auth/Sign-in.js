@@ -1,11 +1,13 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import User from "../../../Schemas/server/UserSchema";
 import CreateToken from "../../../utils/server/SecretToken";
+import connectDB from "@/database/db";
 
 export default async function handler(req, res) {
+  await connectDB();
+
   if (req.method !== "POST") {
-    return res.status(405).end();
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
   const { email, password } = req.body;
   try {
@@ -14,15 +16,23 @@ export default async function handler(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log(isMatch, "ismatch ashh");
     if (!isMatch) {
       return res.status(401).json({ message: "invalid Password" });
     }
     const jwtToken = CreateToken(user._id);
     user.SecretToken = jwtToken;
+    const sanitizedUser = {
+      _id: user._id,
+      FirstName: user.FirstName,
+      LastName: user.LastName,
+      email: user.email,
+      cart: user.cart,
+      wishlist: user.wishlist,
+      SecretToken: user.SecretToken,
+    };
     await user.save();
-    res.status(200).json({ message: "Sign sucessfully", Token: jwtToken });
+    res.status(201).json({ message: "Sign sucessfully", user: sanitizedUser });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error occurred" });
   }
 }

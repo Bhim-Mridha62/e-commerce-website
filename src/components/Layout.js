@@ -1,43 +1,18 @@
-import React, { useState } from "react";
-import Navbar from "./common/Navbar/Navbar";
-import Footer from "./common/Footer/Footer";
-import { FaCalculator } from "react-icons/fa6";
-import { Modal } from "antd";
-import Calculator from "./calculator/Calculator";
-function Layout({ children }) {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+import { UserProvider } from "@/context/authContext";
+import dynamic from "next/dynamic";
+import React from "react";
+const Navbar = dynamic(() => import("./common/Navbar/Navbar"));
+const Footer = dynamic(() => import("./common/Footer/Footer"));
+const Layout = ({ children }) => {
   return (
     <div>
-      <Navbar />
-      <div className="z-[999] fixed top-36 right-0 bg-gray-800 p-2 rounded-l-md text-white">
-        <FaCalculator onClick={showModal} className="text-2xl msm:text-3xl cursor-pointer" />
-      </div>
-      <main>{children}</main>
-      <Footer />
-      <Modal
-        title="Calculator"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okButtonProps={{ style: { backgroundColor: 'darkblue', color: 'white' } }}
-        cancelButtonProps={{ style: { display: 'none' } }}
-       >
-        <div><Calculator/></div> 
-      </Modal>
+      <UserProvider>
+        <Navbar />
+        <main className="min-h-64">{children}</main>
+        <Footer />
+      </UserProvider>
     </div>
   );
-}
+};
 
 export default Layout;
