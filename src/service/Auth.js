@@ -68,6 +68,9 @@ const Deletewishlist = async (data) => {
 const Postwishlist = async (data) => {
   return Apimethod(`api/wishlist`, "post", data, false);
 };
+const GetCartCount = async () => {
+  return Apimethod(`/api/cart/cartCount`, "get", {}, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -80,4 +83,5 @@ export const useAuthData = () => ({
   Deletewishlist,
   Postwishlist,
   PostResetPassword,
+  GetCartCount
 });
