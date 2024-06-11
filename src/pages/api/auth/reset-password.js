@@ -6,8 +6,8 @@ export default async function handler(req, res) {
   await connectDB();
 
   try {
-    const { email, otp, password } = req.body;
-    const existingUser = await User.findOne({ email });
+    const { emailOrPhone, otp, password } = req.body;
+    const existingUser = await User.findOne({ emailOrPhone });
     if (!existingUser) {
       return res
         .status(404)
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ message: "Password changed successfully" });
     }
     const generatedOTP = Math.floor(100000 + Math.random() * 900000);
-    sendOTPByEmail(email, generatedOTP);
+    sendOTPByEmail(emailOrPhone, generatedOTP);
     existingUser.otp = generatedOTP;
     await existingUser.save();
     return res

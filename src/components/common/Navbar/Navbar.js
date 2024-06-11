@@ -27,9 +27,11 @@ function Navbar() {
   // const CertCount = JSON.parse(localStorage.getItem("User")).cart.length || 0;
   // const Mobile = isMobile();
   useEffect(() => {
-    UpdateCartCount()
     if (typeof window !== "undefined") {
       const user = JSON.parse(localStorage.getItem("User")) || "";
+      if (user) {
+        UpdateCartCount()
+      }
       setUser(user);
     }
   }, []);

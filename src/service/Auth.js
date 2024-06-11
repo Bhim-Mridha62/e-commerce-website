@@ -41,6 +41,9 @@ const HandelSignUp = (data) => {
 const PostResetPassword = (data) => {
   return Apimethod("/api/auth/reset-password", "post", data, true);
 };
+const PostCreateUser = (data) => {
+  return Apimethod("/api/auth/Create-User", "post", data, true);
+};
 export const HandelverifyOTP = (data) => {
   return Apimethod("/api/auth/verify", "post", data, true);
 };
@@ -83,5 +86,6 @@ export const useAuthData = () => ({
   Deletewishlist,
   Postwishlist,
   PostResetPassword,
-  GetCartCount
+  GetCartCount,
+  PostCreateUser,
 });
