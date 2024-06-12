@@ -68,11 +68,11 @@ const ProductCard = ({ product ,user }) => {
       <p className="inline text-sm">
         <span className="text-black">
           <BsCurrencyRupee className="inline text-black" />
-          {calculateDiscountedPrice(product.price, product.discountPercentage)}
+          {product.price}
         </span>
         <del className="text-black ml-1 font-bold">
           {/* <BsCurrencyRupee className='inline text-black'/> */}
-          {product.price}
+          {calculateDiscountedPrice(product.price, product.discountPercentage)}
         </del>
         <span className="text-[#26a541] font-bold">
           {Math.round(product.discountPercentage)}%OFF

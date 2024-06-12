@@ -11,22 +11,19 @@ const ProductCard = ({ product, HandelRemove }) => {
   useEffect(() => {
     setQuantity(product?.quantity);
     setSelectedSize(product?.Size);
-    return () => {
-      HandelAddToCart();
-    };
   }, []);
-  const HandelAddToCart = async () => {
-    console.log(selectedSize,product?._id,quantity,"quantity");
-    try {
-      await AddToCart({
-        Size: selectedSize,
-        productId: product?._id,
-        quantity: quantity,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const HandelAddToCart = async () => {
+  //   console.log(selectedSize, product?._id, quantity, "quantity");
+  //   try {
+  //     await AddToCart({
+  //       Size: selectedSize,
+  //       productId: product?._id,
+  //       quantity: quantity,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   return (
     <>
       <div className="mb-4 p-2 md:p-4">

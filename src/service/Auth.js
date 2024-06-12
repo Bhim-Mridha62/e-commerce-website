@@ -41,6 +41,9 @@ const HandelSignUp = (data) => {
 const PostResetPassword = (data) => {
   return Apimethod("/api/auth/reset-password", "post", data, true);
 };
+const PostCreateUser = (data) => {
+  return Apimethod("/api/auth/Create-User", "post", data, true);
+};
 export const HandelverifyOTP = (data) => {
   return Apimethod("/api/auth/verify", "post", data, true);
 };
@@ -68,6 +71,9 @@ const Deletewishlist = async (data) => {
 const Postwishlist = async (data) => {
   return Apimethod(`api/wishlist`, "post", data, false);
 };
+const GetCartCount = async () => {
+  return Apimethod(`/api/cart/cartCount`, "get", {}, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -80,4 +86,6 @@ export const useAuthData = () => ({
   Deletewishlist,
   Postwishlist,
   PostResetPassword,
+  GetCartCount,
+  PostCreateUser,
 });

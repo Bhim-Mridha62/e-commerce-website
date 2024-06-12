@@ -9,25 +9,20 @@ import ReviewSection from "./ReviewSection";
 import { useAuthData } from "@/service/Auth";
 import { FcLike } from "react-icons/fc";
 import { FaRegHeart } from "react-icons/fa6";
+import { useUser } from "@/context/authContext";
 
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [Product, setProduct] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [user, setUser] = useState(false);
   const [islike, setLslike] = useState(false);
+  const { user, cartCountRef } = useUser();
 
   const router = useRouter();
   const { AddToCart, FetchProductDetail, Postwishlist } = useAuthData();
   const { productId } = router.query;
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUserString = localStorage.getItem("User");
-      const storedUser = storedUserString ? JSON.parse(storedUserString) : "";
-      setUser(storedUser ? true : false);
-    }
-
     if (productId) {
       getProductDetail(productId);
     }
@@ -69,6 +64,7 @@ const ProductDetail = () => {
           quantity: quantity,
         });
         if (res?.status === 200) {
+          cartCountRef.current && cartCountRef?.current()
           router.push("/cart");
         } else {
           message.error("Somthing please try again");
@@ -192,15 +188,13 @@ const ProductDetail = () => {
           </div>
           <p className="inline ">
             <BsCurrencyRupee className="inline text-xl font-semibold text-black" />
-            <span className="text-xl text-black">
+            <span className="text-xl text-black">{Product?.price}</span>
+            <del className="text-black ml-2 font-normal ">
+              {/* <BsCurrencyRupee className='inline text-black'/> */}
               {calculateDiscountedPrice(
                 Product?.price,
                 Product?.discountPercentage
               )}
-            </span>
-            <del className="text-black ml-2 font-normal ">
-              {/* <BsCurrencyRupee className='inline text-black'/> */}
-              {Product?.price}
             </del>
             <span className="text-[#26a541] ml-2 font-bold">
               {Math.round(Product?.discountPercentage)}%OFF

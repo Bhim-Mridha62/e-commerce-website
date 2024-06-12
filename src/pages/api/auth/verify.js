@@ -7,11 +7,11 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "method not allow" });
   }
-  const { email, otp } = req.body;
+  const { emailOrPhone, otp } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ emailOrPhone });
     if (!user) {
-      res.status(400).json({ message: "Email not exists" }).end();
+      res.status(400).json({ message: "User not exists" }).end();
     }
     if (otp != user.otp) {
       res.status(422).json({ message: "Invalid OTP" }).end();
@@ -22,9 +22,8 @@ export default async function handler(req, res) {
     user.save();
     const sanitizedUser = {
       _id: user._id,
-      FirstName: user.FirstName,
-      LastName: user.LastName,
-      email: user.email,
+      name:user?.name,
+      emailOrPhone: user.emailOrPhone,
       cart: user.cart,
       wishlist: user.wishlist,
       SecretToken: user.SecretToken,

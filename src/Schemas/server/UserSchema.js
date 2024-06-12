@@ -4,10 +4,10 @@ const CartItemSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
-  Size:{
-  type:String,
-  require:false,
-  default:"",
+  Size: {
+    type: String,
+    require: false,
+    default: "",
   },
   quantity: {
     type: Number,
@@ -16,21 +16,18 @@ const CartItemSchema = new mongoose.Schema({
   },
 });
 const UserSchema = new mongoose.Schema({
-  FirstName: {
+  name: {
     type: String,
     required: true,
   },
-  LastName: {
-    type: String,
-    required: true,
-  },
-  email: {
+  emailOrPhone: {
     type: String,
     required: true,
     unique: true,
   },
   password: {
     type: String,
+
     required: true,
   },
   otp: {

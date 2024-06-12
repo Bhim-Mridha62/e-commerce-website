@@ -54,7 +54,7 @@ function Footer() {
             className= "justify-start flex h-max"
           >
             <Image
-              src="/loge.svg"
+              src="/logo.png"
               alt="Logo"
               width={50}
               height={50}

@@ -8,6 +8,9 @@ import { TfiMenu } from "react-icons/tfi";
 import isMobile from "@/utils/client/isMobile";
 import dynamic from "next/dynamic";
 import Loading from "@/components/Loading/Loading";
+import Image from "next/image";
+import { useAuthData } from "@/service/Auth";
+import { useUser } from "@/context/authContext";
 const SidebarContent = dynamic(
   () => import("@/components/Sidebar/SidebarContent"),
   {
@@ -17,12 +20,18 @@ const SidebarContent = dynamic(
 function Navbar() {
   const [visible, setVisible] = useState(false);
   const [user, setUser] = useState([]);
+  const [cartLength, setCartLength] = useState(0);
   const router = useRouter();
+  const { cartCountRef } = useUser();
+  const {GetCartCount} = useAuthData();
   // const CertCount = JSON.parse(localStorage.getItem("User")).cart.length || 0;
   // const Mobile = isMobile();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = JSON.parse(localStorage.getItem("User")) || "";
+      if (user) {
+        UpdateCartCount()
+      }
       setUser(user);
     }
   }, []);
@@ -32,18 +41,32 @@ function Navbar() {
   const HandeLogin = () => {
     if (user) {
       localStorage?.clear();
-      window?.location?.reload()
+      window?.location?.reload();
     } else {
       router.push("/login");
     }
   };
+  const UpdateCartCount = async () => {
+    try {
+        const res = await GetCartCount();
+        if (res?.status === 200) {
+          setCartLength(res?.data?.data)
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+  useEffect(() => {
+    cartCountRef.current = UpdateCartCount;
+  }, [cartCountRef]);
   console.log(user, "user");
   return (
     <>
       <div className="w-full sticky top-0 z-[999] justify-between items-center h-16 bg-slate-700 flex text-white p-1 md:px-10">
         <div className="flex items-center gap-2">
           <div onClick={() => router.push("/")} className="cursor-pointer">
-            Namelogo
+            <Image src="/logo.png" alt="logo" height={40} width={100} />
           </div>
           {/* {Mobile ? (
           <IoSearchSharp />
@@ -62,7 +85,7 @@ function Navbar() {
             </span>
             <Link href={`/cart`}>
               <Badge
-                count={user?.cart?.length || 0}
+                count={cartLength}
                 overflowCount={9}
                 style={{ background: "green" }}
               >
@@ -84,7 +107,7 @@ function Navbar() {
         width={isMobile ? 290 : 378}
         onClose={opensidebar}
         open={visible}
-        extra={<Space className="text-black">Logo and name</Space>}
+        extra={<Image src="/logo.png" alt="logo" height={20} width={20} />}
       >
         <div>
           <SidebarContent opensidebar={opensidebar} />

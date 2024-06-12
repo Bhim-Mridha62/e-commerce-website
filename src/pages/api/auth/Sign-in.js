@@ -9,9 +9,9 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
-  const { email, password } = req.body;
+  const { emailOrPhone, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ emailOrPhone });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -23,9 +23,8 @@ export default async function handler(req, res) {
     user.SecretToken = jwtToken;
     const sanitizedUser = {
       _id: user._id,
-      FirstName: user.FirstName,
-      LastName: user.LastName,
-      email: user.email,
+      name:user.name,
+      emailOrPhone: user.emailOrPhone,
       cart: user.cart,
       wishlist: user.wishlist,
       SecretToken: user.SecretToken,

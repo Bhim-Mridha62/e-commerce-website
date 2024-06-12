@@ -1,4 +1,4 @@
-export function calculateDiscountedPrice(originalPrice, discountPercentage) {
-    const discountedPrice = originalPrice * (1 - discountPercentage / 100);
-    return Math.round(discountedPrice)
-  }
+export function calculateDiscountedPrice(originalPrice, percentageIncrease) {
+  var newPrice = originalPrice * (1 + percentageIncrease / 100);
+  return Math.round(newPrice);
+}

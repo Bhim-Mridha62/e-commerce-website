@@ -11,21 +11,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { FirstName, LastName, email, password } = req.body;
-
+  const { name, emailOrPhone, password } = req.body;
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ emailOrPhone });
     if (existingUser?.otpVerify) {
-      res.status(409).json({ message: "Email already exists" });
+      return res.status(409).json({ message: "User already exists" });
+    } else if (!emailOrPhone.includes("@")) {
+      return res.status(400).json({ message: "Please enter a valid email" });
     } else {
       const otp = Math.floor(100000 + Math.random() * 900000);
-      sendOTPByEmail(email, otp);
+      sendOTPByEmail(emailOrPhone, otp);
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
-        email,
+        emailOrPhone,
         password: hashedPassword,
-        FirstName,
-        LastName,
+        name,
         otp,
         otpVerify: false,
       });
