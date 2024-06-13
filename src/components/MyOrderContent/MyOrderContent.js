@@ -25,7 +25,6 @@ function MyOrderContent() {
       },
       {
         key: "2",
-        label: "This is panel header 2",
         status: "Delivered",
         title: "iPhone 9",
         image: "https://cdn.dummyjson.com/product-images/87/thumbnail.jpg",
@@ -41,7 +40,6 @@ function MyOrderContent() {
       },
       {
         key: "3",
-        label: "This is panel header 3",
         status: "cancelled",
         title: 'iPhone 9',
         image: "https://cdn.dummyjson.com/product-images/87/thumbnail.jpg",
