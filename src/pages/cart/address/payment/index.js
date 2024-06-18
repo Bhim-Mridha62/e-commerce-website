@@ -42,7 +42,16 @@ const PaymentOptions = () => {
       },
     });
   };
-
+  const HandelConfirmOrder = () => {
+    console.log({
+      productID: "id here",
+      quantity: "5",
+      title: "title",
+      image: "https://cdn.dummyjson.com/product-images/87/thumbnail.jpg",
+      price: "197",
+      address: "123 Fake Street, Faketown, FK1 2AB",
+    });
+  };
   return (
     <>
       <Collapse
@@ -120,7 +129,10 @@ const PaymentOptions = () => {
         </Radio.Group>
       </div>
       <div className="text-center my-5">
-        <button className="text-white border border-solid border-gray-400 px-8 py-4 text-lg rounded-md bg-gray-800">
+        <button
+          onClick={HandelConfirmOrder}
+          className="text-white border border-solid border-gray-400 px-8 py-4 text-lg rounded-md bg-gray-800"
+        >
           CONFIRM ORDER
         </button>
       </div>

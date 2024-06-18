@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Radio, message } from "antd";
+import { Button, Input, Modal, Radio, Spin, message } from "antd";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { SignInSchema } from "@/Schemas/client/FormSchema";
@@ -16,6 +16,7 @@ const SignInForm = ({ onSignIn }) => {
   const [contactMethod, setContactMethod] = useState("phone");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showModel, setShowModel] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { LoginUser, PostResetPassword } = useAuthData();
   const router = useRouter();
   const formik = useFormik({
@@ -30,11 +31,12 @@ const SignInForm = ({ onSignIn }) => {
   });
   const HandelLogin = async (values) => {
     try {
-      console.log(values, "values");
+      setLoading(true);
       const res = await LoginUser({
         emailOrPhone: values.email,
         password: values.password,
       });
+      setLoading(false);
       if (res?.status === 201) {
         message.success(res?.data?.message);
         window.localStorage.setItem(
@@ -45,6 +47,7 @@ const SignInForm = ({ onSignIn }) => {
         router.push("/");
       }
     } catch (error) {
+      setLoading(false);
       message.error(error?.response?.data?.message);
     }
   };
@@ -146,12 +149,9 @@ const SignInForm = ({ onSignIn }) => {
             Forgot your password?
           </a>
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          Sign In
-        </button>
+        <Button onClick={formik.handleSubmit} className="" loading={loading}>
+          {loading ? "Please wait" : "Sign In"}
+        </Button>
       </form>
       <Modal
         maskClosable={false}
