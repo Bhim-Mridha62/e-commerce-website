@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 const SignInUpForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  
   return (
     <>
     <Head>
