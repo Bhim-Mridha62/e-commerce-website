@@ -2,18 +2,21 @@ import nodemailer from "nodemailer";
 require("dotenv").config();
 const SERVICE_EMAIL = process.env.SERVICE_EMAIL;
 const SERVICE_EMAIL_PASSWORD = process.env.SERVICE_EMAIL_PASSWORD;
+const SMTP_SERVICE_EMAIL = process.env.SMTP_SERVICE_EMAIL;
+const SMTP_SERVICE_EMAIL_PASSWORD = process.env.SMTP_SERVICE_EMAIL_PASSWORD;
+const SMTP_SERVICE_USER = process.env.SMTP_SERVICE_USER;
 export async function sendOTPByEmail(email, otp) {
   try {
     var transporter = nodemailer.createTransport({
       host: "smtp-relay.brevo.com",
       port: 587,
       auth: {
-        user: "767148001@smtp-brevo.com",
-        pass: "CfO8bZwmvzM7yqXK",
+        user:SMTP_SERVICE_USER,
+        pass: SMTP_SERVICE_EMAIL_PASSWORD,
       },
     });
     var mailOptions = {
-      from: "yuvrajpradeep2018@gmail.com",
+      from: SMTP_SERVICE_EMAIL,
       to: email,
       subject: "Your OTP Code",
       text: `Your one-time password (OTP) is: ${otp}`,
