@@ -43,7 +43,7 @@ function Navbar() {
       localStorage?.clear();
       window?.location?.reload();
     } else {
-      router.push("/login");
+      router.push("/sign-in");
     }
   };
   const UpdateCartCount = async () => {

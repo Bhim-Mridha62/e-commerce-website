@@ -11,7 +11,7 @@ function TimelineData({ StatusOrder, StatusText }) {
       let color;
       let dot;
       let status = Object.values(item)[0];
-      let statusText = Object.keys(item)[0].replace("_", " ");
+      let statusText = Object.keys(item)[0].replaceAll("_", " ");
       if (status === "Done") {
         color = "#26a541";
         dot = <FaRegCircleCheck className="text-[17px]" />;
