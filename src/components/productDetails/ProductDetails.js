@@ -164,7 +164,7 @@ const ProductDetail = () => {
                   ))}
               </div>
               <div className='"w-[80%] h-100% relative'>
-                {user && (
+                {user && Product && (
                   <span
                     className="absolute right-1 top-1"
                     onClick={() => handleAddwishlist(Product._id)}
