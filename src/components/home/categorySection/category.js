@@ -1,17 +1,24 @@
-import React, { useCallback } from "react";
-import productsData from "@/data/homePage/homeCategory.json";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-
-// Memoizing the products data to prevent re-renders
-const categories = productsData.map((product) => ({
-  category: product.category,
-  img: product.img,
-}));
-
+import { useAuthData } from "@/service/Auth";
+import { message } from "antd";
 function Categories() {
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
+  const { getCategories } = useAuthData();
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
+  const fetchCategories = async () => {
+    try {
+      const response = await getCategories();
+      setCategories(response.data.data);
+    } catch (error) {
+      message.error("Error fetching categories");
+    }
+  };
   // Memoized event handler to prevent unnecessary re-renders
   const handleCategory = useCallback(
     (category) => {
@@ -30,7 +37,7 @@ function Categories() {
             className="p-2 rounded-md flex flex-col items-center cursor-pointer"
           >
             <Image
-              src={product.img}
+              src={product.image}
               alt={product.category}
               width={96}
               height={96}

@@ -74,6 +74,9 @@ const Postwishlist = async (data) => {
 const GetCartCount = async () => {
   return Apimethod(`/api/cart/cartCount`, "get", {}, false);
 };
+const getCategories = async () => {
+  return Apimethod(`/api/categories`, "get", {}, true);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -88,4 +91,5 @@ export const useAuthData = () => ({
   PostResetPassword,
   GetCartCount,
   PostCreateUser,
+  getCategories
 });

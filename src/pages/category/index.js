@@ -1,22 +1,36 @@
-import React from "react";
-import productsData from '@/data/homePage/homeCategory.json';
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useAuthData } from "@/service/Auth";
 function index() {
-    const router=useRouter();
-    const handleCategory = (category) => {
-        console.log(category, "category");
-        router.push(`/category/${category}`);
+  const [categories, setCategories] = useState([]);
+  const router = useRouter();
+  const { getCategories } = useAuthData();
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await getCategories();
+      setCategories(response.data.data);
+    } catch (error) {
+      message.error("Error fetching categories");
     }
+  };
+  const handleCategory = (category) => {
+    console.log(category, "category");
+    router.push(`/category/${category}`);
+  };
   return (
     <div className="flex flex-wrap w-full  gap-1 lsm:gap-8 mdb:gap-16 ">
-      {productsData.map((product, index) => (
+      {categories.map((product, index) => (
         <div
           onClick={() => handleCategory(product.category)}
           key={index}
           className="bg-white shadow-md p-4 rounded-md flex flex-col items-center"
         >
           <img
-            src={product.img}
+            src={product.image}
             alt={product.category}
             className="w-32 h-32 object-cover mb-2"
           />
