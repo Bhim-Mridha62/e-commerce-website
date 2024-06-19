@@ -1,5 +1,5 @@
+import CarouselImage from "@/Schemas/server/CarouselImageSchema";
 import connectDB from "@/database/db";
-import Category from "@/Schemas/server/CategorySchema";
 
 export default async function handler(req, res) {
   await connectDB();
@@ -8,20 +8,20 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
-      return getCategories(req, res);
+      return getImages(req, res);
     default:
       res.status(405).json({ success: false, message: "Method Not Allowed" });
   }
 }
 
-const getCategories = async (req, res) => {
+const getImages = async (req, res) => {
   try {
-    const categories = await Category.find().select("-__v");
-    res.status(200).json({ success: true, data: categories });
+    const images = await CarouselImage.find().select("-__v");
+    res.status(200).json({ success: true, data: images });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Error fetching categories",
+      message: "Error fetching images",
       error: error.message,
     });
   }
