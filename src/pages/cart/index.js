@@ -1,16 +1,32 @@
-import Loading from '@/components/Loading/Loading';
-import dynamic from 'next/dynamic';
-import React from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useEffect,
+  useState,
+  startTransition,
+} from "react";
+import Loading from "@/components/Loading/Loading";
 
-const CartContent = dynamic(() => import('@/components/cart/CartContent'), {
-  ssr: false, // Disable server-side rendering if the component should only render on the client
-  loading: () => <Loading className="mt-40"/>,
-});
+const CartContent = lazy(() => import("@/components/cart/CartContent"));
 
 function Index() {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    startTransition(() => {
+      setIsHydrated(true);
+    });
+  }, []);
+
   return (
     <div>
-      <CartContent />
+      {isHydrated ? (
+        <Suspense fallback={<Loading className="mt-40" />}>
+          <CartContent />
+        </Suspense>
+      ) : (
+        <Loading className="mt-40" />
+      )}
     </div>
   );
 }

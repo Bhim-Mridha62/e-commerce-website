@@ -78,7 +78,20 @@ const SignInForm = ({ onSignIn }) => {
       message.info("Password no match");
       return;
     }
-    HandelLogin({ emailOrPhone: email, password: password });
+    try {
+      const res = await PostResetPassword({
+        emailOrPhone: email,
+        password: password,
+      });
+      if (res?.status === 200) {
+        message.success(res?.data?.message);
+        setShowModel(false);
+        setStep(1);
+      }
+    } catch (error) {
+      message.error(error?.response?.data?.message);
+    }
+    // HandelLogin({ emailOrPhone: email, password: password });
   };
   return (
     <>
