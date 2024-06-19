@@ -5,6 +5,7 @@ const SERVICE_EMAIL_PASSWORD = process.env.SERVICE_EMAIL_PASSWORD;
 const SMTP_SERVICE_EMAIL = process.env.SMTP_SERVICE_EMAIL;
 const SMTP_SERVICE_EMAIL_PASSWORD = process.env.SMTP_SERVICE_EMAIL_PASSWORD;
 const SMTP_SERVICE_USER = process.env.SMTP_SERVICE_USER;
+
 export async function sendOTPByEmail(email, otp) {
   try {
     var transporter = nodemailer.createTransport({
