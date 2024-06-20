@@ -17,6 +17,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     UpdateUser();
   }, []);
+  
   const UpdateUser = () => {
     if (typeof window !== "undefined") {
       const storedUserString = localStorage.getItem("User");
