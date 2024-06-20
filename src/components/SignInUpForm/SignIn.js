@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import AutoSignInUp from "./AutoSignIn-Up";
 import { TfiEmail } from "react-icons/tfi";
 import { FiLock, FiPhone } from "react-icons/fi";
+import { useUser } from "@/context/authContext";
 const SignInForm = ({ onSignIn }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [step, setStep] = useState(1);
@@ -18,6 +19,7 @@ const SignInForm = ({ onSignIn }) => {
   const [showModel, setShowModel] = useState(false);
   const [loading, setLoading] = useState(false);
   const { LoginUser, PostResetPassword } = useAuthData();
+  const { UpdateUser } = useUser();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -44,6 +46,7 @@ const SignInForm = ({ onSignIn }) => {
           res?.data?.user?.SecretToken
         );
         window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
+        UpdateUser()
         router.push("/");
       }
     } catch (error) {

@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/Loading/Loading";
 import Image from "next/image";
 import { useAuthData } from "@/service/Auth";
-import { useUser } from "@/context/authContext";
+import { useUser} from "@/context/authContext";
 import { IoIosSearch } from "react-icons/io";
 const SidebarContent = dynamic(
   () => import("@/components/Sidebar/SidebarContent"),
@@ -21,24 +21,12 @@ const SidebarContent = dynamic(
 function Navbar() {
   const [visible, setVisible] = useState(false);
   const [inputValue, setinputValue] = useState("");
-  const [user, setUser] = useState([]);
   const [cartLength, setCartLength] = useState(0);
   const router = useRouter();
-  const { cartCountRef } = useUser();
+  const { cartCountRef,user } = useUser();
   const { GetCartCount } = useAuthData();
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
   const [hide, setHide] = useState(false);
-  // const CertCount = JSON.parse(localStorage.getItem("User")).cart.length || 0;
-  // const Mobile = isMobile();
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("User")) || "";
-      if (user) {
-        UpdateCartCount();
-      }
-      setUser(user);
-    }
-  }, []);
   const opensidebar = () => {
     setVisible(!visible);
   };
@@ -80,11 +68,11 @@ function Navbar() {
   }, [lastScrollPosition]);
   const handleSearchEnter = (e) => {
     if (e.key === "Enter") {
-      let searchvalue =encodeURIComponent(inputValue);
+      let searchvalue = encodeURIComponent(inputValue);
       // let searchvalue = inputValue.trim().replace(/\s+/g, "+");
       if (searchvalue) {
         // router.push({ pathname: "/", query: { q: searchvalue } });
-        console.log(searchvalue,"searchvalue");
+        console.log(searchvalue, "searchvalue");
       }
     }
   };
