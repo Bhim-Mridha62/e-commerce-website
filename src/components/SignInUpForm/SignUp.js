@@ -15,6 +15,7 @@ import {
 import { app } from "../../../firebaseConfig";
 import { TfiEmail } from "react-icons/tfi";
 import AutoSignInUp from "./AutoSignIn-Up";
+import { useUser } from "@/context/authContext";
 
 const auth = getAuth(app);
 
@@ -26,6 +27,7 @@ const SignUpForm = ({ onSignUp }) => {
   const { HandelSignUp, HandelverifyOTP,PostCreateUser } = useAuthData();
   const [otp, setOtp] = useState(null);
   const [verificationId, setVerificationId] = useState("");
+  const { UpdateUser } = useUser();
   const router = useRouter();
 
   const formik = useFormik({
@@ -131,8 +133,8 @@ const SignUpForm = ({ onSignUp }) => {
             res?.data?.user?.SecretToken
           );
           window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
-          setIsotp(false);
-          router.back();
+          UpdateUser();
+          router.push("/");
         }
       } catch (error) {
         message.error(error?.response?.data?.message);
