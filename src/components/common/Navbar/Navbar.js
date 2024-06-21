@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 import Loading from "@/components/Loading/Loading";
 import Image from "next/image";
 import { useAuthData } from "@/service/Auth";
-import { useUser} from "@/context/authContext";
+import { useUser } from "@/context/authContext";
 import { IoIosSearch } from "react-icons/io";
 const SidebarContent = dynamic(
   () => import("@/components/Sidebar/SidebarContent"),
@@ -23,13 +23,17 @@ function Navbar() {
   const [inputValue, setinputValue] = useState("");
   const [cartLength, setCartLength] = useState(0);
   const router = useRouter();
-  const { cartCountRef,user } = useUser();
+  const { cartCountRef, user } = useUser();
   const { GetCartCount } = useAuthData();
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
   const [hide, setHide] = useState(false);
   const opensidebar = () => {
     setVisible(!visible);
   };
+  useEffect(() => {
+    UpdateCartCount();
+  }, []);
+
   const HandeLogin = () => {
     if (user) {
       localStorage?.clear();
@@ -52,7 +56,6 @@ function Navbar() {
   useEffect(() => {
     cartCountRef.current = UpdateCartCount;
   }, [cartCountRef]);
-  console.log(user, "user");
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPosition =

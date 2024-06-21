@@ -24,7 +24,8 @@ export default async function handler(req, res) {
 async function addOrder(req, res) {
   try {
     const { userId } = req;
-    const { productID, quantity, title, image, price, address } = req.body;
+    const { productID, quantity, title, size, image, price, address } =
+      req.body;
 
     if (!userId || !productID || !address) {
       return res
@@ -37,6 +38,7 @@ async function addOrder(req, res) {
       productID,
       quantity,
       title,
+      size,
       image,
       price,
       address,
