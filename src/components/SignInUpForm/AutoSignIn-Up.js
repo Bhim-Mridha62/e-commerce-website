@@ -1,16 +1,23 @@
 import { Facebook, Google } from "@/utils/client/svg-icon";
 import { Button, Divider, message } from "antd";
-import { FacebookAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+} from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { app } from "../../../firebaseConfig";
 import { useAuthData } from "@/service/Auth";
+import { useUser } from "@/context/authContext";
 const auth = getAuth(app);
 
 const AutoSignInUp = () => {
   const [isSignIn, setIsSignIn] = useState();
-  const {PostCreateUser } = useAuthData();
+  const { PostCreateUser } = useAuthData();
+  const { UpdateUser } = useUser();
   const router = useRouter();
   useEffect(() => {
     if (router) {
@@ -27,7 +34,11 @@ const AutoSignInUp = () => {
         // The signed-in user info.
         const user = result.user;
         console.log("User signed in with Google:", user);
-        CreateUser({name:user?.displayName,emailOrPhone:user?.email,password:""})
+        CreateUser({
+          name: user?.displayName,
+          emailOrPhone: user?.email,
+          password: "",
+        });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -62,7 +73,7 @@ const AutoSignInUp = () => {
         console.error("Error during Facebook sign-in:", errorMessage);
       });
   };
-  const CreateUser=async(values)=>{
+  const CreateUser = async (values) => {
     try {
       const res = await PostCreateUser(values);
       if (res?.status == 200) {
@@ -72,13 +83,13 @@ const AutoSignInUp = () => {
           res?.data?.data?.SecretToken
         );
         window.localStorage.setItem("User", JSON.stringify(res?.data?.data));
-        setIsotp(false);
-        router.back();
+        UpdateUser();
+        router.push("/");
       }
     } catch (error) {
       message.error(error?.response?.data?.message);
     }
-  }
+  };
   return (
     <>
       <Divider plain>Or Sign {isSignIn ? "In" : "Up"} With</Divider>
@@ -89,7 +100,10 @@ const AutoSignInUp = () => {
         >
           Google
         </Button>
-        <Button onClick={handleSignInWithFacebook} icon={<Facebook className="w-[15px] h-auto" />}>
+        <Button
+          onClick={handleSignInWithFacebook}
+          icon={<Facebook className="w-[15px] h-auto" />}
+        >
           Facebook
         </Button>
       </div>
