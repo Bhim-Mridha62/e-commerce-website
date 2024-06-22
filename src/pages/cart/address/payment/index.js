@@ -61,13 +61,7 @@ const PaymentOptions = () => {
             key: "1",
             label: "Price Details",
             children: priceDetails ? (
-              <PriceDetails
-                totalItems={priceDetails?.totalItems}
-                totalPrice={priceDetails?.totalPrice}
-                totalDiscount={priceDetails?.totalDiscount}
-                totalAmount={priceDetails?.totalAmount}
-                totalSavings={priceDetails?.totalSavings}
-              />
+              <PriceDetails productData={priceDetails} />
             ) : (
               <div>No Price Details yet</div>
             ),

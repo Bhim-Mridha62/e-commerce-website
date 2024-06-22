@@ -3,26 +3,30 @@ import { Button } from "antd";
 import { useRouter } from "next/router";
 import { encodeData } from "@/utils/client/encoding";
 
-function PriceDetails({
-  totalItems,
-  totalPrice,
-  totalDiscount,
-  totalAmount,
-  totalSavings,
-}) {
+function PriceDetails({ productData }) {
   const router = useRouter();
   const isAddress =
     router.pathname?.split("/")[2]?.toLocaleLowerCase() === "address";
 
+  const products = Array.isArray(productData) ? productData : [productData];
+  console.log(products,"PriceDetails");
+  const totalItems = products?.length || 0;
+  const totalPrice = products
+    .reduce((acc, product) => acc + product.price * product.quantity, 0)
+    .toFixed(0);
+  const totalDiscount = products
+    .reduce(
+      (acc, product) =>
+        acc +
+        ((product.price * product.discountPercentage) / 100) * product.quantity,
+      0
+    )
+    .toFixed(0);
+  const totalAmount = (totalPrice - totalDiscount).toFixed(0);
+  const totalSavings = totalDiscount;
+
   const handlePlaceOrder = () => {
-    const query = {
-      totalItems,
-      totalPrice,
-      totalDiscount,
-      totalAmount,
-      totalSavings,
-    };
-    const encodedQuery = encodeData(query);
+    const encodedQuery = encodeData(products);
     router.push(`/cart/address?data=${encodedQuery}`);
   };
 

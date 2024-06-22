@@ -1,29 +1,73 @@
 import React, { useEffect } from "react";
-import { Button, Divider, Rate, Select } from "antd";
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Input,
+  Menu,
+  Modal,
+  Rate,
+  Select,
+} from "antd";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { useState } from "react";
 import { useAuthData } from "@/service/Auth";
-
-const ProductCard = ({ product, HandelRemove }) => {
+import { DownOutlined } from "@ant-design/icons";
+import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
+const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { AddToCart } = useAuthData();
   useEffect(() => {
     setQuantity(product?.quantity);
     setSelectedSize(product?.Size);
   }, []);
-  // const HandelAddToCart = async () => {
-  //   console.log(selectedSize, product?._id, quantity, "quantity");
-  //   try {
-  //     await AddToCart({
-  //       Size: selectedSize,
-  //       productId: product?._id,
-  //       quantity: quantity,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const HandelAddToCart = async (Size, productId, qty) => {
+    try {
+      await AddToCart({
+        Size: Size,
+        productId: productId,
+        quantity: qty,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleMenuClick = (e) => {
+    if (e.key === "custom") {
+      setIsModalVisible(true);
+    } else {
+      setQuantity(Number(e.key));
+      UpdateProductData(selectedSize, product?._id, Number(e.key));
+      HandelAddToCart(selectedSize, product?._id, Number(e.key));
+    }
+  };
+  const handleOk = () => {
+    if (!(quantity < 0 || quantity == "")) {
+      setIsModalVisible(false);
+    }
+  };
+
+  const handleCancel = () => {
+    if (!(quantity < 0 || quantity == "")) {
+      setIsModalVisible(false);
+    }
+  };
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1">1</Menu.Item>
+      <Menu.Item key="2">2</Menu.Item>
+      <Menu.Item key="3">3</Menu.Item>
+      <Menu.Item key="4">4</Menu.Item>
+      <Menu.Item key="custom">Custom</Menu.Item>
+    </Menu>
+  );
+  const handelQuantity = (e) => {
+    setQuantity(Number(e.target.value));
+    UpdateProductData(selectedSize, product?._id, Number(e.target.value));
+    HandelAddToCart(selectedSize, product?._id, Number(e.target.value));
+  };
   return (
     <>
       <div className="mb-4 p-2 md:p-4">
@@ -34,17 +78,21 @@ const ProductCard = ({ product, HandelRemove }) => {
               alt={product?.title}
               className="w-full h-auto rounded"
             />
-            <div className="relative flex items-center mt-3">
-              <span className="absolute left-[10px] pointer-events-none">
-                Qty:
-              </span>
-              <input
-                value={quantity}
-                onChange={(e) => setQuantity(e?.target?.value)}
-                min={1}
-                type="number"
-                className="pl-[40px] outline-none border border-gray-400 border-opacity-40 rounded-md w-full"
-              />
+            <div className="flex items-center mt-2 gap-2 rounded-lg">
+              Quantity:
+              <Dropdown
+                overlay={menu}
+                placement="bottomRight"
+                arrow={{
+                  pointAtCenter: true,
+                }}
+                trigger={["click"]}
+              >
+                <span className="cursor-pointer">
+                  {quantity}
+                  <DownOutlined className="ml-2" />
+                </span>
+              </Dropdown>
             </div>
           </div>
           <div className="w-3/4 pl-4">
@@ -56,7 +104,11 @@ const ProductCard = ({ product, HandelRemove }) => {
                 placeholder="Select Size"
                 optionFilterProp="children"
                 value={selectedSize}
-                onChange={(value) => setSelectedSize(value)}
+                onChange={(value) => {
+                  setSelectedSize(value),
+                    UpdateProductData(value, product?._id, quantity),
+                    HandelAddToCart(value, product?._id, quantity);
+                }}
                 options={[
                   { value: "S", label: "S" },
                   { value: "M", label: "M" },
@@ -74,17 +126,17 @@ const ProductCard = ({ product, HandelRemove }) => {
             </div>
             <div className="flex items-center mb-2">
               <span className="text-gray-500 line-through">
-                ₹{product?.price}
+                ₹
+                {calculateDiscountedPrice(
+                  product?.price,
+                  product?.discountPercentage
+                ) * quantity}
               </span>
               <span className="ml-2 text-xl font-bold">
-                ₹
-                {(
-                  product?.price -
-                  (product?.price * product?.discountPercentage) / 100
-                ).toFixed(2)}
+                ₹{product?.price * quantity}
               </span>
               <span className="ml-2 text-green-600">
-                {product?.discountPercentage}% off
+                {Math.round(product?.discountPercentage)}% off
               </span>
             </div>
           </div>
@@ -108,6 +160,27 @@ const ProductCard = ({ product, HandelRemove }) => {
         </div>
       </div>
       <Divider />
+      {isModalVisible && (
+        <Modal
+          maskClosable={false}
+          width={250}
+          title="Custom Quantity"
+          open={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okButtonProps={{ style: { background: "black" } }}
+        >
+          <Input
+            type="number"
+            value={quantity}
+            onChange={handelQuantity}
+            placeholder="Enter custom quantity"
+          />
+          {(quantity < 0 || quantity == "") && (
+            <span className="text-[#ff0505]">Quantity is require</span>
+          )}
+        </Modal>
+      )}
     </>
   );
 };

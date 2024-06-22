@@ -1,31 +1,24 @@
-const secretKey = "bhimdk@123";
-
 export const encodeData = (data) => {
   try {
     const json = JSON.stringify(data);
-    let encoded = "";
-    for (let i = 0; i < json.length; i++) {
-      encoded += String.fromCharCode(
-        json.charCodeAt(i) ^ secretKey.charCodeAt(i % secretKey.length)
-      );
-    }
-    return btoa(encodeURIComponent(encoded));
+    const base64 = btoa(json);
+    return `a${base64}a`;
   } catch (error) {
     console.error("Encoding error:", error);
     return null;
   }
 };
 
+// Function to decode data
 export const decodeData = (encodedData) => {
   try {
-    const decoded = decodeURIComponent(atob(encodedData));
-    let json = "";
-    for (let i = 0; i < decoded.length; i++) {
-      json += String.fromCharCode(
-        decoded.charCodeAt(i) ^ secretKey.charCodeAt(i % secretKey.length)
-      );
+    if (encodedData.startsWith("a") && encodedData.endsWith("a")) {
+      const base64 = encodedData.slice(1, -1);
+      const json = atob(base64);
+      return JSON.parse(json);
+    } else {
+      throw new Error("Invalid encoded data format");
     }
-    return JSON.parse(json);
   } catch (error) {
     console.error("Decoding error:", error);
     return null;

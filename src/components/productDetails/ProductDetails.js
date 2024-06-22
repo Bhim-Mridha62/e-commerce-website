@@ -20,7 +20,7 @@ import { useAuthData } from "@/service/Auth";
 import { FcLike } from "react-icons/fc";
 import { FaRegHeart } from "react-icons/fa6";
 import { useUser } from "@/context/authContext";
-import { encodeData } from "@/utils/client/encoding";
+import { decodeData, encodeData } from "@/utils/client/encoding";
 import { DownOutlined } from "@ant-design/icons";
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -68,28 +68,17 @@ const ProductDetail = () => {
       message.info("Please Select Size");
       return;
     }
-    let totalItems = quantity;
-    let totalPrice =
-      calculateDiscountedPrice(Product?.price, Product?.discountPercentage) *
-      quantity;
-    // let totalPrice =Product?.price / (1 - (Product?.discountPercentage / 100));
-    let totalAmount = Product?.price * quantity;
-    let totalDiscount =totalPrice -totalAmount;
-    let totalSavings = totalDiscount;
-    const query = {
-      productId,
-      totalItems,
-      totalPrice,
-      totalDiscount,
-      totalAmount,
-      totalSavings,
-    };
-    const encodedQuery = encodeData(query);
+    const { title, discountPercentage, price, thumbnail, _id } = Product;
+    const encodedQuery = encodeData({
+      title,
+      discountPercentage,
+      price,
+      thumbnail,
+      quantity,
+      selectedSize,
+      _id,
+    });
     router.push(`/cart/address?data=${encodedQuery}`);
-    // router.push({
-    //   pathname: "/cart/address",
-    //   query: { productId: productId },
-    // });
   };
   const HandelAddToCart = async (id) => {
     try {
@@ -121,13 +110,13 @@ const ProductDetail = () => {
   };
 
   const handleOk = () => {
-    if (!(quantity == 0 || quantity == "")) {
+    if (!(quantity < 0 || quantity == "")) {
       setIsModalVisible(false);
     }
   };
 
   const handleCancel = () => {
-    if (!(quantity == 0 || quantity == "")) {
+    if (!(quantity < 0 || quantity == "")) {
       setIsModalVisible(false);
     }
   };
@@ -291,7 +280,7 @@ const ProductDetail = () => {
               onChange={(e) => setQuantity(e.target.value)}
               placeholder="Enter custom quantity"
             />
-            {(quantity == 0 || quantity == "") && (
+            {(quantity < 0 || quantity == "") && (
               <span className="text-[#ff0505]">Quantity is require</span>
             )}
           </Modal>

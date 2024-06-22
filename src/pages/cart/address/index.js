@@ -9,7 +9,6 @@ import { decodeData, encodeData } from "@/utils/client/encoding";
 const index = () => {
   const router = useRouter();
   const { data } = router.query;
-  console.log(data);
   const priceDetails = decodeData(data);
   const initialValues = {
     name: "",
@@ -27,7 +26,9 @@ const index = () => {
       ...values,
     };
     const encodedAddressData = encodeData(addressData);
-    router.push(`/cart/address/payment?data=${data}&address=${encodedAddressData}`);
+    router.push(
+      `/cart/address/payment?data=${data}&address=${encodedAddressData}`
+    );
     resetForm();
   };
   return (
@@ -39,17 +40,10 @@ const index = () => {
             key: "1",
             label: "Price Details",
             children: priceDetails && (
-              <PriceDetails
-                totalItems={priceDetails?.totalItems}
-                totalPrice={priceDetails?.totalPrice}
-                totalDiscount={priceDetails?.totalDiscount}
-                totalAmount={priceDetails?.totalAmount}
-                totalSavings={priceDetails?.totalSavings}
-              />
+              <PriceDetails productData={priceDetails} />
             ),
           },
         ]}
-        // bordered={false}
       />
       <p className="text-xl text-black font-bold mb-1">
         Enter Delivery Address
