@@ -27,7 +27,11 @@ const CartContent = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    if (user) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const HandelRemove = async (id) => {

@@ -7,7 +7,7 @@ function EmptyCart({ IsLogin }) {
     if (IsLogin) {
       router.push("/");
     } else {
-      router.push("/login");
+      router.push("/sign-in");
     }
   };
   return (

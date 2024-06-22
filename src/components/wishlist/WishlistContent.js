@@ -12,15 +12,18 @@ const WishlistContent = () => {
   const [loading, setLoading] = useState(true);
   const { Getwishlist, Deletewishlist } = useAuthData();
   const router = useRouter();
-  const { user} = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
-    fetchData();
+    if (user) {
+      fetchData();
+    } else {
+      setLoading(false); // End loading
+    }
   }, []);
 
   const fetchData = async () => {
     try {
-      setLoading(true); // Start loading
       const res = await Getwishlist();
       if (res?.status === 200) {
         setWishlist(res?.data?.data);
@@ -48,12 +51,11 @@ const WishlistContent = () => {
   };
 
   if (loading) {
-    return <Loading className="mt-4"/>;
+    return <Loading className="mt-4" />;
   }
   if (!user) {
     return <EmptyWishlist IsLogin={user} />;
   }
-
 
   if (!wishlist?.length) {
     return <EmptyWishlist IsLogin={user} />;

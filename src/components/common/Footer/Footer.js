@@ -1,4 +1,4 @@
-import { Phone,Mail } from "@/utils/client/svg-icon";
+import { Phone, Mail } from "@/utils/client/svg-icon";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -23,42 +23,21 @@ function Footer() {
           </div>
           <div className="flex flex-col gap-1">
             <span>
-              <Link href="/" >
-                Home
-              </Link>
+              <Link href="/">Home</Link>
             </span>
             <span>
-              <Link
-                href="/login"
-              >
-                Sign In{" "}
-              </Link>
+              <Link href="/sign-in">Sign In </Link>
             </span>
             <span>
-              <Link
-                href="/login"
-              >
-                Create Account
-              </Link>
+              <Link href="/sign-up">Create Account</Link>
             </span>
             <span>
-              <Link
-                href="/contact-us"
-              >
-                Contact Us
-              </Link>
+              <Link href="/contact-us">Contact Us</Link>
             </span>
           </div>
 
-          <div
-            className= "justify-start flex h-max"
-          >
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={50}
-              height={50}
-            />
+          <div className="justify-start flex h-max">
+            <Image src="/logo.png" alt="Logo" width={50} height={50} />
           </div>
         </div>
       </div>

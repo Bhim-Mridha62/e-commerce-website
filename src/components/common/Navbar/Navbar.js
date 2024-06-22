@@ -31,7 +31,9 @@ function Navbar() {
     setVisible(!visible);
   };
   useEffect(() => {
-    UpdateCartCount();
+    if (user) {
+      UpdateCartCount();
+    }
   }, []);
 
   const HandeLogin = () => {

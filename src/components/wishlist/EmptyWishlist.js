@@ -8,7 +8,7 @@ const EmptyWishlist = ({ IsLogin }) => {
     if (IsLogin) {
       router.push("/");
     } else {
-      router.push("/login");
+      router.push("/sign-in");
     }
   };
   return (
@@ -23,7 +23,8 @@ const EmptyWishlist = ({ IsLogin }) => {
           : "Please login to see your Wishlist items"}
       </h1>
       <p className="text-lg mb-4">
-        Before proceeding to checkout, you must add some products to your Wishlist.
+        Before proceeding to checkout, you must add some products to your
+        Wishlist.
       </p>
       <p className="text-lg mb-8">
         You will find a lot of interesting products on our "Shop" page.
