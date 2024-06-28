@@ -28,9 +28,20 @@ body {
 .HideScroll::-webkit-scrollbar {
   display: none;
 }
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
+@media screen and (max-width: 730px) {
+  .ant-modal .ant-modal-content {
+    padding: 10px 10px;
+  }
+}
+.cancelReason input[type="radio"] {
+  height: 18px;
+  width: 18px;
+}
+.cancelReason {
+  font-size: 18px;
+}

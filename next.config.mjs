@@ -2,7 +2,17 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["cdn.dummyjson.com"],
+    domains: [],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+    ],
   },
   transpilePackages: [
     "antd",
@@ -16,7 +26,7 @@ const nextConfig = {
     "rc-table",
   ],
   publicRuntimeConfig: {
-    env:process.env,
+    env: process.env,
   },
 };
 

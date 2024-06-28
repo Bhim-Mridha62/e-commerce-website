@@ -80,7 +80,7 @@ export const DeliveryAddressSchema = Yup.object().shape({
   pincode: Yup.string().required("Please enter your pin code"),
   state: Yup.string().required("Please select your state"),
   district: Yup.string().required("Please select your district"),
-  Villege: Yup.string().required("Please enter your Villege"),
+  village: Yup.string().required("Please enter your village"),
   buildingAddress: Yup.string().required("Please enter your building address"),
 });
 export const GiveRatingSchema = Yup.object().shape({

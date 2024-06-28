@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Radio, Space, Divider, Collapse, Modal } from "antd";
+import {
+  Radio,
+  Space,
+  Divider,
+  Collapse,
+  Modal,
+  message,
+  notification,
+  Button,
+} from "antd";
 import PriceDetails from "@/components/common/PriceDetails";
 import DeliverDetails from "@/components/common/DeliverDetails";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -7,9 +16,13 @@ import { useRouter } from "next/router";
 import { decodeData, encodeData } from "@/utils/client/encoding";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
 import { districts } from "@/utils/client/districts.js";
+import { useAuthData } from "@/service/Auth";
 
 const PaymentOptions = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [payment, setPayment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { postorder } = useAuthData();
   const router = useRouter();
   const { data, address } = router.query;
   const priceDetails = useMemo(() => decodeData(data), [data]);
@@ -42,15 +55,57 @@ const PaymentOptions = () => {
       },
     });
   };
-  const HandelConfirmOrder = () => {
-    console.log({
-      productID: "id here",
-      quantity: "5",
-      title: "title",
-      image: "https://cdn.dummyjson.com/product-images/87/thumbnail.jpg",
-      price: "197",
-      address: "123 Fake Street, Faketown, FK1 2AB",
+  const HandelConfirmOrder = async () => {
+    console.log(payment != "cod", payment);
+    if (payment != "cod") {
+      return message.info("Please select a payment method");
+    }
+    setIsSubmitting(true);
+    console.log(priceDetails);
+    let orderData = {
+      productID: priceDetails?._id,
+      quantity: priceDetails?.quantity,
+      title: priceDetails?.title,
+      image: priceDetails?.thumbnail,
+      price: priceDetails?.price,
+      size: priceDetails?.selectedSize,
+      address: addressDetails,
+    };
+    try {
+      const res = await postorder(orderData);
+      console.log(res, "res");
+      if (res?.status === 201) {
+        openNotificationWithIcon(
+          "success",
+          "Order Confirmed",
+          "Order confirmed! Thank you for your purchase."
+        );
+        router.push("/myorder");
+      } else {
+        openNotificationWithIcon(
+          "error",
+          "Order Failed",
+          "An error occurred while confirming your order. Please try again."
+        );
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      openNotificationWithIcon(
+        "error",
+        "Order Failed",
+        "An error occurred while confirming your order. Please try again."
+      );
+      setIsSubmitting(false);
+    }
+  };
+  const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message: message,
+      description: description,
     });
+  };
+  const HandelPaymentOption = (e) => {
+    setPayment(e?.target?.value);
   };
   return (
     <>
@@ -87,7 +142,7 @@ const PaymentOptions = () => {
       />
       <div className="bg-white p-4 rounded-lg shadow-md">
         <h2 className="text-xl font-bold mb-4 text-black">Payment Options</h2>
-        <Radio.Group className="w-full">
+        <Radio.Group className="w-full" onChange={HandelPaymentOption}>
           <Space direction="vertical" className="w-full">
             <Radio value="upi" disabled className="w-full">
               <div className="flex items-center justify-between">
@@ -123,12 +178,13 @@ const PaymentOptions = () => {
         </Radio.Group>
       </div>
       <div className="text-center my-5">
-        <button
+        <Button
           onClick={HandelConfirmOrder}
-          className="text-white border border-solid border-gray-400 px-8 py-4 text-lg rounded-md bg-gray-800"
+          disabled={isSubmitting}
+          className=""
         >
           CONFIRM ORDER
-        </button>
+        </Button>
       </div>
       {addressDetails && (
         <Modal
@@ -267,20 +323,20 @@ const PaymentOptions = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="Villege"
+                    htmlFor="village"
                     className="text-gray-700 font-semibold"
                   >
-                    <span className="text-red-500">*</span> Villege
+                    <span className="text-red-500">*</span> village
                   </label>
                   <Field
                     type="text"
-                    id="Villege"
-                    name="Villege"
-                    placeholder="Enter your Villege"
+                    id="village"
+                    name="village"
+                    placeholder="Enter your village"
                     className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
                   />
                   <ErrorMessage
-                    name="Villege"
+                    name="village"
                     component="div"
                     className="text-red-500 text-sm mt-1"
                   />

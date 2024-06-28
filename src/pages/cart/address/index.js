@@ -17,7 +17,7 @@ const index = () => {
     pincode: "",
     state: "Odisha",
     district: "",
-    Villege: "",
+    village: "",
     buildingAddress: "",
   };
 
@@ -172,18 +172,18 @@ const index = () => {
               />
             </div>
             <div>
-              <label htmlFor="Villege" className="text-gray-700 font-semibold">
-                <span className="text-red-500">*</span> Villege
+              <label htmlFor="village" className="text-gray-700 font-semibold">
+                <span className="text-red-500">*</span> village
               </label>
               <Field
                 type="text"
-                id="Villege"
-                name="Villege"
-                placeholder="Enter your Villege"
+                id="village"
+                name="village"
+                placeholder="Enter your village"
                 className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 "
               />
               <ErrorMessage
-                name="Villege"
+                name="village"
                 component="div"
                 className="text-red-500 text-sm mt-1"
               />

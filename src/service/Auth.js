@@ -80,6 +80,15 @@ const getCategories = async () => {
 const getcarousel = async () => {
   return Apimethod(`/api/carousel`, "get", {}, true);
 };
+const postorder = async (data) => {
+  return Apimethod(`/api/order`, "POST", data, false);
+};
+const getorder = async () => {
+  return Apimethod(`/api/order`, "get", {}, false);
+};
+const putorder = async (data) => {
+  return Apimethod(`/api/order`, "put", data, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -95,5 +104,8 @@ export const useAuthData = () => ({
   GetCartCount,
   PostCreateUser,
   getCategories,
-  getcarousel
+  getcarousel,
+  postorder,
+  getorder,
+  putorder,
 });

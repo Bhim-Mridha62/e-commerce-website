@@ -1,9 +1,11 @@
 import connectDB from "@/database/db";
 import Order from "@/Schemas/server/OrderSchema";
 import verifyUser from "../middleware/verifyUser";
+import { getDayDifference } from "@/utils/client/formatDate";
 
-// Handler for adding a new order
-
+const now = new Date();
+const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+const currentTime = new Date(now.getTime() + istOffset).toISOString();
 // Main handler for API routing
 export default async function handler(req, res) {
   await connectDB();
@@ -21,6 +23,7 @@ export default async function handler(req, res) {
       res.status(405).json({ success: false, message: "Method Not Allowed" });
   }
 }
+
 async function addOrder(req, res) {
   try {
     const { userId } = req;
@@ -32,6 +35,13 @@ async function addOrder(req, res) {
         .status(400)
         .json({ success: false, message: "Missing required fields" });
     }
+    const initialStatusOrder = {
+      Order_Received: { status: "Done", time: currentTime },
+      Order_Shipped: { status: "InHere", time: "" },
+      Order_Picked: { status: "pending", time: "" },
+      Out_for_delivery: { status: "pending", time: "" },
+      Order_Delivered: { status: "pending", time: "" },
+    };
 
     const newOrder = new Order({
       userId,
@@ -42,6 +52,8 @@ async function addOrder(req, res) {
       image,
       price,
       address,
+      DeliveryDate: currentTime,
+      StatusOrder: initialStatusOrder,
     });
 
     await newOrder.save();
@@ -54,9 +66,15 @@ async function addOrder(req, res) {
 // Handler for updating the order status
 async function updateOrderStatus(req, res) {
   try {
-    const { orderId, orderStatus } = req.body;
+    const { orderId, orderStatus, cancelReason, statusUpdate } = req.body;
 
-    if (!orderId || !orderStatus) {
+    if (
+      !orderId ||
+      !orderStatus ||
+      !statusUpdate ||
+      !statusUpdate.key ||
+      !statusUpdate.value
+    ) {
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });
@@ -69,10 +87,48 @@ async function updateOrderStatus(req, res) {
         .status(404)
         .json({ success: false, message: "Order not found" });
     }
-    const now = new Date();
-    const istOffset = 5.5 * 60 * 60 * 1000;
-    order.OrderStatus = orderStatus;
-    order.DeliveryDate = new Date(now.getTime() + istOffset);
+    let statusUpdated = false;
+
+    // Update the status order based on the statusUpdate provided
+    let nextKey = null;
+    for (const key in order.StatusOrder) {
+      if (key === statusUpdate.key) {
+        order.StatusOrder[key].status = statusUpdate.value;
+        order.StatusOrder[key].time = currentTime;
+        statusUpdated = true;
+      } else if (statusUpdated && nextKey === null) {
+        order.StatusOrder[key].status = "InHere";
+        nextKey = key;
+      } else if (
+        nextKey !== null &&
+        order.StatusOrder[key].time === "pending"
+      ) {
+        order.StatusOrder[key].time = "";
+      }
+    }
+    if (orderStatus === "Done") {
+      order.OrderStatus = orderStatus;
+    }
+    order.cancelReason = cancelReason;
+
+    if (orderStatus === "cancelled") {
+      order.OrderStatus = orderStatus;
+      for (const key in order.StatusOrder) {
+        if (order.StatusOrder[key].status === "pending") {
+          order.StatusOrder[key].status = "cancelled";
+        }
+      }
+    }
+
+    if (
+      orderStatus === "returned" &&
+      getDayDifference(order.DeliveryDate, currentTime) < 6
+    ) {
+      order.OrderStatus = orderStatus;
+      order.DeliveryDate = currentTime; // Update to the return date
+    } else {
+      order.DeliveryDate = currentTime;
+    }
 
     await order.save();
     return res.status(200).json({ success: true, data: order });
@@ -92,7 +148,7 @@ async function getOrdersByUser(req, res) {
         .json({ success: false, message: "Missing userId" });
     }
 
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({ userId }).select("-userId -__v");
 
     if (!orders.length) {
       return res

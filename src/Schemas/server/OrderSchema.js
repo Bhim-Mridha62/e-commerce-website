@@ -1,41 +1,51 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+
+const StatusSchema = new mongoose.Schema({
+  Order_Received: {
+    status: { type: String, default: 'Done' },
+    time: { type: String, default: '' }
+  },
+  Order_Shipped: {
+    status: { type: String, default: 'pending' },
+    time: { type: String, default: '' }
+  },
+  Order_Picked: {
+    status: { type: String, default: 'pending' },
+    time: { type: String, default: '' }
+  },
+  Out_for_delivery: {
+    status: { type: String, default: 'pending' },
+    time: { type: String, default: '' }
+  },
+  Order_Delivered: {
+    status: { type: String, default: 'pending' },
+    time: { type: String, default: '' }
+  }
+}, { _id: false });
+
 const OrderSchema = new mongoose.Schema({
-  userId: { type: String, require: true },
-  productID: { type: String, require: true },
-  quantity: {
-    type: Number,
-    default: 1,
-  },
-  title: {
-    type: String,
-  },
-  image: {
-    type: String,
-  },
-  size: {
-    type: String,
-  },
-  price: {
-    type: String,
-  },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  productID: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  title: { type: String, required: true },
+  size: { type: String, required: true },
+  image: { type: String, required: true },
+  price: { type: Number, required: true },
   address: {
-    type: String,
-    required: true,
+    village: { type: String, required: true },
+    alternatePhone: { type: String },
+    buildingAddress: { type: String, required: true },
+    district: { type: String, required: true },
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    pincode: { type: String, required: true },
+    state: { type: String, required: true }
   },
-  OrderStatus: {
-    type: String,
-    default: "pending",
-  },
-  OrderDate: {
-    type: Date,
-    default: () => {
-      const now = new Date();
-      const istOffset = 5.5 * 60 * 60 * 1000;
-      return new Date(now.getTime() + istOffset);
-    },
-  },
-  DeliveryDate: {
-    type: Date,
-  },
+  StatusOrder: { type: StatusSchema, required: true },
+  OrderDate: { type: Date, default: Date.now },
+  OrderStatus: { type: String, default: 'pending' },
+  cancelReason: { type: String, default: '' },
+  DeliveryDate: { type: String, default: '' }
 });
-export default mongoose.models.Order || mongoose.model("Order", OrderSchema);
+
+export default mongoose.models.Order || mongoose.model('Order', OrderSchema);
