@@ -36,7 +36,8 @@ const getCart = async (req, res) => {
     const mergedCart = user.cart
       .map((cartItem) => {
         const productDetails = cartDetails.find(
-          (product) => product._id.toString() === cartItem.productID.toString()
+          (product) =>
+            product?._id?.toString() === cartItem?.productID?.toString()
         );
         if (productDetails) {
           // Convert Mongoose document to plain JavaScript object
@@ -75,8 +76,8 @@ const addItemToCart = async (req, res) => {
       (item) => item.productID?.toString() === productId
     );
     if (itemIndex > -1) {
-      user.cart[itemIndex].quantity=quantity;
-      user.cart[itemIndex].Size=Size;
+      user.cart[itemIndex].quantity = quantity;
+      user.cart[itemIndex].Size = Size;
     } else {
       user.cart.push({ productID: productId, quantity: quantity, Size: Size });
     }
@@ -103,9 +104,7 @@ const removeItemFromCart = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    user.cart = user.cart.filter(
-      (item) => item.productID !== productId
-    );
+    user.cart = user.cart.filter((item) => item.productID !== productId);
     await user.save();
     res.status(200).json({ success: true, data: user.cart });
   } catch (error) {
