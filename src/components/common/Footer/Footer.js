@@ -5,7 +5,7 @@ import React from "react";
 function Footer() {
   return (
     <>
-      <div className=" footer   bg-slate-700  text-white pb-2  w-full h-[auto] text-base ">
+      <div className=" footer mt-4 bg-slate-700  text-white pb-2  w-full h-[auto] text-base ">
         <div className="md:text-start text-left py-[5%] px-[4%] flex flex-col  md:flex-row justify-center md:justify-around align-middle Msm:gap-5 msm:gap-3">
           <div className="flex flex-col gap-1   ">
             <span>
