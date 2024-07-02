@@ -16,6 +16,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { encodeData } from "@/utils/client/encoding";
 import { useRouter } from "next/router";
+import Link from "next/link";
 const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -89,11 +90,13 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       <div className="mb-4 p-2 md:p-4">
         <div className="flex text-black">
           <div className="w-1/4">
-            <img
-              src={product?.thumbnail}
-              alt={product?.title}
-              className="w-full h-auto rounded"
-            />
+            <Link href={`/product/${product?._id}`}>
+              <img
+                src={product?.thumbnail}
+                alt={product?.title}
+                className="w-full h-auto rounded"
+              />
+            </Link>
             <div className="flex items-center mt-2 gap-2 rounded-lg">
               Quantity:
               <Dropdown

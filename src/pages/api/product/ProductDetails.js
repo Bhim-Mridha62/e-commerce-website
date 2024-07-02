@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   } else {
     try {
       const { id } = req.query;
-      const data = await Product.findById(id);
+      const data = await Product.findById(id).select("-reviews -__v");
       if (data) {
         res.status(200).json({ data: data });
       } else {

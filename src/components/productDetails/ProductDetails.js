@@ -261,7 +261,7 @@ const ProductDetail = () => {
                 </Dropdown>
               </div>
             </div>
-            <ReviewSection reviews={Product?.reviews} />
+            <ReviewSection id={Product?._id} />
           </div>
         </div>
         {isModalVisible && (

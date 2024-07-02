@@ -20,7 +20,7 @@ function RelatedProduct() {
     fetchData();
   }, []);
   return (
-    <div className="">
+    <div className="text-black mt-4 border-t-[1px] border-[#80808069]">
       <div className="text-xl flex justify-between p-4 font-semibold">
         <div>Reateted product</div>
         <div className="underline underline-offset-2 hover:text-blue-600 cursor-pointer">

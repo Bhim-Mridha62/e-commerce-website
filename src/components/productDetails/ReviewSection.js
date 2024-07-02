@@ -1,27 +1,29 @@
-import { Avatar, List, Rate, Space } from "antd";
-import axios from "axios";
+import { useAuthData } from "@/service/Auth";
+import { formatDate } from "@/utils/client/formatDate";
+import { List, Rate, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { AiFillDislike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
-import { FaCommentDots } from "react-icons/fa6";
-import { MdOutlineStarPurple500 } from "react-icons/md";
-import { TbShare3 } from "react-icons/tb";
-function ReviewSection({ reviews }) {
+function ReviewSection({ id }) {
   const [review, setReview] = useState([]);
+  const { getreviews } = useAuthData();
   const router = useRouter();
   useEffect(() => {
-    setReview(reviews)
-    // console.log(reviews, "reviews");
-    getReviewData();
-  }, [reviews]);
-  const getReviewData = async () => {
-    axios
-      .get("https://dummyjson.com/comments")
-      .then((res) => {
-        setReview(res.data.comments);
-      })
-      .catch((err) => console.log(err));
+    if (id) {
+      getReviewData(id);
+    }
+  }, [id]);
+  const getReviewData = async (id) => {
+    try {
+      const res = await getreviews(id);
+      if (res.status === 200) {
+        setReview(res?.data?.data?.reviews);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const IconText = ({ icon, text }) => (
     <Space className="mr-4">
@@ -45,9 +47,9 @@ function ReviewSection({ reviews }) {
           itemLayout="vertical"
           size="small"
           pagination={{
-            // onChange: (page) => {
-            //   console.log(page);
-            // },
+            onChange: (page) => {
+              console.log(page);
+            },
             pageSize: 4,
           }}
           dataSource={review}
@@ -62,22 +64,17 @@ function ReviewSection({ reviews }) {
           renderItem={(data) => (
             <List.Item
               className="p-0"
-              key={data.id}
+              key={data._id}
               actions={[
                 <IconText
-                  icon={TbShare3}
-                  text="156"
-                  key="list-vertical-star-o"
-                />,
-                <IconText
                   icon={BiSolidLike}
-                  text="156"
+                  text={data?.like}
                   key="list-vertical-like-o"
                 />,
                 <IconText
-                  icon={FaCommentDots}
-                  text="2"
-                  key="list-vertical-message"
+                  icon={AiFillDislike}
+                  text={data?.dislike}
+                  key="list-vertical-star-o"
                 />,
               ]}
             >
@@ -88,54 +85,29 @@ function ReviewSection({ reviews }) {
                 }
                 title={
                   <p>
-                    {data?.user?.username}{" "}
-                    <span className="ml-1 text-xs text-gray-400">20/12/20</span>
+                    {data?.username}{" "}
+                    <span className="ml-1 text-sm text-gray-400">
+                      {formatDate(data?.postdAt)}
+                    </span>
                   </p>
                 }
                 description={
                   <div className="">
-                    <Rate className="text-xs" allowHalf disabled value={4.2} />
-                    4.2
+                    <Rate
+                      className="text-sm"
+                      allowHalf
+                      disabled
+                      value={data?.rating}
+                    />
+                    <span className="ml-2">{data?.rating}</span>
                   </div>
                 }
               />
-              {data.body}
+              {data?.comment}
             </List.Item>
           )}
         />
       </div>
-      {/* <div>
-        {review.slice(0, 5).map((data) => (
-          <div className=" border-b-2 ">
-            <div className="flex">
-              <div>
-                <Avatar />
-              </div>
-              <div>
-                <p>
-                  <span>{data.user.username}</span>
-                  <MdOutlineStarPurple500 className="inline" />
-                </p>
-                <span>22/15/2001</span>
-              </div>
-            </div>
-            <div>{data.body}</div>
-            <div>
-              <IconText icon={TbShare3} text="156" key="list-vertical-star-o" />
-              <IconText
-                icon={FaCommentDots}
-                text="156"
-                key="list-vertical-star-o"
-              />
-              <IconText
-                icon={BiSolidLike}
-                text="156"
-                key="list-vertical-star-o"
-              />
-            </div>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }
