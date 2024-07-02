@@ -25,12 +25,18 @@ function ReviewSection({ id }) {
       console.log(error);
     }
   };
-  const IconText = ({ icon, text }) => (
-    <Space className="mr-4">
-      {React.createElement(icon)}
+  const IconText = ({ icon, text, style, onClick }) => (
+    <Space className="mr-4" onClick={onClick}>
+      {React.createElement(icon, { style: { ...style, cursor: "pointer" } })}
       {text}
     </Space>
   );
+  const handleLikeClick = (data) => {
+    console.log(data, "like");
+  };
+  const handleDislikeClick = (data) => {
+    console.log(data, "dislike");
+  };
   const HandelAllReview = () => {
     //  router.push({
     //   pathname:"/product/allreview",
@@ -70,11 +76,15 @@ function ReviewSection({ id }) {
                   icon={BiSolidLike}
                   text={data?.like}
                   key="list-vertical-like-o"
+                  style={{ fontSize: "18px" }}
+                  onClick={() => handleLikeClick(data)}
                 />,
                 <IconText
                   icon={AiFillDislike}
                   text={data?.dislike}
                   key="list-vertical-star-o"
+                  style={{ fontSize: "18px" }}
+                  onClick={() => handleDislikeClick(data)}
                 />,
               ]}
             >
