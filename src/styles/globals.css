@@ -45,3 +45,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .cancelReason {
   font-size: 18px;
 }
+.ant-list-item-meta-avatar {
+  margin-inline-end: 7px !important;
+}
+.ant-list-item-meta-title {
+  margin-block-end: 0px !important;
+}

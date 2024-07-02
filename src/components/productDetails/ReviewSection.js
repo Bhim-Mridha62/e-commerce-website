@@ -1,4 +1,5 @@
 import { useAuthData } from "@/service/Auth";
+import { getLetterColors } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
 import { List, Rate, Space } from "antd";
 import Link from "next/link";
@@ -91,7 +92,31 @@ function ReviewSection({ id }) {
               <List.Item.Meta
                 style={{ marginBottom: 0 }}
                 avatar={
-                  <img className="w-7" src="/reviewAvtar.png" alt="avtar" />
+                  data?.userImage ? (
+                    <img
+                      className="w-9 h-9 text-center rounded-full"
+                      src={data?.userImage}
+                      alt="avatar"
+                      onError={(e) => {
+                        e.target.src = "/user.png";
+                      }}
+                    />
+                  ) : (
+                    <p
+                      style={{
+                        backgroundColor: getLetterColors(
+                          data?.username?.charAt(0)
+                        ).backgroundColor,
+                        color: getLetterColors(data?.username?.charAt(0))
+                          .textColor,
+                      }}
+                      className={`w-9 h-9 text-center rounded-full`}
+                    >
+                      <span className="pt-[2px]">
+                        {data?.username?.charAt(0)}
+                      </span>
+                    </p>
+                  )
                 }
                 title={
                   <p>
