@@ -14,10 +14,13 @@ import { useState } from "react";
 import { useAuthData } from "@/service/Auth";
 import { DownOutlined } from "@ant-design/icons";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
+import { encodeData } from "@/utils/client/encoding";
+import { useRouter } from "next/router";
 const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const router = useRouter();
   const { AddToCart } = useAuthData();
   useEffect(() => {
     setQuantity(product?.quantity);
@@ -67,6 +70,19 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
     setQuantity(Number(e.target.value));
     UpdateProductData(selectedSize, product?._id, Number(e.target.value));
     HandelAddToCart(selectedSize, product?._id, Number(e.target.value));
+  };
+  const handleBuyNow = () => {
+    const { title, discountPercentage, price, thumbnail, _id } = product;
+    const encodedQuery = encodeData({
+      title,
+      discountPercentage,
+      price,
+      thumbnail,
+      quantity,
+      selectedSize,
+      _id,
+    });
+    router.push(`/cart/address?data=${encodedQuery}`);
   };
   return (
     <>
@@ -154,7 +170,11 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
           >
             Remove
           </Button>
-          <Button className="bg-[#1677ff]" type="primary">
+          <Button
+            onClick={handleBuyNow}
+            className="bg-[#1677ff]"
+            type="primary"
+          >
             Buy this now
           </Button>
         </div>

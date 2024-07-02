@@ -63,7 +63,7 @@ const ProductDetail = () => {
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
   };
-  const handleBuyNow = (productId) => {
+  const handleBuyNow = () => {
     if (!selectedSize) {
       message.info("Please Select Size");
       return;
@@ -180,7 +180,7 @@ const ProductDetail = () => {
                 Add to Cart
               </button>
               <button
-                onClick={() => handleBuyNow(Product?._id)}
+                onClick={handleBuyNow}
                 className="flex items-center justify-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
                 Buy Now

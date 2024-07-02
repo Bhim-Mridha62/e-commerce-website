@@ -34,7 +34,7 @@ function Navbar() {
     if (user) {
       UpdateCartCount();
     }
-  }, []);
+  }, [user]);
 
   const HandeLogin = () => {
     if (user) {

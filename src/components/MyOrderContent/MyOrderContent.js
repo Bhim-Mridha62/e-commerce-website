@@ -8,7 +8,6 @@ import { getDayDifference } from "@/utils/client/formatDate";
 
 function MyOrderContent() {
   const [items, setItems] = useState([]);
-  const [statusOrder, setStatusOrder] = useState([]);
   const { getorder, putorder } = useAuthData();
   useEffect(() => {
     getUserOrder();

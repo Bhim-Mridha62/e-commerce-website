@@ -42,7 +42,6 @@ const PaymentOptions = () => {
 
   const handleSubmit = (values) => {
     setAddressDetails(values);
-    console.log(values, "value");
     setIsModalVisible(false);
 
     // Encode the updated address details and update the URL
@@ -56,39 +55,44 @@ const PaymentOptions = () => {
     });
   };
   const HandelConfirmOrder = async () => {
-    console.log(payment != "cod", payment);
     if (payment != "cod") {
       return message.info("Please select a payment method");
     }
     setIsSubmitting(true);
-    console.log(priceDetails);
-    let orderData = {
-      productID: priceDetails?._id,
-      quantity: priceDetails?.quantity,
-      title: priceDetails?.title,
-      image: priceDetails?.thumbnail,
-      price: priceDetails?.price,
-      size: priceDetails?.selectedSize,
-      address: addressDetails,
-    };
     try {
-      const res = await postorder(orderData);
-      console.log(res, "res");
-      if (res?.status === 201) {
-        openNotificationWithIcon(
-          "success",
-          "Order Confirmed",
-          "Order confirmed! Thank you for your purchase."
-        );
-        router.push("/myorder");
-      } else {
-        openNotificationWithIcon(
-          "error",
-          "Order Failed",
-          "An error occurred while confirming your order. Please try again."
-        );
-        setIsSubmitting(false);
+      let products = Array.isArray(priceDetails)
+        ? priceDetails
+        : [priceDetails];
+      for (const product of products) {
+        let orderData = {
+          productID: product?._id,
+          quantity: product?.quantity,
+          title: product?.title,
+          image: product?.thumbnail,
+          price: product?.price,
+          size: Array.isArray(priceDetails)
+            ? product?.Size
+            : product?.selectedSize,
+          address: addressDetails,
+        };
+        const res = await postorder(orderData);
+        if (res?.status !== 201) {
+          openNotificationWithIcon(
+            "error",
+            "Order Failed",
+            "An error occurred while confirming your order. Please try again."
+          );
+          setIsSubmitting(false);
+          return;
+        }
       }
+      openNotificationWithIcon(
+        "success",
+        "Order Confirmed",
+        "Order confirmed! Thank you for your purchase."
+      );
+
+      router.push("/myorder");
     } catch (error) {
       openNotificationWithIcon(
         "error",
