@@ -1,11 +1,13 @@
 export function GetOrderStatusColour(status) {
   let colour;
   if (status === "pending") {
-    colour = "#3b82f6"; // Blue
-  } else if (status === "Delivered") {
+    colour = "#fd7e14"; // Blue
+  } else if (status === "Delivered" || status === "Done") {
     colour = "#10b981"; // Green
   } else if (status === "cancelled") {
     colour = "#ef4444"; // Red
+  } else if (status === "returned") {
+    colour = "#6f42c1"; // Purple
   } else {
     colour = "#6b7280"; // Gray
   }

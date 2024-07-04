@@ -88,5 +88,4 @@ export const GiveRatingSchema = Yup.object().shape({
     .required("Rating is required")
     .min(1, "Rating must be at least 1"),
   description: Yup.string().required("Description is required"),
-  image: Yup.mixed().required("Image is required"),
 });

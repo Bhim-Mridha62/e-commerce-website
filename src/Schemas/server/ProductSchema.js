@@ -1,15 +1,17 @@
 // import faker from 'faker';
 import mongoose from "mongoose";
 
+// Define the schema for product reviews
 const reviewSchema = new mongoose.Schema({
-  username: { type: String, default: "" },
-  userId: { type: String, default: "" },
-  userImage: { type: String, default: "" },
-  rating: { type: Number, default: 0 },
-  like: { type: Number, default: 0 },
-  dislike: { type: Number, default: 0 },
-  comment: { type: String, default: "" },
-  postdAt: { type: Date, default: Date.now },
+  username: { type: String, default: "" }, // The name of the user who wrote the review
+  userId: { type: String, default: "" }, // The ID of the user who wrote the review
+  userImage: { type: String, default: "" }, // The profile image of the user
+  rating: { type: Number, default: 0 }, // The rating given by the user
+  like: { type: Number, default: 0 }, // The number of likes the review received
+  dislike: { type: Number, default: 0 }, // The number of dislikes the review received
+  comment: { type: String, default: "" }, // The comment text of the review
+  images: { type: [String], default: [] }, // Any images attached to the review
+  postdAt: { type: String, default: "" }, // The date the review was posted
 });
 
 const productSchema = new mongoose.Schema({

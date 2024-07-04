@@ -92,6 +92,9 @@ const putorder = async (data) => {
 const getreviews = async (data) => {
   return Apimethod(`api/product/review?id=${data}`, "get", {}, true);
 };
+const postreviews = async (data) => {
+  return Apimethod(`api/product/review`, "POST", data, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -111,5 +114,6 @@ export const useAuthData = () => ({
   postorder,
   getorder,
   putorder,
-  getreviews
+  getreviews,
+  postreviews,
 });

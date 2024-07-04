@@ -1,8 +1,8 @@
+import { useUser } from "@/context/authContext";
 import { useAuthData } from "@/service/Auth";
 import { getLetterColors } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
 import { List, Rate, Space } from "antd";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { AiFillDislike } from "react-icons/ai";
@@ -10,6 +10,7 @@ import { BiSolidLike } from "react-icons/bi";
 function ReviewSection({ id }) {
   const [review, setReview] = useState([]);
   const { getreviews } = useAuthData();
+  const { user } = useUser();
   const router = useRouter();
   useEffect(() => {
     if (id) {
@@ -20,7 +21,8 @@ function ReviewSection({ id }) {
     try {
       const res = await getreviews(id);
       if (res.status === 200) {
-        setReview(res?.data?.data?.reviews);
+        console.log(res, "data");
+        setReview(res?.data?.data);
       }
     } catch (error) {
       console.log(error);
@@ -33,10 +35,18 @@ function ReviewSection({ id }) {
     </Space>
   );
   const handleLikeClick = (data) => {
-    console.log(data, "like");
+    if (user) {
+      console.log(data, "like");
+    } else {
+      message.info("Please log in to like this item.");
+    }
   };
   const handleDislikeClick = (data) => {
-    console.log(data, "dislike");
+    if (user) {
+      console.log(data, "dislike");
+    } else {
+      message.info("Please log in to dislike this item.");
+    }
   };
   const HandelAllReview = () => {
     //  router.push({
@@ -110,11 +120,9 @@ function ReviewSection({ id }) {
                         color: getLetterColors(data?.username?.charAt(0))
                           .textColor,
                       }}
-                      className={`w-9 h-9 text-center rounded-full`}
+                      className={`w-8 h-8 pt-[4px] text-center rounded-full`}
                     >
-                      <span className="pt-[2px]">
-                        {data?.username?.charAt(0)}
-                      </span>
+                      {data?.username?.charAt(0)}
                     </p>
                   )
                 }
