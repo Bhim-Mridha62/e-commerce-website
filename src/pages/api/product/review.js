@@ -66,7 +66,30 @@ const addReview = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const updateReview = async (req, res) => {};
+const updateReview = async (req, res) => {
+  try {
+    const { comment_id, like, dislike, productID } = req.body;
+    if (!comment_id || !productID) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    const product = await Product.findById(productID).select("reviews");
+    let indexData = product?.reviews.find(
+      (data) => data?._id.toString() === comment_id
+    );
+    console.log(indexData, "datafromindex");
+    if (indexData && like) {
+      if (dislike) {
+        indexData.dislike++;
+      } else {
+        indexData.like++;
+      }
+    }
+    await product.save();
+    res.status(200).json({ message: "Update successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 const deleteReview = async (req, res) => {
   try {
     const { productID, review_id } = req.body;
@@ -90,7 +113,6 @@ const deleteReview = async (req, res) => {
       .status(200)
       .json({ message: "Review deleted successfully", data: product.reviews });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

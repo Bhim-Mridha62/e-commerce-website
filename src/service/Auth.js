@@ -47,53 +47,59 @@ const PostCreateUser = (data) => {
 export const HandelverifyOTP = (data) => {
   return Apimethod("/api/auth/verify", "post", data, true);
 };
-const LoginUser = async (loginUser) => {
+const LoginUser = (loginUser) => {
   return Apimethod("/api/auth/Sign-in", "post", loginUser, true);
 };
-const AddToCart = async (data) => {
+const AddToCart = (data) => {
   return Apimethod("/api/cart", "post", data, false);
 };
-const AllCartData = async () => {
+const AllCartData = () => {
   return Apimethod("/api/cart", "get", {}, false);
 };
-const RemoveCartData = async (id) => {
+const RemoveCartData = (id) => {
   return Apimethod("/api/cart", "DELETE", id, false);
 };
-const FetchProductDetail = async (id) => {
+const FetchProductDetail = (id) => {
   return Apimethod(`/api/product/ProductDetails?id=${id}`, "get", {}, true);
 };
-const Getwishlist = async () => {
+const Getwishlist = () => {
   return Apimethod(`api/wishlist`, "get", {}, false);
 };
-const Deletewishlist = async (data) => {
+const Deletewishlist = (data) => {
   return Apimethod(`api/wishlist`, "DELETE", data, false);
 };
-const Postwishlist = async (data) => {
+const Postwishlist = (data) => {
   return Apimethod(`api/wishlist`, "post", data, false);
 };
-const GetCartCount = async () => {
+const GetCartCount = () => {
   return Apimethod(`/api/cart/cartCount`, "get", {}, false);
 };
-const getCategories = async () => {
+const getCategories = () => {
   return Apimethod(`/api/categories`, "get", {}, true);
 };
-const getcarousel = async () => {
+const getcarousel = () => {
   return Apimethod(`/api/carousel`, "get", {}, true);
 };
-const postorder = async (data) => {
+const postorder = (data) => {
   return Apimethod(`/api/order`, "POST", data, false);
 };
-const getorder = async () => {
+const getorder = () => {
   return Apimethod(`/api/order`, "get", {}, false);
 };
-const putorder = async (data) => {
+const putorder = (data) => {
   return Apimethod(`/api/order`, "put", data, false);
 };
-const getreviews = async (data) => {
+const getreviews = (data) => {
   return Apimethod(`api/product/review?id=${data}`, "get", {}, true);
 };
-const postreviews = async (data) => {
+const postreviews = (data) => {
   return Apimethod(`api/product/review`, "POST", data, false);
+};
+const putreviews = (data) => {
+  return Apimethod(`api/product/review`, "put", data, false);
+};
+const Deletereviews = (data) => {
+  return Apimethod(`api/product/review`, "DELETE", data, false);
 };
 export const useAuthData = () => ({
   HandelSignUp,
@@ -116,4 +122,6 @@ export const useAuthData = () => ({
   putorder,
   getreviews,
   postreviews,
+  putreviews,
+  Deletereviews,
 });

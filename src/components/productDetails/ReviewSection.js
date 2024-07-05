@@ -2,14 +2,15 @@ import { useUser } from "@/context/authContext";
 import { useAuthData } from "@/service/Auth";
 import { getLetterColors } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
-import { List, Rate, Space } from "antd";
+import { Button, List, Popconfirm, Rate, Space } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { AiFillDislike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
+import { MdDeleteForever } from "react-icons/md";
 function ReviewSection({ id }) {
   const [review, setReview] = useState([]);
-  const { getreviews } = useAuthData();
+  const { getreviews, putreviews, Deletereviews } = useAuthData();
   const { user } = useUser();
   const router = useRouter();
   useEffect(() => {
@@ -21,7 +22,6 @@ function ReviewSection({ id }) {
     try {
       const res = await getreviews(id);
       if (res.status === 200) {
-        console.log(res, "data");
         setReview(res?.data?.data);
       }
     } catch (error) {
@@ -34,18 +34,40 @@ function ReviewSection({ id }) {
       {text}
     </Space>
   );
-  const handleLikeClick = (data) => {
+  const handleActionLikeClick = async (data) => {
     if (user) {
-      console.log(data, "like");
+      let likedata = {
+        productID: id,
+        like: true,
+        dislike: data?.dislike,
+        comment_id: data?._id,
+      };
+      try {
+        const res = await putreviews(likedata);
+        if (res.status === 200) {
+          console.log(res, "data");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      message.info("Please log in to like this item.");
+      message.info(
+        data?.dislike
+          ? "Please log in to dislike this item."
+          : "Please log in to like this item."
+      );
     }
   };
-  const handleDislikeClick = (data) => {
-    if (user) {
-      console.log(data, "dislike");
-    } else {
-      message.info("Please log in to dislike this item.");
+  const HandelDeleteReview = async (reviewId) => {
+    try {
+      const res = await Deletereviews({ productID: id, review_id: reviewId });
+      if (res.status === 200) {
+        setReview((prevReviews) =>
+          prevReviews.filter((review) => review?._id !== reviewId)
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const HandelAllReview = () => {
@@ -88,14 +110,18 @@ function ReviewSection({ id }) {
                   text={data?.like}
                   key="list-vertical-like-o"
                   style={{ fontSize: "18px" }}
-                  onClick={() => handleLikeClick(data)}
+                  onClick={() =>
+                    handleActionLikeClick({ ...data, dislike: false })
+                  }
                 />,
                 <IconText
                   icon={AiFillDislike}
                   text={data?.dislike}
                   key="list-vertical-star-o"
                   style={{ fontSize: "18px" }}
-                  onClick={() => handleDislikeClick(data)}
+                  onClick={() =>
+                    handleActionLikeClick({ ...data, dislike: true })
+                  }
                 />,
               ]}
             >
@@ -132,6 +158,20 @@ function ReviewSection({ id }) {
                     <span className="ml-1 text-sm text-gray-400">
                       {formatDate(data?.postdAt)}
                     </span>
+                    <Popconfirm
+                      title="Confirm"
+                      description="Delete Review?"
+                      okText="Yes"
+                      cancelText="No"
+                      okButtonProps={{
+                        style: { backgroundColor: "red", color: "white" },
+                      }}
+                      onConfirm={() => HandelDeleteReview(data?._id)}
+                    >
+                      {user?._id === data?.userId && (
+                        <MdDeleteForever className="inline-flex ml-10 text-red-700" />
+                      )}
+                    </Popconfirm>
                   </p>
                 }
                 description={
