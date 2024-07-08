@@ -63,13 +63,13 @@ const FetchProductDetail = (id) => {
   return Apimethod(`/api/product/ProductDetails?id=${id}`, "get", {}, true);
 };
 const Getwishlist = () => {
-  return Apimethod(`api/wishlist`, "get", {}, false);
+  return Apimethod(`/api/wishlist`, "get", {}, false);
 };
 const Deletewishlist = (data) => {
-  return Apimethod(`api/wishlist`, "DELETE", data, false);
+  return Apimethod(`/api/wishlist`, "DELETE", data, false);
 };
 const Postwishlist = (data) => {
-  return Apimethod(`api/wishlist`, "post", data, false);
+  return Apimethod(`/api/wishlist`, "post", data, false);
 };
 const GetCartCount = () => {
   return Apimethod(`/api/cart/cartCount`, "get", {}, false);
@@ -90,16 +90,16 @@ const putorder = (data) => {
   return Apimethod(`/api/order`, "put", data, false);
 };
 const getreviews = (data) => {
-  return Apimethod(`api/product/review?id=${data}`, "get", {}, true);
+  return Apimethod(`/api/product/review?id=${data}`, "get", {}, true);
 };
 const postreviews = (data) => {
-  return Apimethod(`api/product/review`, "POST", data, false);
+  return Apimethod(`/api/product/review`, "POST", data, false);
 };
 const putreviews = (data) => {
-  return Apimethod(`api/product/review`, "put", data, false);
+  return Apimethod(`/api/product/review`, "put", data, false);
 };
 const Deletereviews = (data) => {
-  return Apimethod(`api/product/review`, "DELETE", data, false);
+  return Apimethod(`/api/product/review`, "DELETE", data, false);
 };
 export const useAuthData = () => ({
   HandelSignUp,

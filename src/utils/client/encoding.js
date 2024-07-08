@@ -12,8 +12,8 @@ export const encodeData = (data) => {
 // Function to decode data
 export const decodeData = (encodedData) => {
   try {
-    if (encodedData.startsWith("a") && encodedData.endsWith("a")) {
-      const base64 = encodedData.slice(1, -1);
+    if (encodedData?.startsWith("a") && encodedData?.endsWith("a")) {
+      const base64 = encodedData?.slice(1, -1);
       const json = atob(base64);
       return JSON.parse(json);
     } else {
