@@ -76,7 +76,6 @@ const updateReview = async (req, res) => {
     let indexData = product?.reviews.find(
       (data) => data?._id.toString() === comment_id
     );
-    console.log(indexData, "datafromindex");
     if (indexData && like) {
       if (dislike) {
         indexData.dislike++;

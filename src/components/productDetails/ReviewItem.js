@@ -1,58 +1,26 @@
+// ReviewItem.js
+import { getLetterColors } from "@/utils/client/colourCode";
+import { formatDate } from "@/utils/client/formatDate";
 import { List, Popconfirm, Rate, Space } from "antd";
-import React from "react";
 import { AiFillDislike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
+import React, { useState } from "react";
 
-const reviewData = ({ data }) => {
-  const [like, setLike] = useState("");
-  const { getreviews, putreviews, Deletereviews } = useAuthData();
+const IconText = ({ icon, text, style, onClick }) => (
+  <Space className="mr-4" onClick={onClick}>
+    {React.createElement(icon, { style: { ...style, cursor: "pointer" } })}
+    {text}
+  </Space>
+);
 
-  const IconText = ({ icon, text, style, onClick }) => (
-    <Space className="mr-4" onClick={onClick}>
-      {React.createElement(icon, { style: { ...style, cursor: "pointer" } })}
-      {text}
-    </Space>
-  );
-  const handleActionLikeClick = async (data) => {
-    if (user) {
-      if (data?.dislike === true) {
-        setLike("dislike");
-      } else {
-        setLike("like");
-      }
-      let likedata = {
-        productID: id,
-        like: true,
-        dislike: data?.dislike,
-        comment_id: data?._id,
-      };
-      try {
-        const res = await putreviews(likedata);
-        if (res.status === 200) {
-          console.log(res, "data");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      message.info(
-        data?.dislike
-          ? "Please log in to dislike this item."
-          : "Please log in to like this item."
-      );
-    }
-  };
-  const HandelDeleteReview = async (data) => {
-    try {
-      const res = await Deletereviews({ productID: id, review_id: data });
-      if (res.status === 200) {
-        console.log(res, "data");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const ReviewItem = ({
+  data,
+  user,
+  handleActionLikeClick,
+  HandelDeleteReview,
+}) => {
+  const [like, setlike] = useState("");
   return (
     <List.Item
       className="p-0"
@@ -60,23 +28,24 @@ const reviewData = ({ data }) => {
       actions={[
         <IconText
           icon={BiSolidLike}
-          text={like === "like" ? data?.like + 1 : data?.like}
+          text={like == "like" ? data?.like + 1 : data?.like}
           key="list-vertical-like-o"
-          style={{
-            fontSize: "18px",
-            color: like === "like" && "#3c3cff",
-          }}
-          onClick={() => handleActionLikeClick({ ...data, dislike: false })}
+          style={{ fontSize: "18px", color: like == "like" && "blue" }}
+          onClick={() =>
+            handleActionLikeClick({ ...data, dislike: false }, setlike("like"))
+          }
         />,
         <IconText
           icon={AiFillDislike}
           text={like === "dislike" ? data?.dislike + 1 : data?.dislike}
           key="list-vertical-star-o"
-          style={{
-            fontSize: "18px",
-            color: like === "dislike" && "#3c3cff",
-          }}
-          onClick={() => handleActionLikeClick({ ...data, dislike: true })}
+          style={{ fontSize: "18px", color: like === "dislike" && "blue" }}
+          onClick={() =>
+            handleActionLikeClick(
+              { ...data, dislike: true },
+              setlike("dislike")
+            )
+          }
         />,
       ]}
     >
@@ -121,7 +90,9 @@ const reviewData = ({ data }) => {
               }}
               onConfirm={() => HandelDeleteReview(data?._id)}
             >
-              <MdDeleteForever className="inline-flex ml-10 text-red-700" />
+              {user?._id === data?.userId && (
+                <MdDeleteForever className="inline-flex ml-10 cursor-pointer text-red-700" />
+              )}
             </Popconfirm>
           </p>
         }
@@ -137,4 +108,4 @@ const reviewData = ({ data }) => {
   );
 };
 
-export default reviewData;
+export default ReviewItem;

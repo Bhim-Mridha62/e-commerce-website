@@ -112,8 +112,8 @@ function Navbar() {
             ) : (
               <span>
                 Sign {""}
-                <Link href="sign-in">in/</Link>
-                <Link href="sign-up">up</Link>
+                <Link href="/sign-in">in/</Link>
+                <Link href="/sign-up">up</Link>
               </span>
             )}
             <Link href={`/cart`}>
