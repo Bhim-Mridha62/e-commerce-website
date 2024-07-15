@@ -32,7 +32,10 @@ const ReviewItem = ({
           key="list-vertical-like-o"
           style={{ fontSize: "18px", color: like == "like" && "blue" }}
           onClick={() =>
-            handleActionLikeClick({ ...data, dislike: false }, setlike("like"))
+            handleActionLikeClick(
+              { ...data, dislike: false },
+              setlike(user ? "like" : "")
+            )
           }
         />,
         <IconText
@@ -43,7 +46,7 @@ const ReviewItem = ({
           onClick={() =>
             handleActionLikeClick(
               { ...data, dislike: true },
-              setlike("dislike")
+              setlike(user ? "dislike" : "")
             )
           }
         />,

@@ -8,7 +8,6 @@ import ReviewItem from "./ReviewItem"; // Import the new component
 
 function ReviewSection({ id }) {
   const [review, setReview] = useState([]);
-  const [likeData, setLikeData] = useState(null);
   const { getreviews, putreviews, Deletereviews } = useAuthData();
   const { user } = useUser();
   const router = useRouter();
@@ -17,9 +16,6 @@ function ReviewSection({ id }) {
     if (id) {
       getReviewData(id);
     }
-    return () => {
-      console.log(likeData, "in return");
-    };
   }, [id]);
 
   const getReviewData = async (id) => {
@@ -41,7 +37,6 @@ function ReviewSection({ id }) {
         dislike: data?.dislike,
         comment_id: data?._id,
       };
-      setLikeData(likedata);
       try {
         const res = await putreviews(likedata);
         if (res.status === 200) {
@@ -78,9 +73,6 @@ function ReviewSection({ id }) {
     //   query:{id:id},
     //  })
   };
-
-  console.log(likeData, "likedta");
-
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800 my-4">
