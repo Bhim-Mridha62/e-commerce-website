@@ -15,7 +15,6 @@ import {
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { BsCurrencyRupee } from "react-icons/bs";
 import ReviewSection from "./ReviewSection";
-// import { FetchProductDetail } from "@/service/Product";
 import { useAuthData } from "@/service/Auth";
 import { FcLike } from "react-icons/fc";
 import { FaRegHeart } from "react-icons/fa6";

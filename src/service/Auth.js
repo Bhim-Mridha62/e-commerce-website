@@ -101,6 +101,14 @@ const putreviews = (data) => {
 const Deletereviews = (data) => {
   return Apimethod(`/api/product/review`, "DELETE", data, false);
 };
+const GetAllProduct = (skip, limit) => {
+  return Apimethod(
+    `/api/product/GetProduct?skip=${skip}&limit=${limit}`,
+    "get",
+    {},
+    true
+  );
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -124,4 +132,5 @@ export const useAuthData = () => ({
   postreviews,
   putreviews,
   Deletereviews,
+  GetAllProduct,
 });

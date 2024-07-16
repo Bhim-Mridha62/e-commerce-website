@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 // import Productskeleton from "../common/productskeleton";
 import ProductCard from "../common/productcard/productcard";
-import { GetAllProduct } from "@/service/Product";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
+import { useAuthData } from "@/service/Auth";
 
 function Homecard() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user} = useUser();
-
+  const { GetAllProduct } = useAuthData();
+  const { user } = useUser();
   const [skip, setSkip] = useState(0);
   const limit = 20;
 
@@ -44,7 +44,7 @@ function Homecard() {
   return (
     <div>
       {loading ? (
-        <Loading className="my-8"/>
+        <Loading className="my-8" />
       ) : (
         <div className="mt-12 checksixe flex flex-wrap min-h-screen justify-center md:gap-12 bg-white Msm:gap-2">
           {products.map((product) => (
