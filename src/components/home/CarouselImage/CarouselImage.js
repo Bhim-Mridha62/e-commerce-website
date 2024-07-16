@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Carousel, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import CarouselImage from "@/data/homePage/CarouselImageUrlList.json";
 import { useAuthData } from "@/service/Auth";
 
 const Homecarousel = () => {
@@ -14,11 +13,12 @@ const Homecarousel = () => {
   const fetchImages = async () => {
     try {
       const response = await getcarousel();
-      setImages(response.data.data);
+      setImages(response?.data);
     } catch (error) {
       message.error("Error fetching images");
     }
   };
+  console.log(images, "img");
   return (
     <div>
       <Carousel
@@ -26,10 +26,10 @@ const Homecarousel = () => {
         prevArrow={<LeftOutlined />}
         nextArrow={<RightOutlined />}
       >
-        {CarouselImage.map((imageUrl, index) => (
+        {images?.map((imageUrl, index) => (
           <div key={index}>
             <img
-              src={imageUrl}
+              src={imageUrl?.imageUrl}
               alt={`Slide ${index + 1}`}
               style={{ width: "100%", height: "auto" }}
             />

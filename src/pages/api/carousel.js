@@ -16,8 +16,8 @@ export default async function handler(req, res) {
 
 const getImages = async (req, res) => {
   try {
-    const images = await CarouselImage.find().select("-__v");
-    res.status(200).json({ success: true, data: images });
+    const images = await CarouselImage.find().select("-__v -_id");
+    res.status(200).json(images);
   } catch (error) {
     res.status(500).json({
       success: false,
