@@ -16,10 +16,16 @@ function Homecard() {
   async function fetchData() {
     try {
       const response = await GetAllProduct(skip, limit);
-      setProducts((prevProducts) => [...prevProducts, ...response.data.data]);
-      setLoading(false);
+      if (response?.status == 200) {
+        setProducts((prevProducts) => [
+          ...prevProducts,
+          ...response?.data?.data,
+        ]);
+        setLoading(false);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
+      setLoading(false);
       // Handle the error (e.g., display an error message)
     }
   }

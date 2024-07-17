@@ -11,7 +11,9 @@ const Errors = (res) => {
   if (res?.status == 401) {
     window.localStorage.clear();
   } else if (res?.status == 409 || res?.status == 422 || res?.status == 404) {
-    message.error(res?.data?.message);
+    if (res?.data?.message !== "Products not found") {
+      message.error(res?.data?.message);
+    }
   }
 };
 const Apimethod = async (url, method, body, auth) => {

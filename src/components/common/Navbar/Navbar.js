@@ -73,11 +73,10 @@ function Navbar() {
   }, [lastScrollPosition]);
   const handleSearchEnter = (e) => {
     if (e.key === "Enter") {
-      let searchvalue = encodeURIComponent(inputValue);
-      // let searchvalue = inputValue.trim().replace(/\s+/g, "+");
-      if (searchvalue) {
-        // router.push({ pathname: "/", query: { q: searchvalue } });
-        console.log(searchvalue, "searchvalue");
+      const trimmedValue = inputValue.trim();
+      if (trimmedValue) {
+        let searchvalue = encodeURIComponent(trimmedValue);
+        router.push(`/search?query=${searchvalue}`);
       }
     }
   };
@@ -98,7 +97,7 @@ function Navbar() {
             <Input
               value={inputValue}
               prefix={<IoIosSearch className="inline-flex text-xl" />}
-              onChange={(e) => setinputValue(e.target.value)}
+              onChange={(e) => setinputValue(e?.target?.value)}
               placeholder="Search for products, brands and more"
               className="hidden lsm:flex"
               onKeyDown={handleSearchEnter}

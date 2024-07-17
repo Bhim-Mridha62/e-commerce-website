@@ -9,7 +9,7 @@ import isMobile from "@/utils/client/isMobile";
 import { FaRegHeart } from "react-icons/fa6";
 import { useAuthData } from "@/service/Auth";
 import Image from "next/image";
-const ProductCard = ({ product ,user }) => {
+const ProductCard = ({ product, user }) => {
   const [islike, setLslike] = useState(false);
   const { Postwishlist } = useAuthData();
 
@@ -45,14 +45,14 @@ const ProductCard = ({ product ,user }) => {
           )}
         </span>
       )}
-      <Image
+      {/* <Image
         className={stylehome.ProductshowImg}
         src={product.thumbnail}
         layout="responsive"
         height={100}
         width={100}
         alt="Image here"
-      />
+      /> */}
       <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">
         {product.title}
       </p>
