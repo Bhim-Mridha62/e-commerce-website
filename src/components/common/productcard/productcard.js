@@ -13,6 +13,7 @@ const ProductCard = ({ product ,user }) => {
   const [islike, setLslike] = useState(false);
   const { Postwishlist } = useAuthData();
 
+  
   const handleAddwishlist = async (event, id) => {
     event.stopPropagation();
     setLslike(!islike);
