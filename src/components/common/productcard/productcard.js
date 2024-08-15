@@ -16,6 +16,7 @@ const ProductCard = ({ product ,user }) => {
   const handleAddwishlist = async (event, id) => {
     event.stopPropagation();
     setLslike(!islike);
+    
     try {
       await Postwishlist({ productId: id });
     } catch (error) {
