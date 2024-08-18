@@ -1,8 +1,14 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { FaCartPlus } from "react-icons/fa";
-function EmptyCart({ IsLogin }) {
+
+interface EmptyCartProps {
+  IsLogin: boolean;
+}
+
+const EmptyCart: React.FC<EmptyCartProps> = ({ IsLogin }) => {
   const router = useRouter();
+
   const handleButtonClick = () => {
     if (IsLogin) {
       router.push("/");
@@ -10,6 +16,7 @@ function EmptyCart({ IsLogin }) {
       router.push("/sign-in");
     }
   };
+
   return (
     <div className="text-center text-black mb-16">
       <FaCartPlus
@@ -35,6 +42,6 @@ function EmptyCart({ IsLogin }) {
       </button>
     </div>
   );
-}
+};
 
 export default EmptyCart;

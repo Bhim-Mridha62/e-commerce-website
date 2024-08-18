@@ -5,10 +5,11 @@ import { useAuthData } from "@/service/Auth";
 import EmptyCart from "./EmptyCart";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
+import { ProductData } from "@/types/types";
 
 const CartContent = () => {
-  const [productData, setProductData] = useState([]);
-  const { AddToCart, AllCartData, RemoveCartData } = useAuthData();
+  const [productData, setProductData] = useState<ProductData>([]);
+  const { AllCartData, RemoveCartData } = useAuthData();
   const [loading, setLoading] = useState(true);
   const { user, cartCountRef } = useUser();
 
@@ -18,7 +19,6 @@ const CartContent = () => {
       if (res?.status === 200) {
         setProductData(res?.data?.data);
       }
-      console.log(res, "AllCartData");
     } catch (error) {
       console.error(error);
     } finally {
@@ -34,7 +34,7 @@ const CartContent = () => {
     }
   }, []);
 
-  const HandelRemove = async (id) => {
+  const HandelRemove = async (id: string) => {
     try {
       const res = await RemoveCartData({ productId: id });
       if (res?.status === 200) {
@@ -46,8 +46,8 @@ const CartContent = () => {
     }
   };
 
-  const UpdateProductData = (Size, productId, qty) => {
-    let updateData = productData?.map((data) => {
+  const UpdateProductData = (Size: string, productId: string, qty: number) => {
+    let updateData = productData?.map((data: any) => {
       if (data?._id == productId) {
         return { ...data, quantity: qty, Size: Size };
       } else return data;
@@ -64,9 +64,9 @@ const CartContent = () => {
       {user ? (
         productData.length ? (
           <>
-            {productData.map((product) => (
+            {productData.map((product: any) => (
               <ProductCard
-                key={product._id}
+                key={product?._id}
                 product={product}
                 HandelRemove={HandelRemove}
                 UpdateProductData={UpdateProductData}

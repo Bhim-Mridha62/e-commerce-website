@@ -17,9 +17,10 @@ import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { encodeData } from "@/utils/client/encoding";
 import { useRouter } from "next/router";
 import Link from "next/link";
+//@ts-ignore
 const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [quantity, setQuantity] = useState<any>(1);
+  const [selectedSize, setSelectedSize] = useState<any>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const router = useRouter();
   const { AddToCart } = useAuthData();
@@ -27,7 +28,11 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
     setQuantity(product?.quantity);
     setSelectedSize(product?.Size);
   }, []);
-  const HandelAddToCart = async (Size, productId, qty) => {
+  const HandelAddToCart = async (
+    Size: string,
+    productId: string,
+    qty: number
+  ) => {
     try {
       await AddToCart({
         Size: Size,
@@ -38,7 +43,7 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       console.log(error);
     }
   };
-  const handleMenuClick = (e) => {
+  const handleMenuClick = (e: any) => {
     if (e.key === "custom") {
       setIsModalVisible(true);
     } else {
@@ -67,7 +72,7 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       <Menu.Item key="custom">Custom</Menu.Item>
     </Menu>
   );
-  const handelQuantity = (e) => {
+  const handelQuantity = (e: any) => {
     setQuantity(Number(e.target.value));
     UpdateProductData(selectedSize, product?._id, Number(e.target.value));
     HandelAddToCart(selectedSize, product?._id, Number(e.target.value));
@@ -109,6 +114,7 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
               >
                 <span className="cursor-pointer">
                   {quantity}
+                  {/* @ts-ignore */}
                   <DownOutlined className="ml-2" />
                 </span>
               </Dropdown>
