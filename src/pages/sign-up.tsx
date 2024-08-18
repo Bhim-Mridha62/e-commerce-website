@@ -1,7 +1,6 @@
-import SignUpForm from "@/components/SignInUpForm/SignUp";
 import Head from "next/head";
 import React from "react";
-
+import SignUpForm from "@/components/SignInUpForm/SignUp";
 function index() {
   return (
     <>
@@ -9,7 +8,7 @@ function index() {
         <title>Sign-up | </title>
       </Head>
       <div>
-      <SignUpForm/>
+        <SignUpForm />
       </div>
     </>
   );

@@ -9,7 +9,7 @@ function index() {
         <title>Sign-in | </title>
       </Head>
       <div>
-      <SignInForm/>
+        <SignInForm />
       </div>
     </>
   );

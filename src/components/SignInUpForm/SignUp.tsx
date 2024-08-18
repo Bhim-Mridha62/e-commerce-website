@@ -19,13 +19,14 @@ import { useUser } from "@/context/authContext";
 
 const auth = getAuth(app);
 
-const SignUpForm = ({ onSignUp }) => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
-  const [isotp, setIsotp] = useState(false);
+const SignUpForm = () => {
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [confirmpasswordVisible, setConfirmpasswordVisible] =
+    useState<boolean>(false);
+  const [isotp, setIsotp] = useState<boolean>(false);
   const [contactMethod, setContactMethod] = useState("phone");
-  const { HandelSignUp, HandelverifyOTP,PostCreateUser } = useAuthData();
-  const [otp, setOtp] = useState(null);
+  const { HandelSignUp, HandelverifyOTP, PostCreateUser } = useAuthData();
+  const [otp, setOtp] = useState<any>(false);
   const [verificationId, setVerificationId] = useState("");
   const { UpdateUser } = useUser();
   const router = useRouter();
@@ -50,14 +51,14 @@ const SignUpForm = ({ onSignUp }) => {
             setIsotp(true);
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         message.error(error);
       }
     },
   });
 
   const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
+    if (!window?.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
         auth,
         "recaptcha-container",
@@ -76,7 +77,7 @@ const SignUpForm = ({ onSignUp }) => {
   };
   const handleSendCode = () => {
     setupRecaptcha();
-    const appVerifier = window.recaptchaVerifier;
+    const appVerifier = window?.recaptchaVerifier;
     const phoneNumber = `+91${formik?.values?.emailOrPhone}`;
     console.log(phoneNumber, "phoneNumber");
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
@@ -98,7 +99,7 @@ const SignUpForm = ({ onSignUp }) => {
       message.success("Phone number verified successfully");
       try {
         const res = await PostCreateUser(formik?.values);
-        console.log(res,"res");
+        console.log(res, "res");
         if (res?.status == 201) {
           message.success(res?.data?.message);
           window.localStorage.setItem(
@@ -109,7 +110,7 @@ const SignUpForm = ({ onSignUp }) => {
           setIsotp(false);
           router.back();
         }
-      } catch (error) {
+      } catch (error: any) {
         message.error(error?.response?.data?.message);
       }
     } catch (error) {
@@ -136,7 +137,7 @@ const SignUpForm = ({ onSignUp }) => {
           UpdateUser();
           router.push("/");
         }
-      } catch (error) {
+      } catch (error: any) {
         message.error(error?.response?.data?.message);
       }
     }
@@ -268,13 +269,13 @@ const SignUpForm = ({ onSignUp }) => {
               onChange={(e) => setOtp(e.target.value)}
               type="number"
               placeholder="Enter OTP"
-              maxLength="6"
+              maxLength={6}
               className="w-full h-12 text-center border rounded mr-1"
             />
           </div>
         </Modal>
       )}
-      <AutoSignInUp/>
+      <AutoSignInUp />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Radio, Spin, message } from "antd";
+import { Button, Input, Modal, Radio, message } from "antd";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { SignInSchema } from "@/Schemas/client/FormSchema";
@@ -8,11 +8,12 @@ import AutoSignInUp from "./AutoSignIn-Up";
 import { TfiEmail } from "react-icons/tfi";
 import { FiLock, FiPhone } from "react-icons/fi";
 import { useUser } from "@/context/authContext";
-const SignInForm = ({ onSignIn }) => {
+import { SignInFormValues } from "@/types/types";
+const SignInForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState(null);
+  const [otp, setOtp] = useState<string>("");
   const [password, setPassword] = useState("");
   const [contactMethod, setContactMethod] = useState("phone");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,7 +32,7 @@ const SignInForm = ({ onSignIn }) => {
       HandelLogin(values);
     },
   });
-  const HandelLogin = async (values) => {
+  const HandelLogin = async (values: SignInFormValues) => {
     try {
       setLoading(true);
       const res = await LoginUser({
@@ -46,10 +47,10 @@ const SignInForm = ({ onSignIn }) => {
           res?.data?.user?.SecretToken
         );
         window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
-        UpdateUser()
+        UpdateUser();
         router.push("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       message.error(error?.response?.data?.message);
     }
@@ -61,7 +62,7 @@ const SignInForm = ({ onSignIn }) => {
         message.success(res?.data?.message);
         setStep(2);
       }
-    } catch (error) {
+    } catch (error: any) {
       message.error(error?.response?.data?.message);
     }
   };
@@ -72,7 +73,7 @@ const SignInForm = ({ onSignIn }) => {
         message.success(res?.data?.message);
         setStep(3);
       }
-    } catch (error) {
+    } catch (error: any) {
       message.error(error?.response?.data?.message);
     }
   };
@@ -91,10 +92,13 @@ const SignInForm = ({ onSignIn }) => {
         setShowModel(false);
         setStep(1);
       }
-    } catch (error) {
+    } catch (error: any) {
       message.error(error?.response?.data?.message);
     }
     // HandelLogin({ emailOrPhone: email, password: password });
+  };
+  const handleButtonClick = () => {
+    formik.handleSubmit();
   };
   return (
     <>
@@ -165,7 +169,7 @@ const SignInForm = ({ onSignIn }) => {
             Forgot your password?
           </a>
         </div>
-        <Button onClick={formik.handleSubmit} className="" loading={loading}>
+        <Button onClick={handleButtonClick} className="" loading={loading}>
           {loading ? "Please wait" : "Sign In"}
         </Button>
       </form>
