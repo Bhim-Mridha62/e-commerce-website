@@ -15,3 +15,23 @@ export interface Product {
 
 // Define ProductData type as an array of Product objects
 export type ProductData = Product[];
+export interface FilterOptions {
+  size: string[];
+  fabric: string[];
+  color: string[];
+  gender: string[];
+  pattern: string[];
+  discount: string[];
+  occasion: string[];
+}
+
+// Define the shape of the selected filters
+export interface SelectedFilters {
+  size: string[];
+  fabric: string[];
+  color: string[];
+  gender: string[];
+  pattern: string[];
+  discount: string[];
+  occasion: string[];
+}

@@ -5,10 +5,11 @@ import {
   SearchOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import { FilterOptions, SelectedFilters } from "@/types/types";
 
 const { Panel } = Collapse;
 
-const filterOptions = {
+const filterOptions: FilterOptions = {
   size: ["2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"],
   fabric: [
     "Cotton Blend",
@@ -62,7 +63,7 @@ const filterOptions = {
 };
 
 const FilterContent = () => {
-  const [selectedFilters, setSelectedFilters] = useState({
+  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     size: [],
     fabric: [],
     color: [],
@@ -72,23 +73,24 @@ const FilterContent = () => {
     occasion: [],
   });
 
-  const [showAllColors, setShowAllColors] = useState(false);
+  const [showAllColors, setShowAllColors] = useState<boolean>(false);
 
-  const handleFilterChange = (category) => (checkedValues) => {
-    setSelectedFilters({
-      ...selectedFilters,
-      [category]: checkedValues,
-    });
-  };
+  const handleFilterChange =
+    (category: keyof FilterOptions) => (checkedValues: string[]) => {
+      setSelectedFilters({
+        ...selectedFilters,
+        [category]: checkedValues,
+      });
+    };
 
-  const clearAll = (category) => {
+  const clearAll = (category: keyof FilterOptions) => {
     setSelectedFilters({
       ...selectedFilters,
       [category]: [],
     });
   };
 
-  const removeFilter = (category, value) => {
+  const removeFilter = (category: keyof FilterOptions, value: string) => {
     setSelectedFilters({
       ...selectedFilters,
       [category]: selectedFilters[category].filter((item) => item !== value),
@@ -101,15 +103,16 @@ const FilterContent = () => {
 
   const renderSelectedFilters = () => {
     return Object.keys(selectedFilters).flatMap((category) =>
-      selectedFilters[category].map((value) => (
+      selectedFilters[category as keyof FilterOptions].map((value) => (
         <div
           key={`${category}-${value}`}
           className="inline-block m-1 py-[1px] px-2 bg-[#e0e0e0] rounded text-sm"
         >
           {value}
+          {/* @ts-ignore */}
           <CloseOutlined
             className="ml-[5px] cursor-pointer text-sm"
-            onClick={() => removeFilter(category, value)}
+            onClick={() => removeFilter(category as keyof FilterOptions, value)}
           />
         </div>
       ))
@@ -122,11 +125,12 @@ const FilterContent = () => {
     children: (
       <>
         <div
-          onClick={() => clearAll(category)}
+          onClick={() => clearAll(category as keyof FilterOptions)}
           style={{ cursor: "pointer", marginBottom: "10px", color: "blue" }}
         >
-          {selectedFilters[category].length ? (
+          {selectedFilters[category as keyof FilterOptions].length ? (
             <>
+              {/* @ts-ignore */}
               <CloseOutlined /> Clear all
             </>
           ) : (
@@ -135,15 +139,15 @@ const FilterContent = () => {
         </div>
         <Checkbox.Group
           className="flex flex-col" // Add custom class
-          value={selectedFilters[category]}
-          onChange={handleFilterChange(category)}
+          value={selectedFilters[category as keyof FilterOptions]}
+          onChange={handleFilterChange(category as keyof FilterOptions)}
         >
-          {filterOptions[category]
+          {filterOptions[category as keyof FilterOptions]
             .slice(
               0,
               category === "color" && !showAllColors
                 ? 7
-                : filterOptions[category].length
+                : filterOptions[category as keyof FilterOptions].length
             )
             .map((option) => (
               <Checkbox key={option} value={option}>
@@ -151,19 +155,23 @@ const FilterContent = () => {
               </Checkbox>
             ))}
         </Checkbox.Group>
-        {category === "color" && filterOptions[category].length > 7 && (
-          <Button
-            type="link"
-            onClick={toggleShowAllColors}
-            style={{ paddingLeft: 0 }}
-          >
-            {showAllColors ? "Show less" : "Show more"}
-          </Button>
-        )}
+        {category === "color" &&
+          filterOptions[category as keyof FilterOptions].length > 7 && (
+            <Button
+              type="link"
+              onClick={toggleShowAllColors}
+              style={{ paddingLeft: 0 }}
+            >
+              {showAllColors ? "Show less" : "Show more"}
+            </Button>
+          )}
       </>
     ),
   }));
-
+  const handleSearch = async () => {
+    // const products = await fetchProducts(selectedFilters);
+    // setProducts(products);
+  };
   return (
     <div>
       <div className="flex sticky top-0 z-[9] bg-white justify-between px-4 py-2">
@@ -171,8 +179,11 @@ const FilterContent = () => {
         <div className="flex gap-4 items-center">
           <Button
             style={{ background: "#2563eb", color: "white" }}
+            //  @ts-ignore
             icon={<SearchOutlined />}
+            //  @ts-ignore
             iconPosition="start"
+            onClick={handleSearch}
           >
             Search
           </Button>
@@ -199,6 +210,7 @@ const FilterContent = () => {
       <Collapse
         items={items}
         expandIcon={({ isActive }) => (
+          //  @ts-ignore
           <CaretRightOutlined rotate={isActive ? 270 : 90} />
         )}
         expandIconPosition="end"
