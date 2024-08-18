@@ -26,6 +26,9 @@ const productSchema = new mongoose.Schema({
   thumbnail: { type: String, default: "" },
   images: { type: [String], default: [] },
   reviews: { type: [reviewSchema], default: [] },
+  gender: { type: String, default: "" },
+  color: { type: String, default: "" },
+  fabric: { type: String, default: "" },
 });
 // export const Product = mongoose.model('Products', productSchema);
 export default mongoose.models.Product ||
