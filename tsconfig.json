@@ -31,7 +31,8 @@
     ".next/types/**/*.ts",
     "src/redux/all-slices/userDetailSlice.tsx",
     "src/app/not-found.tsx",
-    "src/pages/api/index.js"
+    "src/pages/api/index.js",
+    "src/components/SignInUpForm/AutoSignIn-Up.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { app } from "../../../firebaseConfig";
 import { useAuthData } from "@/service/Auth";
 import { useUser } from "@/context/authContext";
+import axios from "axios";
 const auth = getAuth(app);
 
 const AutoSignInUp = () => {
@@ -20,36 +21,48 @@ const AutoSignInUp = () => {
   const { UpdateUser } = useUser();
   const router = useRouter();
   useEffect(() => {
+    const { code } = router.query;
+    if (code) {
+      CreateUser(code);
+    }
     if (router) {
       setIsSignIn(router.pathname === "/sign-in");
     }
   }, [router]);
-  const handleSignInWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log("User signed in with Google:", user);
-        CreateUser({
-          name: user?.displayName,
-          emailOrPhone: user?.email,
-          password: "",
-        });
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.error("Error during Google sign-in:", errorMessage);
-      });
+  const handleSignInWithGoogle = async () => {
+    // try {
+    //   const res = axios.get("/api/auth/google-login");
+    //   console.log(res);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    router.push("/api/auth/google-login");
+    // const provider = new GoogleAuthProvider();
+    // signInWithPopup(auth, provider)
+    //   .then((result) => {
+    //     // This gives you a Google Access Token.
+    //     const credential = GoogleAuthProvider.credentialFromResult(result);
+    //     const token = credential.accessToken;
+    //     // The signed-in user info.
+    //     const user = result.user;
+    //     console.log("User signed in with Google:", user);
+    //     CreateUser({
+    //       name: user?.displayName,
+    //       emailOrPhone: user?.email,
+    //       password: "",
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     // Handle Errors here.
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // The email of the user's account used.
+    //     const email = error.email;
+    //     // The AuthCredential type that was used.
+    //     const credential = GoogleAuthProvider.credentialFromError(error);
+    //     console.error("Error during Google sign-in:", errorMessage);
+    //   });
   };
   const handleSignInWithFacebook = () => {
     const provider = new FacebookAuthProvider();
@@ -73,10 +86,10 @@ const AutoSignInUp = () => {
         console.error("Error during Facebook sign-in:", errorMessage);
       });
   };
-  const CreateUser = async (values) => {
+  const CreateUser = async (token) => {
     try {
-      const res = await PostCreateUser(values);
-      if (res?.status == 200) {
+      const res = await PostCreateUser({ token: token });
+      if (res?.status == 200 || res?.status == 201) {
         message.success(`Sign ${isSignIn ? "Up" : "In"} sucessfully`);
         window.localStorage.setItem(
           "Authorization",
