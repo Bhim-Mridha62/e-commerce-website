@@ -5,7 +5,7 @@ import {
   SearchOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { FilterOptions, SelectedFilters } from "@/types/types";
+import { FilterOptions } from "@/types/types";
 
 const { Panel } = Collapse;
 
@@ -63,7 +63,7 @@ const filterOptions: FilterOptions = {
 };
 
 const FilterContent = () => {
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
+  const [selectedFilters, setSelectedFilters] = useState<FilterOptions>({
     size: [],
     fabric: [],
     color: [],

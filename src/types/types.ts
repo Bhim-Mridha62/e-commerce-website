@@ -24,14 +24,3 @@ export interface FilterOptions {
   discount: string[];
   occasion: string[];
 }
-
-// Define the shape of the selected filters
-export interface SelectedFilters {
-  size: string[];
-  fabric: string[];
-  color: string[];
-  gender: string[];
-  pattern: string[];
-  discount: string[];
-  occasion: string[];
-}
