@@ -45,14 +45,14 @@ const ProductCard = ({ product, user }) => {
           )}
         </span>
       )}
-      {/* <Image
+      <Image
         className={stylehome.ProductshowImg}
         src={product.thumbnail}
         layout="responsive"
         height={100}
         width={100}
         alt="Image here"
-      /> */}
+      />
       <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">
         {product.title}
       </p>

@@ -1,5 +1,5 @@
 // import SidebarContent from "@/components/Sidebar/SidebarContent";
-import { Badge, Drawer, Space, Input } from "antd";
+import { Badge, Drawer, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -71,7 +71,7 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollPosition]);
-  const handleSearchEnter = (e) => {
+  const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const trimmedValue = inputValue.trim();
       if (trimmedValue) {
@@ -146,7 +146,7 @@ function Navbar() {
         title={`Drawer`}
         placement="right"
         // size="small"
-        width={isMobile ? 290 : 378}
+        width={isMobile() ? 290 : 378}
         onClose={opensidebar}
         open={visible}
         extra={<Image src="/logo.png" alt="logo" height={20} width={20} />}
