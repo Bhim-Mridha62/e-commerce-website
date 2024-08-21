@@ -6,7 +6,7 @@ const Cookie = () => {
     Authorization: auth && `Bearer ${auth ? auth : ""}`,
   };
 };
-const Errors = (res) => {
+const Errors = (res: any) => {
   console.log(res, "Errors");
   if (res?.status == 401) {
     window.localStorage.clear();
@@ -16,7 +16,12 @@ const Errors = (res) => {
     }
   }
 };
-const Apimethod = async (url, method, body, auth) => {
+const Apimethod = async (
+  url: string,
+  method: string,
+  body: any,
+  auth: boolean
+) => {
   console.log(url, method, body, auth, "url, method, body, auth");
   const data = auth
     ? await Axios.request({
@@ -37,40 +42,40 @@ const Apimethod = async (url, method, body, auth) => {
   console.log(data, "useAuthData");
   return data;
 };
-const HandelSignUp = (data) => {
+const HandelSignUp = (data: any) => {
   return Apimethod("/api/auth/Sign-up", "post", data, true);
 };
-const PostResetPassword = (data) => {
+const PostResetPassword = (data: any) => {
   return Apimethod("/api/auth/reset-password", "post", data, true);
 };
-const PostCreateUser = (data) => {
+const PostCreateUser = (data: any) => {
   return Apimethod("/api/auth/Create-User", "post", data, true);
 };
-export const HandelverifyOTP = (data) => {
+export const HandelverifyOTP = (data: any) => {
   return Apimethod("/api/auth/verify", "post", data, true);
 };
-const LoginUser = (loginUser) => {
+const LoginUser = (loginUser: any) => {
   return Apimethod("/api/auth/Sign-in", "post", loginUser, true);
 };
-const AddToCart = (data) => {
+const AddToCart = (data: any) => {
   return Apimethod("/api/cart", "post", data, false);
 };
 const AllCartData = () => {
   return Apimethod("/api/cart", "get", {}, false);
 };
-const RemoveCartData = (id) => {
+const RemoveCartData = (id: any) => {
   return Apimethod("/api/cart", "DELETE", id, false);
 };
-const FetchProductDetail = (id) => {
+const FetchProductDetail = (id: any) => {
   return Apimethod(`/api/product/ProductDetails?id=${id}`, "get", {}, true);
 };
 const Getwishlist = () => {
   return Apimethod(`/api/wishlist`, "get", {}, false);
 };
-const Deletewishlist = (data) => {
+const Deletewishlist = (data: any) => {
   return Apimethod(`/api/wishlist`, "DELETE", data, false);
 };
-const Postwishlist = (data) => {
+const Postwishlist = (data: any) => {
   return Apimethod(`/api/wishlist`, "post", data, false);
 };
 const GetCartCount = () => {
@@ -82,28 +87,28 @@ const getCategories = () => {
 const getcarousel = () => {
   return Apimethod(`/api/carousel`, "get", {}, true);
 };
-const postorder = (data) => {
+const postorder = (data: any) => {
   return Apimethod(`/api/order`, "POST", data, false);
 };
 const getorder = () => {
   return Apimethod(`/api/order`, "get", {}, false);
 };
-const putorder = (data) => {
+const putorder = (data: any) => {
   return Apimethod(`/api/order`, "put", data, false);
 };
-const getreviews = (data) => {
+const getreviews = (data: any) => {
   return Apimethod(`/api/product/review?id=${data}`, "get", {}, true);
 };
-const postreviews = (data) => {
+const postreviews = (data: any) => {
   return Apimethod(`/api/product/review`, "POST", data, false);
 };
-const putreviews = (data) => {
+const putreviews = (data: any) => {
   return Apimethod(`/api/product/review`, "put", data, false);
 };
-const Deletereviews = (data) => {
+const Deletereviews = (data: any) => {
   return Apimethod(`/api/product/review`, "DELETE", data, false);
 };
-const GetAllProduct = (skip, limit) => {
+const GetAllProduct = (skip: any, limit: any) => {
   return Apimethod(
     `/api/product/GetProduct?skip=${skip}&limit=${limit}`,
     "get",
