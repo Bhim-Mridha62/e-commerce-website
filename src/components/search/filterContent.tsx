@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { FilterOptions } from "@/types/types";
 
-const { Panel } = Collapse;
+// const { Panel } = Collapse;
 
 const filterOptions: FilterOptions = {
   size: ["2XS", "XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"],
@@ -169,8 +169,9 @@ const FilterContent = () => {
     ),
   }));
   const handleSearch = async () => {
+    console.log(selectedFilters, "selectedFilters");
     // const products = await fetchProducts(selectedFilters);
-    // setProducts(products);
+    // console.log(products, "products");
   };
   return (
     <div>

@@ -1,29 +1,45 @@
 "use client";
 import FilterContent from "@/components/search/filterContent";
 import Search from "@/components/search/Search";
+import { useAuthData } from "@/service/Auth";
 import { Dropdown, Modal, Select } from "antd";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaSearchengin } from "react-icons/fa6";
 import { TbArrowsSort } from "react-icons/tb";
 const { Option } = Select;
 
 const Index = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [product, setProduct] = useState<any>();
+  const router = useRouter();
+  const { getSearch } = useAuthData();
   useEffect(() => {
     if (window) {
       setIsMobile(window?.innerWidth < 1024);
     }
   }, []);
-
+  useEffect(() => {
+    const { query } = router?.query;
+    if (query) {
+      //@ts-ignore
+      GetSearchProduct(query);
+    }
+  }, [router]);
+  const GetSearchProduct = async (value: string) => {
+    const res: any = await getSearch(value);
+    if (res.status === 200) {
+      setProduct(res.data.data);
+    }
+  };
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const onSortChange = (value) => {
-    console.log(value);
-  };
+  // const onSortChange = (value: string) => {
+  //   console.log(value);
+  // };
 
   const items = [
     {
@@ -80,7 +96,7 @@ const Index = () => {
               </div>
             </div>
           </div>
-          <Search />
+          <Search product={product} />
         </div>
       ) : (
         <div className="mx-8 bg-white h-[90vh] flex">
@@ -88,7 +104,7 @@ const Index = () => {
             <FilterContent />
           </div>
           <div className="HideScroll mt-12 w-[70%] overflow-scroll">
-            <Search />
+            <Search product={product} />
           </div>
         </div>
       )}

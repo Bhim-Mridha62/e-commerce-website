@@ -116,6 +116,9 @@ const GetAllProduct = (skip: any, limit: any) => {
     true
   );
 };
+const getSearch = (q: any) => {
+  return Apimethod(`api/product/search?q=${q}`, "get", {}, true);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -140,4 +143,5 @@ export const useAuthData = () => ({
   putreviews,
   Deletereviews,
   GetAllProduct,
+  getSearch,
 });

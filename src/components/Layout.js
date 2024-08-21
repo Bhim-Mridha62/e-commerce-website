@@ -1,7 +1,7 @@
 import { UserProvider } from "@/context/authContext";
 import dynamic from "next/dynamic";
 import React from "react";
-const Navbar = dynamic(() => import("./common/Navbar/Navbar"));
+import Navbar from "./common/Navbar/Navbar";
 const Footer = dynamic(() => import("./common/Footer/Footer"));
 const Layout = ({ children }) => {
   return (

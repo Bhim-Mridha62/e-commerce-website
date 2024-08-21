@@ -5,13 +5,13 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { TfiMenu } from "react-icons/tfi";
-import isMobile from "@/utils/client/isMobile";
 import dynamic from "next/dynamic";
-import Loading from "@/components/Loading/Loading";
 import Image from "next/image";
 import { useAuthData } from "@/service/Auth";
 import { useUser } from "@/context/authContext";
 import { IoIosSearch } from "react-icons/io";
+import Loading from "@/components/Loading/Loading";
+import isMobile from "@/utils/client/isMobile";
 const SidebarContent = dynamic(
   () => import("@/components/Sidebar/SidebarContent"),
   {
