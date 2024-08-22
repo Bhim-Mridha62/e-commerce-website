@@ -19,14 +19,14 @@ const SidebarContent = dynamic(
   }
 );
 function Navbar() {
-  const [visible, setVisible] = useState(false);
-  const [inputValue, setinputValue] = useState("");
-  const [cartLength, setCartLength] = useState(0);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [inputValue, setinputValue] = useState<string>("");
+  const [cartLength, setCartLength] = useState<number>(0);
   const router = useRouter();
   const { cartCountRef, user } = useUser();
   const { GetCartCount } = useAuthData();
-  const [lastScrollPosition, setLastScrollPosition] = useState(0);
-  const [hide, setHide] = useState(false);
+  const [lastScrollPosition, setLastScrollPosition] = useState<number>(0);
+  const [hide, setHide] = useState<boolean>(false);
   const opensidebar = () => {
     setVisible(!visible);
   };
