@@ -1,7 +1,11 @@
 import Product from "@/Schemas/server/ProductSchema";
 import connectDB from "@/database/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   if (req.method !== "GET") {

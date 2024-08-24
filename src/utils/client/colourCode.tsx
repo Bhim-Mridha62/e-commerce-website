@@ -1,4 +1,4 @@
-export function GetOrderStatusColour(status) {
+export function GetOrderStatusColour(status: string) {
   let colour;
   if (status === "pending") {
     colour = "#fd7e14"; // Blue
@@ -13,9 +13,7 @@ export function GetOrderStatusColour(status) {
   }
   return colour;
 }
-import React from "react";
-
-export const getRatingSpan = (rating) => {
+export const getRatingSpan = (rating: number) => {
   let text = "";
   let colorCode = "";
 
@@ -51,7 +49,7 @@ export const getRatingSpan = (rating) => {
     </span>
   );
 };
-export const getLetterColors = (letter) => {
+export const getLetterColors = (letter: string) => {
   switch (letter.toUpperCase()) {
     case "A":
       return { backgroundColor: "#FF5733", textColor: "#FFFFFF" };

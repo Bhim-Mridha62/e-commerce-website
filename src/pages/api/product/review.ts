@@ -1,10 +1,14 @@
 import Product from "@/Schemas/server/ProductSchema";
 import connectDB from "@/database/db";
 import verifyUser from "../middleware/verifyUser";
+import { NextApiRequest, NextApiResponse } from "next";
 const now = new Date();
 const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
 const currentTime = new Date(now.getTime() + istOffset).toISOString();
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
   const { method } = req;
   switch (method) {
@@ -20,7 +24,7 @@ export default async function handler(req, res) {
       res.status(405).json({ success: false, message: "Method Not Allowed" });
   }
 }
-const getReview = async (req, res) => {
+const getReview = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { id } = req.query;
     if (!id) {
@@ -38,7 +42,7 @@ const getReview = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const addReview = async (req, res) => {
+const addReview = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { username, userImage, userId, comment, images, productID, rating } =
       req.body;
@@ -66,7 +70,7 @@ const addReview = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const updateReview = async (req, res) => {
+const updateReview = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { comment_id, like, dislike, productID } = req.body;
     if (!comment_id || !productID) {
@@ -74,7 +78,7 @@ const updateReview = async (req, res) => {
     }
     const product = await Product.findById(productID).select("reviews");
     let indexData = product?.reviews.find(
-      (data) => data?._id.toString() === comment_id
+      (data: any) => data?._id.toString() === comment_id
     );
     if (indexData && like) {
       if (dislike) {
@@ -89,7 +93,7 @@ const updateReview = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const deleteReview = async (req, res) => {
+const deleteReview = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { productID, review_id } = req.body;
     if (!productID || !review_id) {
@@ -101,7 +105,7 @@ const deleteReview = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
     const reviewIndex = product.reviews.findIndex(
-      (review) => review._id.toString() === review_id
+      (review: any) => review._id.toString() === review_id
     );
     if (reviewIndex === -1) {
       return res.status(404).json({ error: "Review not found" });

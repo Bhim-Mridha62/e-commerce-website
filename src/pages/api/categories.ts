@@ -1,7 +1,11 @@
 import connectDB from "@/database/db";
 import Category from "@/Schemas/server/CategorySchema";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   const { method } = req;
@@ -14,11 +18,11 @@ export default async function handler(req, res) {
   }
 }
 
-const getCategories = async (req, res) => {
+const getCategories = async (_: NextApiRequest, res: NextApiResponse) => {
   try {
     const categories = await Category.find().select("-__v");
     res.status(200).json({ success: true, data: categories });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error fetching categories",

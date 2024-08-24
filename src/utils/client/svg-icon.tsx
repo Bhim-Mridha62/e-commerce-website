@@ -1,4 +1,6 @@
-export const Phone = ({ className }) => {
+import { IClassName } from "@/types/types";
+import React from "react";
+export const Phone: React.FC<IClassName> = ({ className }) => {
   return (
     <svg
       width="16"
@@ -18,7 +20,7 @@ export const Phone = ({ className }) => {
     </svg>
   );
 };
-export const Mail = ({ className }) => {
+export const Mail: React.FC<IClassName> = ({ className }) => {
   return (
     <svg
       width="16"
@@ -45,7 +47,7 @@ export const Mail = ({ className }) => {
     </svg>
   );
 };
-export const Google = ({ className }) => {
+export const Google: React.FC<IClassName> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +77,7 @@ export const Google = ({ className }) => {
     </svg>
   );
 };
-export const Facebook = ({ className }) => {
+export const Facebook: React.FC<IClassName> = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

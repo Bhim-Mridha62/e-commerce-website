@@ -2,7 +2,11 @@ import connectDB from "@/database/db";
 import User from "@/Schemas/server/UserSchema";
 import verifyUser from "../middleware/verifyUser";
 import Product from "@/Schemas/server/ProductSchema";
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   const { method } = req;
@@ -19,7 +23,8 @@ export default async function handler(req, res) {
   }
 }
 
-const getCart = async (req, res) => {
+const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
+  //@ts-ignore
   const { userId } = req;
 
   try {
@@ -29,12 +34,12 @@ const getCart = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    const AllProductId = user.cart.map((item) => item?.productID);
+    const AllProductId = user.cart.map((item: any) => item?.productID);
     const cartDetails = await Product.find({
       _id: { $in: AllProductId },
     }).select("_id title price discountPercentage rating thumbnail");
     const mergedCart = user.cart
-      .map((cartItem) => {
+      .map((cartItem: any) => {
         const productDetails = cartDetails.find(
           (product) =>
             product?._id?.toString() === cartItem?.productID?.toString()
@@ -50,9 +55,9 @@ const getCart = async (req, res) => {
         }
         return null;
       })
-      .filter((item) => item !== null);
+      .filter((item: any) => item !== null);
     res.status(200).json({ success: true, data: mergedCart });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error fetching cart",
@@ -61,8 +66,9 @@ const getCart = async (req, res) => {
   }
 };
 
-const addItemToCart = async (req, res) => {
+const addItemToCart = async (req: NextApiRequest, res: NextApiResponse) => {
   const { productId, quantity, Size } = req.body;
+  //@ts-ignore
   const { userId } = req;
   try {
     const user = await User.findById(userId);
@@ -73,7 +79,7 @@ const addItemToCart = async (req, res) => {
     }
 
     const itemIndex = user.cart.findIndex(
-      (item) => item.productID?.toString() === productId
+      (item: any) => item.productID?.toString() === productId
     );
     if (itemIndex > -1) {
       user.cart[itemIndex].quantity = quantity;
@@ -83,7 +89,7 @@ const addItemToCart = async (req, res) => {
     }
     await user.save();
     res.status(200).json({ success: true, data: user.cart });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error adding item to cart",
@@ -92,8 +98,12 @@ const addItemToCart = async (req, res) => {
   }
 };
 
-const removeItemFromCart = async (req, res) => {
+const removeItemFromCart = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { productId } = req.body;
+  //@ts-ignore
   const { userId } = req;
 
   try {
@@ -104,10 +114,10 @@ const removeItemFromCart = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    user.cart = user.cart.filter((item) => item.productID !== productId);
+    user.cart = user.cart.filter((item: any) => item.productID !== productId);
     await user.save();
     res.status(200).json({ success: true, data: user.cart });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error removing item from cart",

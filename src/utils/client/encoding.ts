@@ -1,4 +1,4 @@
-export const encodeData = (data) => {
+export const encodeData = (data: string) => {
   try {
     const json = JSON.stringify(data);
     const base64 = btoa(json);
@@ -10,7 +10,7 @@ export const encodeData = (data) => {
 };
 
 // Function to decode data
-export const decodeData = (encodedData) => {
+export const decodeData = (encodedData: string) => {
   try {
     if (encodedData?.startsWith("a") && encodedData?.endsWith("a")) {
       const base64 = encodedData?.slice(1, -1);

@@ -1,7 +1,11 @@
 import connectDB from "@/database/db";
 import verifyUser from "../middleware/verifyUser";
 import User from "@/Schemas/server/UserSchema";
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
   if (req.method === "GET") {
     return verifyUser(cartCount)(req, res);
@@ -9,7 +13,8 @@ export default async function handler(req, res) {
     res.status(405).json({ message: "Method Not Allowed" });
   }
 }
-const cartCount = async (req, res) => {
+const cartCount = async (req: NextApiRequest, res: NextApiResponse) => {
+  //@ts-ignore
   const { userId } = req;
   try {
     const user = await User.findById(userId);
@@ -19,7 +24,7 @@ const cartCount = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
     res.status(200).json({ data: user?.cart?.length });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error fetching cart",

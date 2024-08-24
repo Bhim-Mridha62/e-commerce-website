@@ -42,3 +42,9 @@ export interface IAutoComplete {
   category?: string;
   image?: string;
 }
+export interface IClassName {
+  className?: string;
+}
+export interface Ichildren {
+  children: React.ReactNode;
+}
