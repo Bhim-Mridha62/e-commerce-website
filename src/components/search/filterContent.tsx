@@ -109,7 +109,6 @@ const FilterContent = () => {
           className="inline-block m-1 py-[1px] px-2 bg-[#e0e0e0] rounded text-sm"
         >
           {value}
-          {/* @ts-ignore */}
           <CloseOutlined
             className="ml-[5px] cursor-pointer text-sm"
             onClick={() => removeFilter(category as keyof FilterOptions, value)}
@@ -130,7 +129,6 @@ const FilterContent = () => {
         >
           {selectedFilters[category as keyof FilterOptions].length ? (
             <>
-              {/* @ts-ignore */}
               <CloseOutlined /> Clear all
             </>
           ) : (
@@ -180,7 +178,6 @@ const FilterContent = () => {
         <div className="flex gap-4 items-center">
           <Button
             style={{ background: "#2563eb", color: "white" }}
-            //  @ts-ignore
             icon={<SearchOutlined />}
             //  @ts-ignore
             iconPosition="start"
@@ -211,7 +208,6 @@ const FilterContent = () => {
       <Collapse
         items={items}
         expandIcon={({ isActive }) => (
-          //  @ts-ignore
           <CaretRightOutlined rotate={isActive ? 270 : 90} />
         )}
         expandIconPosition="end"
