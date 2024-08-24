@@ -119,6 +119,12 @@ const GetAllProduct = (skip: any, limit: any) => {
 const getSearch = (q: any) => {
   return Apimethod(`api/product/search?q=${q}`, "get", {}, true);
 };
+const postImage = async (data: any) => {
+  return Apimethod(`/api/image`, "POST", data, false);
+};
+const deleteImage = async (url: string) => {
+  return Apimethod(`/api/image?imageUrl=${url}`, "DELETE", {}, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -144,4 +150,6 @@ export const useAuthData = () => ({
   Deletereviews,
   GetAllProduct,
   getSearch,
+  postImage,
+  deleteImage,
 });

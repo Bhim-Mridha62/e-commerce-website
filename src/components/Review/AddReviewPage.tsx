@@ -1,26 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Rate, Button, Input, Upload, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Rate, Button, Input, Upload, message, Image } from "antd";
+import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import "tailwindcss/tailwind.css";
 import { getRatingSpan } from "@/utils/client/colourCode";
 import { useFormik } from "formik";
 import { GiveRatingSchema } from "@/Schemas/client/FormSchema";
-import axios from "axios";
 import { useUser } from "@/context/authContext";
 import { useRouter } from "next/router";
 import { useAuthData } from "@/service/Auth";
+// import Image from "next/image";
 
 const AddReviewPage = () => {
   const { user } = useUser();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [imageloading, setImageLoading] = useState<boolean>(false);
+  const [imageList, setImageList] = useState<string[]>([]);
   const router = useRouter();
-  const { postreviews } = useAuthData();
+  const { postreviews, postImage, deleteImage } = useAuthData();
   const formik = useFormik({
     initialValues: {
       rating: 0,
       description: "",
-      image: [],
+      image: imageList,
     },
     validationSchema: GiveRatingSchema,
     onSubmit: async (values) => {
@@ -35,7 +37,7 @@ const AddReviewPage = () => {
           comment: values?.description,
           userImage: "",
         };
-        const res = await postreviews(data);
+        const res: any = await postreviews(data);
         if (res.status === 201) {
           setLoading(false);
           message.success(res?.data?.message);
@@ -51,36 +53,48 @@ const AddReviewPage = () => {
     },
   });
 
-  const handleRatingChange = (value) => {
+  const handleRatingChange = (value: number) => {
     formik.setFieldValue("rating", value);
   };
-  const handleImageUpload = async (e) => {
-    const formData = new FormData();
-    formData.append("file", e?.target?.files[0]);
-
+  const handleImageUpload = async ({ file }: any) => {
+    if (imageList.length >= 5) {
+      message.error("You can only upload up to 5 images.");
+      return;
+    }
+    setImageLoading(true);
+    const fmData = new FormData();
+    fmData.append("file", file);
     try {
-      const response = await axios.post("/api/ImageUpload", formData, {
-        headers: { "Content-Type": "multipart/form-data" }, // Ensure proper content type
-        responseType: "blob", // Set response type to blob
-      });
-      // const imageUrl = response.data.match(/<img src="([^"]+)"/);
-      const imageUrl = response.headers["location"];
-      // const absoluteUrl = window.location.protocol + imageUrl[1];
-      console.log(response, "response?.data");
+      const res: any = await postImage(fmData);
+      if (res.data.success) {
+        setImageList((prev) => [...prev, res.data.imageUrl]);
+        formik.setFieldValue("image", [...imageList, res.data.imageUrl]);
+      } else {
+        message.error("Error uploading image");
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
+    } finally {
+      setImageLoading(false);
     }
   };
-  // const handleImageUpload = async(e) => {
-  //   const formData = new FormData();
-  //   formData.append('image', e?.target?.files[0]);
-  //   const res = await fetch(`https://api.imgbb.com/1/upload?key=${process?.env?.NEXT_PUBLIC_IMDBB_API_KEY}`, {
-  //     method: 'POST',
-  //     body: formData,
-  //   });
-  //   const data = await res.json();
-  //   console.log(data?.data?.url);
-  // };
+  const handleDeleteImage = async (url: any) => {
+    try {
+      const res: any = await deleteImage(url);
+      if (res.data.success) {
+        setImageList((prev) => prev.filter((img) => img !== url));
+        formik.setFieldValue(
+          "image",
+          imageList.filter((img) => img !== url)
+        );
+        message.success("Image deleted successfully");
+      } else {
+        message.error("Error deleting image");
+      }
+    } catch (error) {
+      message.error("Error deleting image");
+    }
+  };
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="border-b mb-4">
@@ -122,24 +136,39 @@ const AddReviewPage = () => {
                   ) : null}
                 </div>
                 <div className="mb-2">
-                  <input
-                    type="file"
-                    onChange={handleImageUpload}
-                    accept="image/*"
-                  />
-                  test
                   <Upload
-                    // beforeUpload={() => false}
-                    onChange={handleImageUpload}
-                    // maxCount={1}
+                    customRequest={handleImageUpload}
+                    showUploadList={false}
+                    disabled={imageloading}
                   >
-                    <Button icon={<UploadOutlined />}>Upload Photo</Button>
+                    <Button loading={imageloading} icon={<UploadOutlined />}>
+                      {imageloading ? "Uploading..." : "Upload Photo"}
+                    </Button>
                   </Upload>
                   {formik.touched.image && formik.errors.image ? (
                     <div className="text-red-500">{formik.errors.image}</div>
                   ) : null}
                 </div>
                 <div className="mt-4">
+                  {imageList.length > 0 && (
+                    <div className="flex flex-wrap gap-4">
+                      {imageList.map((imageUrl) => (
+                        <div key={imageUrl} className="relative">
+                          <Image
+                            width={100}
+                            src={imageUrl}
+                            alt="Uploaded image"
+                            preview={false}
+                            className="rounded-lg"
+                          />
+                          <CloseCircleOutlined
+                            onClick={() => handleDeleteImage(imageUrl)}
+                            className="absolute top-1 right-1 text-red-500 cursor-pointer"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <Button
                     type="primary"
                     htmlType="submit"
