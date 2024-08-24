@@ -1,7 +1,11 @@
 import connectDB from "@/database/db";
 import User from "../../../Schemas/server/UserSchema";
 import CreateToken from "../../../utils/server/SecretToken";
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   if (req.method !== "POST") {
@@ -11,10 +15,10 @@ export default async function handler(req, res) {
   try {
     const user = await User.findOne({ emailOrPhone });
     if (!user) {
-      res.status(400).json({ message: "User not exists" }).end();
+      return res.status(400).json({ message: "User not exists" });
     }
     if (otp != user.otp) {
-      res.status(422).json({ message: "Invalid OTP" }).end();
+      return res.status(422).json({ message: "Invalid OTP" });
     }
     const token = CreateToken(user._id);
     user.otpVerify = true;
@@ -22,7 +26,7 @@ export default async function handler(req, res) {
     user.save();
     const sanitizedUser = {
       _id: user._id,
-      name:user?.name,
+      name: user?.name,
       emailOrPhone: user.emailOrPhone,
       cart: user.cart,
       wishlist: user.wishlist,

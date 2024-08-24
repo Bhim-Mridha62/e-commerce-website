@@ -2,9 +2,13 @@ import bcrypt from "bcrypt";
 import User from "../../../Schemas/server/UserSchema";
 import { sendOTPByEmail } from "../../../utils/server/emailUtils";
 import connectDB from "@/database/db";
+import { NextApiRequest, NextApiResponse } from "next";
 // Make sure the path to User model is correct based on your project structure
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   if (req.method !== "POST") {

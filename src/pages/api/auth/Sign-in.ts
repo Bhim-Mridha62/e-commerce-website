@@ -2,8 +2,12 @@ import bcrypt from "bcrypt";
 import User from "../../../Schemas/server/UserSchema";
 import CreateToken from "../../../utils/server/SecretToken";
 import connectDB from "@/database/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   if (req.method !== "POST") {

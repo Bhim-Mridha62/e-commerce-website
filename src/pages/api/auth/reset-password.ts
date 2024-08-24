@@ -2,7 +2,11 @@ import connectDB from "@/database/db";
 import User from "../../../Schemas/server/UserSchema";
 import { sendOTPByEmail } from "../../../utils/server/emailUtils";
 import bcrypt from "bcrypt";
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   try {
