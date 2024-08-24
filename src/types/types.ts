@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface SignInFormValues {
   email?: string;
   password?: string;
@@ -23,4 +25,20 @@ export interface FilterOptions {
   pattern: string[];
   discount: string[];
   occasion: string[];
+}
+export interface UserContextType {
+  user: any; // Replace with specific user type if known
+  // cartCountRef: RefObject<HTMLDivElement | undefined>;
+  cartCountRef: React.MutableRefObject<(() => void) | null>;
+  UpdateUser: () => void;
+}
+export interface AutoCompleteOptions {
+  label: string;
+  options: { label: string };
+}
+export interface IAutoComplete {
+  value: string;
+  label: string;
+  category?: string;
+  image?: string;
 }

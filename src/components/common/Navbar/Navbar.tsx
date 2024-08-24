@@ -1,5 +1,4 @@
-// import SidebarContent from "@/components/Sidebar/SidebarContent";
-import { Badge, Drawer, Input } from "antd";
+import { AutoComplete, Badge, Drawer, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -12,21 +11,34 @@ import { useUser } from "@/context/authContext";
 import { IoIosSearch } from "react-icons/io";
 import Loading from "@/components/Loading/Loading";
 import isMobile from "@/utils/client/isMobile";
+import { debounce } from "lodash";
+import { getRecentSearches, setRecentSearches } from "@/utils/client/localData";
+import { MdOutlineAccessTime } from "react-icons/md";
+import { IAutoComplete } from "@/types/types";
 const SidebarContent = dynamic(
   () => import("@/components/Sidebar/SidebarContent"),
   {
     loading: () => <Loading />,
   }
 );
-function Navbar() {
+
+const Navbar: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false);
-  const [inputValue, setinputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
   const [cartLength, setCartLength] = useState<number>(0);
   const router = useRouter();
   const { cartCountRef, user } = useUser();
-  const { GetCartCount } = useAuthData();
+  const { GetCartCount, getSearch } = useAuthData();
   const [lastScrollPosition, setLastScrollPosition] = useState<number>(0);
   const [hide, setHide] = useState<boolean>(false);
+  const [autoCompleteOptions, setAutoCompleteOptions] = useState<
+    IAutoComplete[]
+  >([]);
+
+  useEffect(() => {
+    setAutoCompleteOptions(getRecentSearches());
+  }, []);
+
   const opensidebar = () => {
     setVisible(!visible);
   };
@@ -44,6 +56,7 @@ function Navbar() {
       router.push("/sign-in");
     }
   };
+
   const UpdateCartCount = async () => {
     try {
       const res = await GetCartCount();
@@ -58,6 +71,7 @@ function Navbar() {
   useEffect(() => {
     cartCountRef.current = UpdateCartCount;
   }, [cartCountRef]);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPosition =
@@ -71,37 +85,102 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollPosition]);
-  const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
+  const handleSearchEnter = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === "Enter") {
       const trimmedValue = inputValue.trim();
       if (trimmedValue) {
-        let searchvalue = encodeURIComponent(trimmedValue);
-        router.push(`/search?query=${searchvalue}`);
+        setRecentSearches(trimmedValue);
+        let searchValue = encodeURIComponent(trimmedValue);
+        router.push(`/search?query=${searchValue}`);
       }
     }
   };
+
+  const fetchSuggestions = debounce(async (value: string) => {
+    if (value.length > 2) {
+      try {
+        const res: any = await getSearch(value);
+        if (res.status === 200) {
+          const relatedSearches = res?.data?.data
+            .slice(0, 7)
+            .map((item: any) => ({
+              label: item.title,
+              value: item.title,
+              image: item.thumbnail,
+              category: item.category,
+            }));
+          setAutoCompleteOptions(relatedSearches);
+        }
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      }
+    }
+  }, 500);
+
+  const renderOption = (item: any) =>
+    item?.category ? (
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="font-semibold">{item.label}</div>
+          <div className="text-gray-500 text-sm">{item.category}</div>
+        </div>
+        <img
+          src={item.image}
+          alt={item.label}
+          className="w-8 h-8 object-cover ml-2"
+        />
+      </div>
+    ) : (
+      <div className="flex items-center">
+        <MdOutlineAccessTime className="inline-flex text-gray-600 mr-2" />
+        <span>{item?.label}</span>
+      </div>
+    );
+
+  useEffect(() => {
+    if (inputValue.trim() === "") {
+      setAutoCompleteOptions(getRecentSearches());
+      return;
+    }
+    fetchSuggestions(inputValue);
+    return () => {
+      fetchSuggestions.cancel();
+    };
+  }, [inputValue]);
   return (
     <>
       <div
-        className={` bg-slate-700 p-2 sticky top-0 z-[999] transition-transform duration-300 ease-in-out ${
+        className={`bg-slate-700 p-2 sticky top-0 z-[999] transition-transform duration-300 ease-in-out ${
           hide ? "-translate-y-[59%] lsm:translate-y-0" : "translate-y-0"
         }`}
       >
-        <div
-          className={`w-full sticky justify-between items-center h-auto flex text-white p-1 md:px-10 `}
-        >
+        <div className="w-full sticky justify-between items-center h-auto flex text-white p-1 md:px-10">
           <div className="flex items-center gap-2 lsm:w-[70%]">
             <div onClick={() => router.push("/")} className="cursor-pointer">
               <Image src="/logo.png" alt="logo" height={40} width={100} />
             </div>
-            <Input
-              value={inputValue}
-              prefix={<IoIosSearch className="inline-flex text-xl" />}
-              onChange={(e) => setinputValue(e?.target?.value)}
-              placeholder="Search for products, brands and more"
-              className="hidden lsm:flex"
-              onKeyDown={handleSearchEnter}
-            />
+            <AutoComplete
+              // open={false}
+              options={autoCompleteOptions.map((item) => ({
+                value: item.value,
+                label: renderOption(item),
+              }))}
+              onSelect={(value) => setInputValue(value)}
+              className="w-full"
+              // filterOption={filterOption}
+            >
+              <Input
+                value={inputValue}
+                prefix={<IoIosSearch className="inline-flex text-xl" />}
+                onChange={(e) => setInputValue(e?.target?.value)}
+                placeholder="Search for products, brands and more"
+                className="hidden lsm:flex"
+                onKeyDown={handleSearchEnter}
+              />
+            </AutoComplete>
           </div>
           <div className="flex gap-1 md:gap-5">
             {user ? (
@@ -110,8 +189,7 @@ function Navbar() {
               </span>
             ) : (
               <span>
-                Sign {""}
-                <Link href="/sign-in">in/</Link>
+                Sign <Link href="/sign-in">in/</Link>
                 <Link href="/sign-up">up</Link>
               </span>
             )}
@@ -131,21 +209,30 @@ function Navbar() {
           </div>
         </div>
         <div className="">
-          <Input
-            value={inputValue}
-            prefix={<IoIosSearch className="inline-flex text-xl" />}
-            onChange={(e) => setinputValue(e.target.value)}
-            placeholder="Search for products, brands and more"
-            className="lsm:hidden"
-            onKeyDown={handleSearchEnter}
-          />
+          <AutoComplete
+            // open={false}
+            options={autoCompleteOptions.map((item) => ({
+              value: item.value,
+              label: item?.category ? renderOption(item) : item?.label,
+            }))}
+            onSelect={(value) => setInputValue(value)}
+            className="w-full lsm:hidden"
+            // filterOption={filterOption}
+          >
+            <Input
+              value={inputValue}
+              prefix={<IoIosSearch className="inline-flex text-xl" />}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Search for products, brands and more"
+              className="lsm:hidden"
+              onKeyDown={handleSearchEnter}
+            />
+          </AutoComplete>
         </div>
       </div>
-      {/* open sidebar */}
       <Drawer
         title={`Drawer`}
         placement="right"
-        // size="small"
         width={isMobile() ? 290 : 378}
         onClose={opensidebar}
         open={visible}
@@ -157,6 +244,6 @@ function Navbar() {
       </Drawer>
     </>
   );
-}
+};
 
 export default Navbar;
