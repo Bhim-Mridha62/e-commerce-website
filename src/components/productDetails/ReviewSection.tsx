@@ -1,26 +1,24 @@
 // ReviewSection.js
 import { useUser } from "@/context/authContext";
 import { useAuthData } from "@/service/Auth";
-import { Button, List, message } from "antd";
-import { useRouter } from "next/router";
+import { List, message } from "antd";
 import React, { useEffect, useState } from "react";
 import ReviewItem from "./ReviewItem"; // Import the new component
+import { IReview } from "@/types/types";
 
-function ReviewSection({ id }) {
+function ReviewSection({ id }: { id: string }) {
   const [review, setReview] = useState([]);
   const { getreviews, putreviews, Deletereviews } = useAuthData();
   const { user } = useUser();
-  const router = useRouter();
-
   useEffect(() => {
     if (id) {
       getReviewData(id);
     }
   }, [id]);
 
-  const getReviewData = async (id) => {
+  const getReviewData = async (id: string) => {
     try {
-      const res = await getreviews(id);
+      const res: any = await getreviews(id);
       if (res.status === 200) {
         setReview(res?.data?.data);
       }
@@ -29,7 +27,7 @@ function ReviewSection({ id }) {
     }
   };
 
-  const handleActionLikeClick = async (data) => {
+  const handleActionLikeClick = async (data: IReview) => {
     if (user) {
       let likedata = {
         productID: id,
@@ -38,7 +36,7 @@ function ReviewSection({ id }) {
         comment_id: data?._id,
       };
       try {
-        const res = await putreviews(likedata);
+        const res: any = await putreviews(likedata);
         if (res.status === 200) {
           console.log(res, "data");
         }
@@ -54,12 +52,15 @@ function ReviewSection({ id }) {
     }
   };
 
-  const HandelDeleteReview = async (reviewId) => {
+  const HandelDeleteReview = async (reviewId: string) => {
     try {
-      const res = await Deletereviews({ productID: id, review_id: reviewId });
+      const res: any = await Deletereviews({
+        productID: id,
+        review_id: reviewId,
+      });
       if (res.status === 200) {
         setReview((prevReviews) =>
-          prevReviews.filter((review) => review?._id !== reviewId)
+          prevReviews.filter((review: any) => review?._id !== reviewId)
         );
       }
     } catch (error) {

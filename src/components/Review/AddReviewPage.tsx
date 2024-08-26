@@ -1,6 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Rate, Button, Input, Upload, message, Image } from "antd";
+import {
+  Rate,
+  Button,
+  Input,
+  Upload,
+  message,
+  Image,
+  notification,
+} from "antd";
 import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import "tailwindcss/tailwind.css";
 import { getRatingSpan } from "@/utils/client/colourCode";
@@ -57,6 +65,13 @@ const AddReviewPage = () => {
     formik.setFieldValue("rating", value);
   };
   const handleImageUpload = async ({ file }: any) => {
+    console.log(file, "file");
+    if (file?.size >= 3145728) {
+      return notification.warning({
+        message: "",
+        description: "Image size cannot be more than 3 MB.",
+      });
+    }
     if (imageList.length >= 5) {
       message.error("You can only upload up to 5 images.");
       return;
@@ -78,7 +93,7 @@ const AddReviewPage = () => {
       setImageLoading(false);
     }
   };
-  const handleDeleteImage = async (url: any) => {
+  const handleDeleteImage = async (url: string) => {
     try {
       const res: any = await deleteImage(url);
       if (res.data.success) {
@@ -99,13 +114,13 @@ const AddReviewPage = () => {
     <div className="max-w-4xl mx-auto p-4">
       <div className="border-b mb-4">
         <h1 className="text-2xl font-semibold mb-4 text-black">
-          Give Ratings & Reviews
+          Give Your Rating & Review
         </h1>
       </div>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 text-black">
           <div className="border p-4 rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">Rate this product</h2>
+            <h2 className="text-xl font-semibold mb-4">Rate This Product</h2>
             <Rate
               onChange={handleRatingChange}
               value={formik.values.rating}
@@ -115,14 +130,12 @@ const AddReviewPage = () => {
               <div className="text-red-500">{formik.errors.rating}</div>
             ) : null}
             <div className="mt-4">
-              <h2 className="text-xl font-semibold mb-4">
-                Review this product
-              </h2>
+              <h2 className="text-xl font-semibold mb-4">Write Your Review</h2>
               <form onSubmit={formik.handleSubmit}>
                 <div className="mb-2">
                   <Input.TextArea
                     name="description"
-                    placeholder="Description..."
+                    placeholder="Write your thoughts..."
                     required
                     rows={4}
                     onChange={formik.handleChange}
@@ -136,13 +149,19 @@ const AddReviewPage = () => {
                   ) : null}
                 </div>
                 <div className="mb-2">
+                  <h2 className="text-xl font-semibold mb-4">
+                    Upload an Image
+                  </h2>
+                </div>
+                <div className="mb-2">
                   <Upload
                     customRequest={handleImageUpload}
                     showUploadList={false}
                     disabled={imageloading}
+                    accept="image/*"
                   >
                     <Button loading={imageloading} icon={<UploadOutlined />}>
-                      {imageloading ? "Uploading..." : "Upload Photo"}
+                      {imageloading ? "Uploading..." : "Click to Upload"}
                     </Button>
                   </Upload>
                   {formik.touched.image && formik.errors.image ? (
@@ -163,7 +182,7 @@ const AddReviewPage = () => {
                           />
                           <CloseCircleOutlined
                             onClick={() => handleDeleteImage(imageUrl)}
-                            className="absolute top-1 right-1 text-red-500 cursor-pointer"
+                            className="absolute top--2 right--2 text-gray-700 cursor-pointer"
                           />
                         </div>
                       ))}
@@ -175,7 +194,7 @@ const AddReviewPage = () => {
                     loading={loading}
                     className="bg-orange-600 hover:bg-orange-500 border-none"
                   >
-                    {loading ? "Please wait" : "SUBMIT"}
+                    {loading ? "Submitting..." : "Submit"}
                   </Button>
                 </div>
               </form>

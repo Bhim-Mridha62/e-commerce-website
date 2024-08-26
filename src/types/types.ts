@@ -48,3 +48,32 @@ export interface IClassName {
 export interface Ichildren {
   children: React.ReactNode;
 }
+export interface IReview {
+  comment?: string;
+  dislike?: boolean;
+  images?: string[];
+  like?: number;
+  postdAt?: string;
+  rating?: number;
+  userId?: string;
+  userImage?: string;
+  username?: string;
+  _id?: string;
+}
+export interface IProduct {
+  gender?: string;
+  color?: string;
+  fabric?: string;
+  _id?: string;
+  title?: string;
+  description?: string;
+  price?: number;
+  discountPercentage?: number;
+  rating?: number;
+  stock?: number;
+  brand?: string;
+  category?: string;
+  thumbnail?: string;
+  images?: string[];
+  Originalprice?: number;
+}

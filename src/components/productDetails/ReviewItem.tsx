@@ -1,13 +1,23 @@
 // ReviewItem.js
 import { getLetterColors } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
-import { List, Popconfirm, Rate, Space } from "antd";
+import { Image, List, Popconfirm, Rate, Space } from "antd";
 import { AiFillDislike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import React, { useState } from "react";
 
-const IconText = ({ icon, text, style, onClick }) => (
+const IconText = ({
+  icon,
+  text,
+  style,
+  onClick,
+}: {
+  icon: any;
+  text: string;
+  style?: any;
+  onClick: () => void;
+}) => (
   <Space className="mr-4" onClick={onClick}>
     {React.createElement(icon, { style: { ...style, cursor: "pointer" } })}
     {text}
@@ -19,6 +29,11 @@ const ReviewItem = ({
   user,
   handleActionLikeClick,
   HandelDeleteReview,
+}: {
+  data: any;
+  user: any;
+  handleActionLikeClick: any;
+  HandelDeleteReview: any;
 }) => {
   const [like, setlike] = useState("");
   return (
@@ -60,7 +75,7 @@ const ReviewItem = ({
               className="w-9 h-9 text-center rounded-full"
               src={data?.userImage}
               alt="avatar"
-              onError={(e) => {
+              onError={(e: any) => {
                 e.target.src = "/user.png";
               }}
             />
@@ -106,7 +121,22 @@ const ReviewItem = ({
           </div>
         }
       />
-      {data?.comment}
+      <div>
+        <p>{data?.comment}</p>
+        <div className="flex gap-4 mt-2 flex-wrap">
+          {data?.images?.map((image: string) => (
+            <Image
+              key={image}
+              src={image}
+              width={90}
+              height={90}
+              alt="image"
+              className="flex"
+              preview={{ src: image }}
+            />
+          ))}
+        </div>
+      </div>
     </List.Item>
   );
 };

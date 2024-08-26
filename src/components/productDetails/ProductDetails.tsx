@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import {
-  Button,
   Dropdown,
   Input,
   Menu,
@@ -19,16 +17,16 @@ import { useAuthData } from "@/service/Auth";
 import { FcLike } from "react-icons/fc";
 import { FaRegHeart } from "react-icons/fa6";
 import { useUser } from "@/context/authContext";
-import { decodeData, encodeData } from "@/utils/client/encoding";
+import { encodeData } from "@/utils/client/encoding";
 import { DownOutlined } from "@ant-design/icons";
 const ProductDetail = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [Product, setProduct] = useState([]);
-  const [quantity, setQuantity] = useState(1);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [Product, setProduct] = useState<any>([]);
+  const [quantity, setQuantity] = useState<any>(1);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [islike, setLslike] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [islike, setLslike] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { user, cartCountRef } = useUser();
 
   const router = useRouter();
@@ -36,10 +34,10 @@ const ProductDetail = () => {
   const { productId } = router.query;
   useEffect(() => {
     if (productId) {
-      getProductDetail(productId);
+      getProductDetail(productId as string);
     }
   }, [productId]);
-  const handleAddwishlist = async (id) => {
+  const handleAddwishlist = async (id: string) => {
     setLslike(!islike);
     try {
       await Postwishlist({ productId: id });
@@ -47,7 +45,7 @@ const ProductDetail = () => {
       console.error(error);
     }
   };
-  const getProductDetail = async (id) => {
+  const getProductDetail = async (id: string) => {
     setLoading(true);
     try {
       const data = await FetchProductDetail(id);
@@ -59,15 +57,15 @@ const ProductDetail = () => {
     }
   };
 
-  const handleImageClick = (index) => {
+  const handleImageClick = (index: number) => {
     setCurrentImageIndex(index);
   };
   const handleBuyNow = () => {
     if (!selectedSize) {
-      message.info("Please Select Size");
-      return;
+      return message.info("Please Select Size");
     }
     const { title, discountPercentage, price, thumbnail, _id } = Product;
+    //@ts-ignore
     const encodedQuery = encodeData({
       title,
       discountPercentage,
@@ -79,7 +77,7 @@ const ProductDetail = () => {
     });
     router.push(`/cart/address?data=${encodedQuery}`);
   };
-  const HandelAddToCart = async (id) => {
+  const HandelAddToCart = async (id: string) => {
     try {
       if (!selectedSize) {
         message.info("Please Select Size");
@@ -100,7 +98,7 @@ const ProductDetail = () => {
       console.log(error);
     }
   };
-  const handleMenuClick = (e) => {
+  const handleMenuClick = (e: any) => {
     if (e.key === "custom") {
       setIsModalVisible(true);
     } else {
@@ -137,7 +135,7 @@ const ProductDetail = () => {
               {""}
               <div className="flex w-[20%] justify-between  flex-col space-y-2">
                 {Product &&
-                  Product?.images?.map((image, index) => (
+                  Product?.images?.map((image: string, index: number) => (
                     <img
                       key={index}
                       src={image}
