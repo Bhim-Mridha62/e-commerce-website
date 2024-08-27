@@ -1,9 +1,12 @@
-import React from 'react'
+import Account from "@/components/Account/account";
+import React from "react";
 
-function account() {
+function index() {
   return (
-    <div>account</div>
-  )
+    <div>
+      <Account />
+    </div>
+  );
 }
 
-export default account
+export default index;
