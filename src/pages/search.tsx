@@ -21,8 +21,7 @@ const Index = () => {
   useEffect(() => {
     const { query } = router?.query;
     if (query) {
-      //@ts-ignore
-      GetSearchProduct(query);
+      GetSearchProduct(query as string);
     }
   }, [router]);
   const GetSearchProduct = async (value: string) => {
