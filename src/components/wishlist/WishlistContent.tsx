@@ -54,14 +54,6 @@ const WishlistContent = () => {
   if (loading) {
     return <Loading className="mt-4" />;
   }
-  // if (!user) {
-  //   return <EmptyWishlist IsLogin={user} />;
-  // }
-
-  // if (!wishlist?.length) {
-  //   return <EmptyWishlist IsLogin={user} />;
-  // }
-  console.log(user ? "true" : "false", "user");
 
   return user ? (
     wishlist.length ? (
