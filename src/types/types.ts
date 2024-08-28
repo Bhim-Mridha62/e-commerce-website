@@ -64,7 +64,7 @@ export interface IProduct {
   gender?: string;
   color?: string;
   fabric?: string;
-  _id?: string;
+  _id: string;
   title?: string;
   description?: string;
   price?: number;
@@ -78,47 +78,47 @@ export interface IProduct {
   Originalprice?: number;
 }
 export interface IOrder {
-  _id: string;
-  productID: string;
-  quantity: number;
-  title: string;
-  size: string;
-  image: string;
-  price: number;
+  _id?: string;
+  productID?: string;
+  quantity?: number;
+  title?: string;
+  size?: string;
+  image?: string;
+  price?: number;
   address: {
-    village: string;
-    alternatePhone: string;
-    buildingAddress: string;
-    district: string;
-    name: string;
-    phone: string;
-    pincode: string;
-    state: string;
+    village?: string;
+    alternatePhone?: string;
+    buildingAddress?: string;
+    district?: string;
+    name?: string;
+    phone?: string;
+    pincode?: string;
+    state?: string;
   };
   StatusOrder: {
     Order_Received: {
-      status: string;
-      time: string;
+      status?: string;
+      time?: string;
     };
     Order_Shipped: {
-      status: string;
-      time: string;
+      status?: string;
+      time?: string;
     };
     Order_Picked: {
-      status: string;
-      time: string;
+      status?: string;
+      time?: string;
     };
     Out_for_delivery: {
-      status: string;
-      time: string;
+      status?: string;
+      time?: string;
     };
     Order_Delivered: {
-      status: string;
-      time: string;
+      status?: string;
+      time?: string;
     };
   };
-  OrderStatus: string;
-  cancelReason: string;
-  DeliveryDate: string;
-  OrderDate: string;
+  OrderStatus?: string;
+  cancelReason?: string;
+  DeliveryDate?: string;
+  OrderDate?: string;
 }

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { BsBagHeartFill } from "react-icons/bs";
 
-const EmptyWishlist = ({ IsLogin }) => {
+const EmptyWishlist = ({ IsLogin }: { IsLogin: boolean }) => {
   const router = useRouter();
   const handleButtonClick = () => {
     if (IsLogin) {
