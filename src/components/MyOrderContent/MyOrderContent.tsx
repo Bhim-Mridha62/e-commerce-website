@@ -1,21 +1,20 @@
-import { Button, Collapse } from "antd";
+import { Collapse } from "antd";
 import React, { useEffect, useState } from "react";
 import TimelineData from "./TimelineData";
 
 import { useAuthData } from "@/service/Auth";
 import OrderCard from "./OrderCard";
-import { getDayDifference } from "@/utils/client/formatDate";
-
+import { IOrder } from "@/types/types";
 function MyOrderContent() {
-  const [items, setItems] = useState([]);
-  const { getorder, putorder } = useAuthData();
+  const [items, setItems] = useState<IOrder[]>([]);
+  const { getorder } = useAuthData();
   useEffect(() => {
     getUserOrder();
   }, []);
   const getUserOrder = async () => {
     try {
       let res = await getorder();
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setItems(res?.data?.data);
       }
     } catch (error) {
@@ -24,14 +23,14 @@ function MyOrderContent() {
   };
   return (
     <div className="min-h-[30vh]">
-      {items?.map((data) => (
+      {items?.map((data: IOrder) => (
         <Collapse
           ghost
           items={[
             {
               showArrow: false,
-              key: data?.key,
-              label: <OrderCard key={data?.key} product={data} />,
+              key: data?._id,
+              label: <OrderCard key={data?._id} product={data} />,
               children: (
                 <TimelineData StatusOrder={data} getUserOrder={getUserOrder} />
               ),
