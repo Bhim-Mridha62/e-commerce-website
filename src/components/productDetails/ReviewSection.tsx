@@ -18,8 +18,8 @@ function ReviewSection({ id }: { id: string }) {
 
   const getReviewData = async (id: string) => {
     try {
-      const res: any = await getreviews(id);
-      if (res.status === 200) {
+      const res = await getreviews(id);
+      if (res?.status === 200) {
         setReview(res?.data?.data);
       }
     } catch (error) {
@@ -36,8 +36,8 @@ function ReviewSection({ id }: { id: string }) {
         comment_id: data?._id,
       };
       try {
-        const res: any = await putreviews(likedata);
-        if (res.status === 200) {
+        const res = await putreviews(likedata);
+        if (res?.status === 200) {
           console.log(res, "data");
         }
       } catch (error) {
@@ -54,11 +54,11 @@ function ReviewSection({ id }: { id: string }) {
 
   const HandelDeleteReview = async (reviewId: string) => {
     try {
-      const res: any = await Deletereviews({
+      const res = await Deletereviews({
         productID: id,
         review_id: reviewId,
       });
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setReview((prevReviews) =>
           prevReviews.filter((review: any) => review?._id !== reviewId)
         );

@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPosition =
-        window.pageYOffset || document.documentElement.scrollTop;
+        window.pageYOffset || document.documentElement?.scrollTop;
       setHide(
         currentScrollPosition > lastScrollPosition && currentScrollPosition > 70
       );
@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Enter") {
-      const trimmedValue = inputValue.trim();
+      const trimmedValue = inputValue?.trim();
       if (trimmedValue) {
         setRecentSearches(trimmedValue);
         let searchValue = encodeURIComponent(trimmedValue);
@@ -100,17 +100,17 @@ const Navbar: React.FC = () => {
   };
 
   const fetchSuggestions = debounce(async (value: string) => {
-    if (value.length > 2) {
+    if (value?.length > 2) {
       try {
-        const res: any = await getSearch(value);
-        if (res.status === 200) {
+        const res = await getSearch(value);
+        if (res?.status === 200) {
           const relatedSearches = res?.data?.data
             .slice(0, 7)
             .map((item: any) => ({
-              label: item.title,
-              value: item.title,
-              image: item.thumbnail,
-              category: item.category,
+              label: item?.title,
+              value: item?.title,
+              image: item?.thumbnail,
+              category: item?.category,
             }));
           setAutoCompleteOptions(relatedSearches);
         }
@@ -124,12 +124,12 @@ const Navbar: React.FC = () => {
     item?.category ? (
       <div className="flex items-center justify-between">
         <div>
-          <div className="font-semibold">{item.label}</div>
-          <div className="text-gray-500 text-sm">{item.category}</div>
+          <div className="font-semibold">{item?.label}</div>
+          <div className="text-gray-500 text-sm">{item?.category}</div>
         </div>
         <img
-          src={item.image}
-          alt={item.label}
+          src={item?.image}
+          alt={item?.label}
           className="w-8 h-8 object-cover ml-2"
         />
       </div>
@@ -165,7 +165,7 @@ const Navbar: React.FC = () => {
             <AutoComplete
               // open={false}
               options={autoCompleteOptions.map((item) => ({
-                value: item.value,
+                value: item?.value,
                 label: renderOption(item),
               }))}
               onSelect={(value) => setInputValue(value)}
@@ -212,7 +212,7 @@ const Navbar: React.FC = () => {
           <AutoComplete
             // open={false}
             options={autoCompleteOptions.map((item) => ({
-              value: item.value,
+              value: item?.value,
               label: item?.category ? renderOption(item) : item?.label,
             }))}
             onSelect={(value) => setInputValue(value)}
@@ -222,7 +222,7 @@ const Navbar: React.FC = () => {
             <Input
               value={inputValue}
               prefix={<IoIosSearch className="inline-flex text-xl" />}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => setInputValue(e?.target?.value)}
               placeholder="Search for products, brands and more"
               className="lsm:hidden"
               onKeyDown={handleSearchEnter}

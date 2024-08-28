@@ -45,8 +45,8 @@ const AddReviewPage = () => {
           comment: values?.description,
           userImage: "",
         };
-        const res: any = await postreviews(data);
-        if (res.status === 201) {
+        const res = await postreviews(data);
+        if (res?.status === 201) {
           setLoading(false);
           message.success(res?.data?.message);
           router.push(`/product/${router?.query?.productId}`);
@@ -72,7 +72,7 @@ const AddReviewPage = () => {
         description: "Image size cannot be more than 3 MB.",
       });
     }
-    if (imageList.length >= 5) {
+    if (imageList?.length >= 5) {
       message.error("You can only upload up to 5 images.");
       return;
     }
@@ -80,10 +80,10 @@ const AddReviewPage = () => {
     const fmData = new FormData();
     fmData.append("file", file);
     try {
-      const res: any = await postImage(fmData);
-      if (res.data.success) {
-        setImageList((prev) => [...prev, res.data.imageUrl]);
-        formik.setFieldValue("image", [...imageList, res.data.imageUrl]);
+      const res = await postImage(fmData);
+      if (res?.data?.success) {
+        setImageList((prev) => [...prev, res?.data?.imageUrl]);
+        formik.setFieldValue("image", [...imageList, res?.data?.imageUrl]);
       } else {
         message.error("Error uploading image");
       }
@@ -95,12 +95,12 @@ const AddReviewPage = () => {
   };
   const handleDeleteImage = async (url: string) => {
     try {
-      const res: any = await deleteImage(url);
-      if (res.data.success) {
+      const res = await deleteImage(url);
+      if (res?.data?.success) {
         setImageList((prev) => prev.filter((img) => img !== url));
         formik.setFieldValue(
           "image",
-          imageList.filter((img) => img !== url)
+          imageList?.filter((img) => img !== url)
         );
         message.success("Image deleted successfully");
       } else {
@@ -123,28 +123,30 @@ const AddReviewPage = () => {
             <h2 className="text-xl font-semibold mb-4">Rate This Product</h2>
             <Rate
               onChange={handleRatingChange}
-              value={formik.values.rating}
+              value={formik?.values?.rating}
             />{" "}
-            {formik.values.rating !== 0 && getRatingSpan(formik.values.rating)}
-            {formik.touched.rating && formik.errors.rating ? (
-              <div className="text-red-500">{formik.errors.rating}</div>
+            {formik?.values?.rating !== 0 &&
+              getRatingSpan(formik?.values?.rating)}
+            {formik?.touched?.rating && formik?.errors?.rating ? (
+              <div className="text-red-500">{formik?.errors?.rating}</div>
             ) : null}
             <div className="mt-4">
               <h2 className="text-xl font-semibold mb-4">Write Your Review</h2>
-              <form onSubmit={formik.handleSubmit}>
+              <form onSubmit={formik?.handleSubmit}>
                 <div className="mb-2">
                   <Input.TextArea
                     name="description"
                     placeholder="Write your thoughts..."
                     required
                     rows={4}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.description}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
+                    value={formik?.values?.description}
                   />
-                  {formik.touched.description && formik.errors.description ? (
+                  {formik?.touched?.description &&
+                  formik?.errors?.description ? (
                     <div className="text-red-500">
-                      {formik.errors.description}
+                      {formik?.errors?.description}
                     </div>
                   ) : null}
                 </div>
@@ -164,8 +166,8 @@ const AddReviewPage = () => {
                       {imageloading ? "Uploading..." : "Click to Upload"}
                     </Button>
                   </Upload>
-                  {formik.touched.image && formik.errors.image ? (
-                    <div className="text-red-500">{formik.errors.image}</div>
+                  {formik?.touched?.image && formik?.errors?.image ? (
+                    <div className="text-red-500">{formik?.errors?.image}</div>
                   ) : null}
                 </div>
                 <div className="mt-4">

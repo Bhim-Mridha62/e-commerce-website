@@ -79,6 +79,7 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   };
   const handleBuyNow = () => {
     const { title, discountPercentage, price, thumbnail, _id } = product;
+    //@ts-ignore
     const encodedQuery = encodeData({
       title,
       discountPercentage,
@@ -114,7 +115,6 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
               >
                 <span className="cursor-pointer">
                   {quantity}
-                  {/* @ts-ignore */}
                   <DownOutlined className="ml-2" />
                 </span>
               </Dropdown>

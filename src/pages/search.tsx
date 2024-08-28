@@ -2,13 +2,11 @@
 import FilterContent from "@/components/search/filterContent";
 import Search from "@/components/search/Search";
 import { useAuthData } from "@/service/Auth";
-import { Dropdown, Modal, Select } from "antd";
+import { Dropdown, Modal } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaSearchengin } from "react-icons/fa6";
 import { TbArrowsSort } from "react-icons/tb";
-const { Option } = Select;
-
 const Index = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -28,9 +26,9 @@ const Index = () => {
     }
   }, [router]);
   const GetSearchProduct = async (value: string) => {
-    const res: any = await getSearch(value);
-    if (res.status === 200) {
-      setProduct(res.data.data);
+    const res = await getSearch(value);
+    if (res?.status === 200) {
+      setProduct(res?.data?.data);
     }
   };
   const showModal = () => {
