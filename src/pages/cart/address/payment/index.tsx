@@ -15,7 +15,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/router";
 import { decodeData, encodeData } from "@/utils/client/encoding";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
-import { districts } from "@/utils/client/districts.js";
+import { districts } from "@/utils/client/districts";
 import { useAuthData } from "@/service/Auth";
 
 const PaymentOptions = () => {

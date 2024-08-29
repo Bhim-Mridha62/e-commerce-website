@@ -2,12 +2,16 @@ import connectDB from "@/database/db";
 import Order from "@/Schemas/server/OrderSchema";
 import verifyUser from "../middleware/verifyUser";
 import { getDayDifference } from "@/utils/client/formatDate";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const now = new Date();
 const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
 const currentTime = new Date(now.getTime() + istOffset).toISOString();
 // Main handler for API routing
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   const { method } = req;
@@ -24,7 +28,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function addOrder(req, res) {
+async function addOrder(req: any, res: NextApiResponse) {
   try {
     const { userId } = req;
     const { productID, quantity, title, size, image, price, address } =
@@ -58,13 +62,13 @@ async function addOrder(req, res) {
 
     await newOrder.save();
     return res.status(201).json({ success: true, data: newOrder });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
 }
 
 // Handler for updating the order status
-async function updateOrderStatus(req, res) {
+async function updateOrderStatus(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { orderId, orderStatus, cancelReason, statusUpdate } = req.body;
 
@@ -132,13 +136,13 @@ async function updateOrderStatus(req, res) {
 
     await order.save();
     return res.status(200).json({ success: true, data: order });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
 }
 
 // Handler for getting all orders for a specific user
-async function getOrdersByUser(req, res) {
+async function getOrdersByUser(req: any, res: NextApiResponse) {
   try {
     const { userId } = req;
 
@@ -150,14 +154,8 @@ async function getOrdersByUser(req, res) {
 
     const orders = await Order.find({ userId }).select("-userId -__v");
 
-    if (!orders.length) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No orders found for this user" });
-    }
-
     return res.status(200).json({ success: true, data: orders });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
 }

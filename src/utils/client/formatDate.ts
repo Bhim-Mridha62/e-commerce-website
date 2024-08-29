@@ -40,9 +40,12 @@ export function formatDate(dateString: string) {
     }
   }
 }
-export function getDayDifference(dateString1: string, dateString2: string) {
-  const date1: any = new Date(dateString1);
-  const date2: any = new Date(dateString2);
+export function getDayDifference(
+  dateString1: string | undefined,
+  dateString2: string | undefined
+) {
+  const date1: any = new Date(dateString1 as string);
+  const date2: any = new Date(dateString2 as string);
 
   // Calculate the difference in milliseconds
   const differenceInMilliseconds = Math.abs(date1 - date2);

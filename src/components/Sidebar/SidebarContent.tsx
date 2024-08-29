@@ -3,8 +3,7 @@ import { BiCategory } from "react-icons/bi";
 import { HiShoppingBag } from "react-icons/hi2";
 import { FaCartArrowDown, FaRegCircleUser } from "react-icons/fa6";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { PiNotePencil } from "react-icons/pi";
-const SidebarContent = ({ opensidebar }) => {
+const SidebarContent = ({ opensidebar }: { opensidebar: () => void }) => {
   return (
     <div>
       <ul className="list-none text-black">
