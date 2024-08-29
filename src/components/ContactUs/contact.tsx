@@ -1,35 +1,26 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
+import { ContactUsSchema } from "@/Schemas/client/FormSchema";
 
 export default function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [phone, setPhone] = useState("");
-  function handleSubmit(e) {
-    e.preventDefault();
-    fetch("https://formspree.io/f/mdoqngkk", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone, message }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          alert("Message sent!");
-          setName("");
-          setEmail("");
-          setMessage("");
-          setPhone("");
-        } else {
-          throw new Error("Message failed to send");
-        }
-      })
-      .catch((error) => alert(error.message));
-  }
+  const formik = useFormik({
+    initialValues: {
+      phone: "",
+      message: "",
+      email: "",
+      name: "",
+    },
+    validationSchema: ContactUsSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
     <section id="contact" className="relative bg-[#111827]">
-      <div className="w-full px-5 py-10 mx-auto flex  flex-wrap">
-        <div className=" md:w-1/2 bg-gray-900 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
+      <div className="w-full px-5 py-10 mx-auto flex flex-wrap">
+        <div className="md:w-1/2 bg-gray-900 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
           <iframe
             width="100%"
             height="100%"
@@ -45,7 +36,10 @@ export default function Contact() {
               <h2 className="title-font font-semibold text-white tracking-widest text-xs">
                 ADDRESS
               </h2>
-              <Link href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5766.092794292917!2d81.60224037087305!3d18.081339492905265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a30c4e0b0b1a769%3A0x8faa33ec81eeb6a6!2sKalimela%2C%20Odisha%20764047!5e0!3m2!1sen!2sin!4v1702925751903!5m2!1sen!2sin" target="blank">
+              <Link
+                href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5766.092794292917!2d81.60224037087305!3d18.081339492905265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a30c4e0b0b1a769%3A0x8faa33ec81eeb6a6!2sKalimela%2C%20Odisha%20764047!5e0!3m2!1sen!2sin!4v1702925751903!5m2!1sen!2sin"
+                target="blank"
+              >
                 <p className="mt-1">
                   Near Kalimela <br />
                   Malkangiri,Odisha, 764047
@@ -69,17 +63,13 @@ export default function Contact() {
           </div>
         </div>
         <form
-          netlify
           name="contact"
-          onSubmit={handleSubmit}
+          onSubmit={formik.handleSubmit}
           className="lg:w-1/3 md:w-1/2 flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0"
         >
           <h2 className="text-white md:text-4xl text-2xl mb-1 font-medium title-font">
             Get In Touch With Us
           </h2>
-          {/* <p className="leading-relaxed mb-5">
-            I am passionate about creating innovative solutions and contributing to impactful projects. With a strong foundation in MERN stack development and a drive for continuous learning, I am ready to collaborate, innovate, and deliver high-quality results.
-          </p> */}
           <div className="relative mb-4">
             <label htmlFor="name" className="leading-7 text-sm text-gray-400">
               Name
@@ -89,8 +79,13 @@ export default function Contact() {
               id="name"
               name="name"
               className="w-full bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              onChange={(e) => setName(e.target.value)}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
             />
+            {formik.touched.name && formik.errors.name ? (
+              <div className="text-red-500 text-sm">{formik.errors.name}</div>
+            ) : null}
           </div>
           <div className="relative mb-4">
             <label htmlFor="email" className="leading-7 text-sm text-gray-400">
@@ -101,20 +96,36 @@ export default function Contact() {
               id="email"
               name="email"
               className="w-full bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-500 text-sm">{formik.errors.email}</div>
+            ) : null}
           </div>
           <div className="relative mb-4">
             <label htmlFor="phone" className="leading-7 text-sm text-gray-400">
-              Contact Number :
+              Contact Number
             </label>
             <input
               type="tel"
               id="phone"
               name="phone"
               className="w-full bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-              onChange={(e) => setPhone(e.target.value)}
+              maxLength={10}
+              onChange={(e) => {
+                const { value } = e.target;
+                // Allow only numbers
+                const sanitizedValue = value.replace(/[^0-9]/g, "");
+                formik.setFieldValue("phone", sanitizedValue);
+              }}
+              onBlur={formik.handleBlur}
+              value={formik.values.phone}
             />
+            {formik.touched.phone && formik.errors.phone ? (
+              <div className="text-red-500 text-sm">{formik.errors.phone}</div>
+            ) : null}
           </div>
           <div className="relative mb-4">
             <label
@@ -127,8 +138,15 @@ export default function Contact() {
               id="message"
               name="message"
               className="w-full bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 h-32 text-base outline-none text-gray-100 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.message}
             />
+            {formik.touched.message && formik.errors.message ? (
+              <div className="text-red-500 text-sm">
+                {formik.errors.message}
+              </div>
+            ) : null}
           </div>
           <button
             type="submit"

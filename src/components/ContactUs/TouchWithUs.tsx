@@ -1,12 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { BiCurrentLocation } from "react-icons/bi";
 import { BsFillTelephoneForwardFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { FaFacebookSquare } from "react-icons/fa";
 import { AiFillTwitterCircle, AiFillLinkedin } from "react-icons/ai";
 import Link from "next/link";
-import { useEffect } from "react";
 function TouchWithUs() {
   const SERVICE_PHONE = process.env.NEXT_PUBLIC_SERVICE_PHONE;
   const SERVICE_EMAIL = process.env.NEXT_PUBLIC_SERVICE_EMAIL;

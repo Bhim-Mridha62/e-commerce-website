@@ -1,11 +1,6 @@
-import {
-  emailRegex,
-  nameRegex,
-  passwordRegex,
-  phoneRegex,
-} from "@/utils/client/regEx";
+import { emailRegex, phoneRegex } from "@/utils/client/regEx";
 import * as Yup from "yup";
-export const SignUpSchema = (contactMethod) => {
+export const SignUpSchema = (contactMethod: string) => {
   return Yup.object().shape({
     name: Yup.string()
       .matches(/[a-zA-Z]+$/, "Enter a valid name")
@@ -32,12 +27,12 @@ export const SignUpSchema = (contactMethod) => {
       .matches(/\d/, "Password must contain at least one number")
       .required("Password is required!"),
     confirmpassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm Password is required!"),
   });
 };
 
-export const SignInSchema = (contactMethod) => {
+export const SignInSchema = (contactMethod: string) => {
   return Yup.object().shape({
     email: Yup.string()
       .matches(
@@ -88,4 +83,16 @@ export const GiveRatingSchema = Yup.object().shape({
     .required("Rating is required")
     .min(1, "Rating must be at least 1"),
   description: Yup.string().required("Description is required"),
+});
+export const ContactUsSchema = Yup.object({
+  phone: Yup.string()
+    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
+  message: Yup.string().required("Message is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  name: Yup.string()
+    .min(5, "Name must be at least 5 characters long")
+    .required("Name is required"),
 });
