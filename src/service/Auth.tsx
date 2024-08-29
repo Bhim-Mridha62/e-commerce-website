@@ -1,35 +1,36 @@
 import Axios from "@/utils/client/axios";
-import { message } from "antd";
+// import { message } from "antd";
 const Cookie = () => {
   let auth = window.localStorage.getItem("Authorization");
   return {
     Authorization: auth && `Bearer ${auth ? auth : ""}`,
   };
 };
-const Errors = (res: any) => {
-  console.log(res, "Errors");
-  if (res?.status == 401) {
-    window.localStorage.clear();
-  } else if (res?.status == 409 || res?.status == 422 || res?.status == 404) {
-    if (res?.data?.message !== "Products not found") {
-      message.error(res?.data?.message);
-    }
-  }
-};
+// const Errors = (res: any) => {
+//   if (res?.status == 401) {
+//     window.localStorage.clear();
+//   } else if (res?.status == 409 || res?.status == 422 || res?.status == 404) {
+//     if (res?.data?.message !== "Products not found") {
+//       message.error(res?.data?.message);
+//     }
+//   }
+// };
 const Apimethod = async (
   url: string,
   method: string,
   body: any,
   auth: boolean
 ) => {
-  console.log(url, method, body, auth, "url, method, body, auth");
   const data = auth
     ? await Axios.request({
         url: url ? url : "",
         method: method ? method : "post",
         data: body ? body : "",
       }).catch(({ response }) => {
-        Errors(response);
+        if (response?.status == 401) {
+          window.localStorage.clear();
+        }
+        return response;
       })
     : await Axios.request({
         url: url ? url : "",
@@ -37,9 +38,11 @@ const Apimethod = async (
         data: body ? body : "",
         headers: Cookie(),
       }).catch(({ response }) => {
-        Errors(response);
+        if (response?.status == 401) {
+          window.localStorage.clear();
+        }
+        return response;
       });
-  console.log(data, "useAuthData");
   return data;
 };
 const HandelSignUp = (data: any) => {

@@ -1,17 +1,23 @@
-import { Button, Modal, Timeline } from "antd";
+import { Button, Modal, notification, Timeline } from "antd";
 import React, { useState } from "react";
-import { ClockCircleOutlined } from "@ant-design/icons";
 import { GiCancel } from "react-icons/gi";
 import { FaShippingFast } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdAccessTime } from "react-icons/md";
 import { formatDate, getDayDifference } from "@/utils/client/formatDate";
 import { useAuthData } from "@/service/Auth";
+import { IOrder } from "@/types/types";
 
-function TimelineData({ StatusOrder, getUserOrder }) {
+function TimelineData({
+  StatusOrder,
+  getUserOrder,
+}: {
+  StatusOrder: IOrder;
+  getUserOrder: () => void;
+}) {
   const [cancelText, setCancelText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSubmitting, _] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalType, setModalType] = useState(""); // "cancel" or "return"
   const { putorder } = useAuthData();
   const cancelReasons = [
@@ -37,7 +43,7 @@ function TimelineData({ StatusOrder, getUserOrder }) {
     "Better Price Available",
   ];
 
-  const getStatusTimelineItems = (statusOrder) => {
+  const getStatusTimelineItems = (statusOrder: any) => {
     let timelineItems = [];
 
     for (const key in statusOrder) {
@@ -78,7 +84,7 @@ function TimelineData({ StatusOrder, getUserOrder }) {
     return timelineItems;
   };
 
-  const showModal = (type) => {
+  const showModal = (type: string) => {
     setModalType(type);
     setIsModalVisible(true);
   };
@@ -97,8 +103,17 @@ function TimelineData({ StatusOrder, getUserOrder }) {
           value: modalType === "cancelled" ? "cancelled" : "Done",
         },
       });
-      getUserOrder();
-      setIsModalVisible(false);
+      if (res?.status !== 200) {
+        notification.error({
+          message:
+            modalType === "cancelled"
+              ? "Order cancellation failed. Please try again."
+              : "Unable to cancel the order at this time. Please try again later.",
+        });
+      } else {
+        getUserOrder();
+        setIsModalVisible(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -150,15 +165,14 @@ function TimelineData({ StatusOrder, getUserOrder }) {
           confirmLoading={isSubmitting}
         >
           {modalType === "cancelled" ? (
-            <div
-              className="cancelReason"
-              onChange={(e) => setCancelText(e.target.value)}
-            >
+            <div className="cancelReason">
               {cancelReasons.map((reason) => (
                 <div key={reason}>
                   <input
                     type="radio"
+                    className="cursor-pointer"
                     value={reason}
+                    onChange={(e) => setCancelText(e.target.value)}
                     name="cancelReason"
                     checked={cancelText === reason}
                   />{" "}
@@ -167,15 +181,14 @@ function TimelineData({ StatusOrder, getUserOrder }) {
               ))}
             </div>
           ) : (
-            <div
-              className="cancelReason"
-              onChange={(e) => setCancelText(e.target.value)}
-            >
+            <div className="cancelReason">
               {returnReasons.map((reason) => (
                 <div key={reason}>
                   <input
+                    className="cursor-pointer"
                     type="radio"
                     value={reason}
+                    onChange={(e) => setCancelText(e?.target?.value)}
                     name="returnReason"
                     checked={cancelText === reason}
                   />{" "}

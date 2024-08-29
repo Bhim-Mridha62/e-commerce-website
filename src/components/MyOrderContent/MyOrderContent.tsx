@@ -5,12 +5,18 @@ import TimelineData from "./TimelineData";
 import { useAuthData } from "@/service/Auth";
 import OrderCard from "./OrderCard";
 import { IOrder } from "@/types/types";
+import { useUser } from "@/context/authContext";
+import EmptyOrder from "./emptyOrder";
 function MyOrderContent() {
   const [items, setItems] = useState<IOrder[]>([]);
   const { getorder } = useAuthData();
+  const { user } = useUser();
+
   useEffect(() => {
-    getUserOrder();
-  }, []);
+    if (user) {
+      getUserOrder();
+    }
+  }, [user]);
   const getUserOrder = async () => {
     try {
       let res = await getorder();
@@ -21,24 +27,34 @@ function MyOrderContent() {
       console.log(error);
     }
   };
-  return (
-    <div className="min-h-[30vh]">
-      {items?.map((data: IOrder) => (
-        <Collapse
-          ghost
-          items={[
-            {
-              showArrow: false,
-              key: data?._id,
-              label: <OrderCard key={data?._id} product={data} />,
-              children: (
-                <TimelineData StatusOrder={data} getUserOrder={getUserOrder} />
-              ),
-            },
-          ]}
-        />
-      ))}
-    </div>
+  return user ? (
+    items?.length ? (
+      <div className="min-h-[30vh]">
+        {items?.map((data: IOrder) => (
+          <Collapse
+            key={data?._id}
+            ghost
+            items={[
+              {
+                showArrow: false,
+                key: data?._id,
+                label: <OrderCard key={data?._id} product={data} />,
+                children: (
+                  <TimelineData
+                    StatusOrder={data}
+                    getUserOrder={getUserOrder}
+                  />
+                ),
+              },
+            ]}
+          />
+        ))}
+      </div>
+    ) : (
+      <EmptyOrder IsLogin={true} />
+    )
+  ) : (
+    <EmptyOrder IsLogin={false} />
   );
 }
 
