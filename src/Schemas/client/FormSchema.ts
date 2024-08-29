@@ -95,4 +95,5 @@ export const ContactUsSchema = Yup.object({
   name: Yup.string()
     .min(5, "Name must be at least 5 characters long")
     .required("Name is required"),
+  address: Yup.string().required("Address is required"),
 });

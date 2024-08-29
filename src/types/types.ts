@@ -122,3 +122,10 @@ export interface IOrder {
   DeliveryDate?: string;
   OrderDate?: string;
 }
+export interface IContactUs {
+  phone: string;
+  message: string;
+  email: string;
+  name: string;
+  address: string;
+}

@@ -1,3 +1,4 @@
+import { IContactUs } from "@/types/types";
 import Axios from "@/utils/client/axios";
 // import { message } from "antd";
 const Cookie = () => {
@@ -125,6 +126,9 @@ const postImage = async (data: any) => {
 const deleteImage = async (url: string) => {
   return Apimethod(`/api/image?imageUrl=${url}`, "DELETE", {}, false);
 };
+const postContactUs = async (data: IContactUs) => {
+  return Apimethod(`/api/contact-us`, "post", data, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -151,4 +155,5 @@ export const useAuthData = () => ({
   getSearch,
   postImage,
   deleteImage,
+  postContactUs,
 });

@@ -1,19 +1,43 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { ContactUsSchema } from "@/Schemas/client/FormSchema";
+import { notification } from "antd";
+import { useAuthData } from "@/service/Auth";
+import { IContactUs } from "@/types/types";
+import { CgSpinnerTwo } from "react-icons/cg";
 
 export default function Contact() {
-  const formik = useFormik({
+  const { postContactUs } = useAuthData();
+  const [loading, setLoading] = useState<boolean>(false);
+  const formik = useFormik<IContactUs>({
     initialValues: {
       phone: "",
       message: "",
       email: "",
       name: "",
+      address: "",
     },
     validationSchema: ContactUsSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        setLoading(true);
+        const res = await postContactUs(values);
+        if (res?.status === 200) {
+          notification.success({ message: res?.data?.message });
+          resetForm();
+        } else {
+          notification.error({
+            message: "Something went wrong. Please try again later.",
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        notification.error({
+          message: "Something went wrong. Please try again later.",
+        });
+        setLoading(false);
+      }
     },
   });
 
@@ -129,6 +153,27 @@ export default function Contact() {
           </div>
           <div className="relative mb-4">
             <label
+              htmlFor="address"
+              className="leading-7 text-sm text-gray-400"
+            >
+              Address
+            </label>
+            <input
+              id="address"
+              name="address"
+              className="w-full bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.address}
+            />
+            {formik.touched.address && formik.errors.address ? (
+              <div className="text-red-500 text-sm">
+                {formik.errors.address}
+              </div>
+            ) : null}
+          </div>
+          <div className="relative mb-4">
+            <label
               htmlFor="message"
               className="leading-7 text-sm text-gray-400"
             >
@@ -149,10 +194,18 @@ export default function Contact() {
             ) : null}
           </div>
           <button
+            disabled={loading}
             type="submit"
             className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
           >
-            Submit
+            {loading ? (
+              <div className="flex justify-center items-center gap-2  ">
+                <CgSpinnerTwo className="animate-spin" />
+                Please wait...
+              </div>
+            ) : (
+              "Submit"
+            )}
           </button>
         </form>
       </div>
