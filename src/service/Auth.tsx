@@ -63,8 +63,8 @@ const LoginUser = (loginUser: any) => {
 const AddToCart = (data: any) => {
   return Apimethod("/api/cart", "post", data, false);
 };
-const AllCartData = () => {
-  return Apimethod("/api/cart", "get", {}, false);
+const AllCartData = (isCount = 0) => {
+  return Apimethod(`/api/cart?count=${isCount}`, "get", {}, false);
 };
 const RemoveCartData = (id: any) => {
   return Apimethod("/api/cart", "DELETE", id, false);
@@ -80,9 +80,6 @@ const Deletewishlist = (data: any) => {
 };
 const Postwishlist = (data: any) => {
   return Apimethod(`/api/wishlist`, "post", data, false);
-};
-const GetCartCount = () => {
-  return Apimethod(`/api/cart/cartCount`, "get", {}, false);
 };
 const getCategories = () => {
   return Apimethod(`/api/categories`, "get", {}, true);
@@ -140,7 +137,6 @@ export const useAuthData = () => ({
   Deletewishlist,
   Postwishlist,
   PostResetPassword,
-  GetCartCount,
   PostCreateUser,
   getCategories,
   getcarousel,

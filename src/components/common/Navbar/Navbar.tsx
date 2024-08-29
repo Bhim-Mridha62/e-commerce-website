@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   const [cartLength, setCartLength] = useState<number>(0);
   const router = useRouter();
   const { cartCountRef, user } = useUser();
-  const { GetCartCount, getSearch } = useAuthData();
+  const { AllCartData, getSearch } = useAuthData();
   const [lastScrollPosition, setLastScrollPosition] = useState<number>(0);
   const [hide, setHide] = useState<boolean>(false);
   const [autoCompleteOptions, setAutoCompleteOptions] = useState<
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
 
   const UpdateCartCount = async () => {
     try {
-      const res = await GetCartCount();
+      const res = await AllCartData(1);
       if (res?.status === 200) {
         setCartLength(res?.data?.data);
       }

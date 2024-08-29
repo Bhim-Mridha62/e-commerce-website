@@ -23,8 +23,7 @@ export default async function handler(
   }
 }
 
-const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
-  //@ts-ignore
+const getCart = async (req: any, res: NextApiResponse) => {
   const { userId } = req;
 
   try {
@@ -33,6 +32,9 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
+    }
+    if (Number(req?.query?.count)) {
+      return res.status(200).json({ data: user?.cart?.length });
     }
     const AllProductId = user.cart.map((item: any) => item?.productID);
     const cartDetails = await Product.find({
@@ -66,9 +68,8 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const addItemToCart = async (req: NextApiRequest, res: NextApiResponse) => {
+const addItemToCart = async (req: any, res: NextApiResponse) => {
   const { productId, quantity, Size } = req.body;
-  //@ts-ignore
   const { userId } = req;
   try {
     const user = await User.findById(userId);
@@ -98,12 +99,8 @@ const addItemToCart = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const removeItemFromCart = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const removeItemFromCart = async (req: any, res: NextApiResponse) => {
   const { productId } = req.body;
-  //@ts-ignore
   const { userId } = req;
 
   try {
