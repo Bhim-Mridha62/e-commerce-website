@@ -44,6 +44,7 @@ export interface IAutoComplete {
 }
 export interface IClassName {
   className?: string;
+  onClick?: () => void;
 }
 export interface Ichildren {
   children: React.ReactNode;
