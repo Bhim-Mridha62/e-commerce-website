@@ -48,10 +48,13 @@ const handleUpload = (req: any, res: any) => {
       });
 
       const drive = google.drive({ version: "v3", auth: oAuth2Client });
-
       const fileMetadata = {
         name: file.originalname,
-        parents: ["1ZuRJjvEFaQMCNvV4hCD-bocilmXhwf06"],
+        parents: [
+          file.originalname.includes("Profile_pic")
+            ? "1bitH16Pp9LLCGEPHJ9Pn2bSGDnNXwqpd"
+            : "1ZuRJjvEFaQMCNvV4hCD-bocilmXhwf06",
+        ],
       };
 
       const media = {
