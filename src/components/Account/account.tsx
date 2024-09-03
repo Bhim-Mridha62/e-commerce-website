@@ -1,5 +1,4 @@
 import {
-  UserOutlined,
   CreditCardOutlined,
   HomeOutlined,
   SettingOutlined,
@@ -7,14 +6,17 @@ import {
   LogoutOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Card, Tabs, Badge, Input } from "antd";
+import { Button, Card, Tabs, Badge, Input } from "antd";
+import ImageContent from "./imageUpload";
 
 export default function Account() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
         <Card className="lg:col-span-1 text-center">
-          <Avatar size={96} src="" icon={<UserOutlined />} />
+          <div className="">
+            <ImageContent imageUrl="" />
+          </div>
           <h3 className="mt-4 text-lg font-semibold">Jane Doe</h3>
           <p className="text-gray-500">Premium Member</p>
           <div className="mt-4">
