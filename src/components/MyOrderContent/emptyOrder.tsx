@@ -6,7 +6,11 @@ const EmptyOrder = ({ IsLogin }: { IsLogin: boolean }) => {
   const router = useRouter();
 
   const handleLogin = () => {
-    router.push("/sign-in"); // Redirect to the login page
+    if (IsLogin) {
+      router.push("/");
+    } else {
+      router.push("/sign-in"); // Redirect to the login page
+    }
   };
   return (
     <div className="flex flex-col items-center justify-center text-center p-4">
