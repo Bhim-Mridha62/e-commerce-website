@@ -86,22 +86,13 @@ export interface IOrder {
   size?: string;
   image?: string;
   price?: number;
-  address: {
-    village?: string;
-    alternatePhone?: string;
-    buildingAddress?: string;
-    district?: string;
-    name?: string;
-    phone?: string;
-    pincode?: string;
-    state?: string;
-  };
-  StatusOrder: {
+  address?: IAddress;
+  StatusOrder?: {
     Order_Received: {
       status?: string;
       time?: string;
     };
-    Order_Shipped: {
+    Order_Shipped?: {
       status?: string;
       time?: string;
     };
@@ -109,7 +100,7 @@ export interface IOrder {
       status?: string;
       time?: string;
     };
-    Out_for_delivery: {
+    Out_for_delivery?: {
       status?: string;
       time?: string;
     };
@@ -129,4 +120,14 @@ export interface IContactUs {
   email: string;
   name: string;
   address: string;
+}
+export interface IAddress {
+  village?: string;
+  alternatePhone?: string;
+  buildingAddress?: string;
+  district?: string;
+  name?: string;
+  phone?: string;
+  pincode?: string;
+  state?: string;
 }

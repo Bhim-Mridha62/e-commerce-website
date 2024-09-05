@@ -1,14 +1,19 @@
+import { IAddress } from "@/types/types";
 import { Button } from "antd";
 import React from "react";
 
-const DeliverDetails = ({ addressDetails,HandelChange }) => {
+const DeliverDetails = ({
+  addressDetails,
+  HandelChange,
+}: {
+  addressDetails?: IAddress;
+  HandelChange?: any;
+}) => {
   return (
     <div>
       <p className="flex justify-between">
         <span className="text-xl font-medium">{addressDetails?.name}</span>
-        <Button onClick={HandelChange}>
-          Change
-        </Button>
+        <Button onClick={HandelChange}>Change</Button>
       </p>
       <p className="mt-2 ml-2">
         {addressDetails?.district} {addressDetails?.buildingAddress}{" "}
