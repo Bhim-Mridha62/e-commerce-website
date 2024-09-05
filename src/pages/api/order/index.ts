@@ -3,6 +3,7 @@ import Order from "@/Schemas/server/OrderSchema";
 import verifyUser from "../middleware/verifyUser";
 import { getDayDifference } from "@/utils/client/formatDate";
 import { NextApiRequest, NextApiResponse } from "next";
+import User from "@/Schemas/server/UserSchema";
 
 const now = new Date();
 const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
@@ -47,6 +48,15 @@ async function addOrder(req: any, res: NextApiResponse) {
       Order_Delivered: { status: "pending", time: "" },
     };
 
+    // Save Address In user model
+    const updateAddress = await User.findByIdAndUpdate(
+      userId,
+      { address },
+      { new: true, runValidators: true }
+    );
+    if (!updateAddress) {
+      return res.status(404).json({ error: "User not found" });
+    }
     const newOrder = new Order({
       userId,
       productID,
