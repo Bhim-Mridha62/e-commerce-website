@@ -129,6 +129,9 @@ const deleteImage = async (url: string) => {
 const postContactUs = async (data: IContactUs) => {
   return Apimethod(`/api/contact-us`, "post", data, false);
 };
+const getProfile = async () => {
+  return Apimethod(`/api/profile`, "get", {}, false);
+};
 export const useAuthData = () => ({
   HandelSignUp,
   HandelverifyOTP,
@@ -156,4 +159,5 @@ export const useAuthData = () => ({
   postImage,
   deleteImage,
   postContactUs,
+  getProfile,
 });

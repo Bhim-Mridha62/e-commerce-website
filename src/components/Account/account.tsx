@@ -8,8 +8,33 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Tabs, Badge, Input } from "antd";
 import ImageContent from "./imageUpload";
+import { useAuthData } from "@/service/Auth";
+import { useEffect, useState } from "react";
+import { BsCurrencyRupee } from "react-icons/bs";
+import { GetOrderStatusColour } from "@/utils/client/colourCode";
+import { formatDate } from "@/utils/client/formatDate";
+import DeliverDetails from "../common/DeliverDetails";
+import { IOrder } from "@/types/types";
 
 export default function Account() {
+  const { getProfile } = useAuthData();
+  const [profile, setProfile] = useState<any>({});
+  useEffect(() => {
+    getProfileData();
+  }, []);
+  const getProfileData = async () => {
+    try {
+      const res = await getProfile();
+      if (res?.status === 200) {
+        console.log(res);
+        setProfile(res?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(profile?.user?.address?.name);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
@@ -61,7 +86,7 @@ export default function Account() {
                 >
                   Name
                 </label>
-                <Input id="name" placeholder="Jane Doe" />
+                <Input id="name" placeholder={profile?.user?.name} />
               </div>
               <div>
                 <label
@@ -70,7 +95,12 @@ export default function Account() {
                 >
                   Email
                 </label>
-                <Input id="email" type="email" placeholder="jane@example.com" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={profile?.user?.emailOrPhone}
+                  disabled
+                />
               </div>
               <div>
                 <label
@@ -87,12 +117,23 @@ export default function Account() {
             </Button>
           </Card>
           <Tabs defaultActiveKey="orders">
-            <Tabs.TabPane tab="Orders" key="orders">
+            <Tabs.TabPane
+              tab={
+                <Badge
+                  color="#334155"
+                  count={profile?.orderLength || 0}
+                  offset={[0, -6]}
+                >
+                  <p>Orders</p>
+                </Badge>
+              }
+              key="orders"
+            >
               <Card title="Recent Orders">
                 <div className="space-y-4">
-                  {[1, 2, 3].map((order) => (
+                  {profile?.order?.map((order: IOrder) => (
                     <div
-                      key={order}
+                      key={order?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
@@ -100,13 +141,16 @@ export default function Account() {
                           <ShoppingOutlined className="text-gray-500 text-2xl" />
                         </div>
                         <div>
-                          <p className="font-medium">Order #{order}23456</p>
+                          <p className="font-medium">{order?.title}</p>
                           <p className="text-sm text-gray-500">
-                            Placed on May 15, 2023
+                            {formatDate(order?.OrderDate)}
                           </p>
                         </div>
                       </div>
-                      <Badge status="success" text="Delivered" />
+                      <Badge
+                        color={GetOrderStatusColour(order?.OrderStatus)}
+                        text={order?.OrderStatus}
+                      />
                     </div>
                   ))}
                 </div>
@@ -116,12 +160,23 @@ export default function Account() {
               </Card>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Wishlist" key="wishlist">
+            <Tabs.TabPane
+              tab={
+                <Badge
+                  color="#334155"
+                  count={profile?.user?.wishlistLength || 0}
+                  offset={[0, -6]}
+                >
+                  <p>Wishlist</p>
+                </Badge>
+              }
+              key="wishlist"
+            >
               <Card title="Wishlist">
                 <div className="space-y-4">
-                  {[1, 2, 3].map((item) => (
+                  {profile?.user?.wishlist.map((item) => (
                     <div
-                      key={item}
+                      key={item?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
@@ -129,8 +184,11 @@ export default function Account() {
                           <HeartOutlined className="text-gray-500 text-2xl" />
                         </div>
                         <div>
-                          <p className="font-medium">Product {item}</p>
-                          <p className="text-sm text-gray-500">$99.99</p>
+                          <p className="font-medium">{item?.title}</p>
+                          <p className="text-sm text-gray-500">
+                            <BsCurrencyRupee className="inline text-black" />
+                            {item?.price}
+                          </p>
                         </div>
                       </div>
                       <Button size="small">Add to Cart</Button>
@@ -143,21 +201,35 @@ export default function Account() {
               </Card>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Cart" key="Cart">
+            <Tabs.TabPane
+              tab={
+                <Badge
+                  color="#334155"
+                  count={profile?.user?.cartLength || 0}
+                  offset={[0, -6]}
+                >
+                  <p>Cart</p>
+                </Badge>
+              }
+              key="Cart"
+            >
               <Card title="Cart">
                 <div className="space-y-4">
-                  {[1, 2, 3].map((item) => (
+                  {profile?.user?.cart.map((item) => (
                     <div
-                      key={item}
-                      className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
+                      key={item?._id}
+                      className="flex items-center justify-start border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
                           <HeartOutlined className="text-gray-500 text-2xl" />
                         </div>
                         <div>
-                          <p className="font-medium">Product {item}</p>
-                          <p className="text-sm text-gray-500">$99.99</p>
+                          <p className="font-medium">Product {item?.title}</p>
+                          <p className="text-sm text-gray-500">
+                            <BsCurrencyRupee className="inline text-black" />
+                            {item?.price}
+                          </p>
                         </div>
                       </div>
                       <Button size="small">Add to Cart</Button>
@@ -172,27 +244,11 @@ export default function Account() {
             <Tabs.TabPane tab="Addresses" key="addresses">
               <Card title="Shipping Addresses">
                 <div className="space-y-4">
-                  {[1, 2].map((address) => (
-                    <div
-                      key={address}
-                      className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0"
-                    >
-                      <div>
-                        <p className="font-medium">Address {address}</p>
-                        <p className="text-sm text-gray-500">
-                          123 Main St, Apt {address}01
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          Anytown, ST 12345
-                        </p>
-                      </div>
-                      <Button size="small">Edit</Button>
-                    </div>
-                  ))}
+                  <div className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0">
+                    <DeliverDetails addressDetails={profile?.user?.address} />
+                    <Button size="small">Edit</Button>
+                  </div>
                 </div>
-                <Button block className="mt-4">
-                  Add New Address
-                </Button>
               </Card>
             </Tabs.TabPane>
           </Tabs>
