@@ -14,14 +14,19 @@ import { BsCurrencyRupee } from "react-icons/bs";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
 import DeliverDetails from "../common/DeliverDetails";
-import { IOrder } from "@/types/types";
-
+import { IAddress, IOrder, IProfileCartWishlist } from "@/types/types";
+import { useUser } from "@/context/authContext";
+import AddressForm from "../common/addressFrom";
 export default function Account() {
   const { getProfile } = useAuthData();
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
   const [profile, setProfile] = useState<any>({});
+  const { user } = useUser();
   useEffect(() => {
-    getProfileData();
-  }, []);
+    if (user) {
+      getProfileData();
+    }
+  }, [user]);
   const getProfileData = async () => {
     try {
       const res = await getProfile();
@@ -33,14 +38,28 @@ export default function Account() {
       console.log(error);
     }
   };
+  const handerAddress = (data: IAddress) => {
+    handleFormClose;
+    if (data?.name == "") {
+      //add login here
+    } else {
+      //update login here
+    }
+  };
   console.log(profile?.user?.address?.name);
-
+  const HandeLogout = () => {
+    localStorage?.clear();
+    window?.location?.reload();
+  };
+  const handleFormClose = () => {
+    setIsFormOpen(!isFormOpen);
+  };
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
         <Card className="lg:col-span-1 text-center">
           <div className="">
-            <ImageContent imageUrl="" />
+            <ImageContent imageUrl={profile?.user?.profile_pic || ""} />
           </div>
           <h3 className="mt-4 text-lg font-semibold">Jane Doe</h3>
           <p className="text-gray-500">Premium Member</p>
@@ -71,7 +90,13 @@ export default function Account() {
               Settings
             </Button>
           </div>
-          <Button block danger icon={<LogoutOutlined />} className="mt-4">
+          <Button
+            block
+            danger
+            onClick={HandeLogout}
+            icon={<LogoutOutlined />}
+            className="mt-4"
+          >
             Log out
           </Button>
         </Card>
@@ -86,7 +111,7 @@ export default function Account() {
                 >
                   Name
                 </label>
-                <Input id="name" placeholder={profile?.user?.name} />
+                <Input placeholder={profile?.user?.name} />
               </div>
               <div>
                 <label
@@ -174,7 +199,7 @@ export default function Account() {
             >
               <Card title="Wishlist">
                 <div className="space-y-4">
-                  {profile?.user?.wishlist.map((item) => (
+                  {profile?.user?.wishlist.map((item: IProfileCartWishlist) => (
                     <div
                       key={item?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
@@ -215,7 +240,7 @@ export default function Account() {
             >
               <Card title="Cart">
                 <div className="space-y-4">
-                  {profile?.user?.cart.map((item) => (
+                  {profile?.user?.cart.map((item: IProfileCartWishlist) => (
                     <div
                       key={item?._id}
                       className="flex items-center justify-start border-b pb-4 last:border-0 last:pb-0"
@@ -245,8 +270,19 @@ export default function Account() {
               <Card title="Shipping Addresses">
                 <div className="space-y-4">
                   <div className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0">
-                    <DeliverDetails addressDetails={profile?.user?.address} />
-                    <Button size="small">Edit</Button>
+                    <DeliverDetails
+                      addressDetails={profile?.user?.address}
+                      isAccount={true}
+                    />
+                    <Button
+                      // onClick={() => handerAddress(profile?.user?.address)}
+                      onClick={handleFormClose}
+                      size="small"
+                    >
+                      {profile?.user?.address.name === ""
+                        ? "Add Address"
+                        : "Update Address"}
+                    </Button>
                   </div>
                 </div>
               </Card>
@@ -254,6 +290,11 @@ export default function Account() {
           </Tabs>
         </div>
       </div>
+      <AddressForm
+        isFormOpen={isFormOpen}
+        handleFormClose={handleFormClose}
+        address={profile?.user?.address}
+      />
     </div>
   );
 }
