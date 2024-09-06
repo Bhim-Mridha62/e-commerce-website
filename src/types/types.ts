@@ -131,3 +131,12 @@ export interface IAddress {
   pincode?: string;
   state?: string;
 }
+export interface IProfileCartWishlist {
+  productID: string;
+  Size: string;
+  quantity: number;
+  _id: string;
+  thumbnail: string;
+  price: number;
+  title: string;
+}
