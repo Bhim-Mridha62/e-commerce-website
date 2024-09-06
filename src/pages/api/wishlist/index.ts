@@ -2,7 +2,12 @@ import connectDB from "@/database/db";
 import User from "@/Schemas/server/UserSchema";
 import verifyUser from "../middleware/verifyUser";
 import Product from "@/Schemas/server/ProductSchema";
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+import { ISchemaWishlist } from "@/types/backentType";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   await connectDB();
 
   const { method } = req;
@@ -19,7 +24,7 @@ export default async function handler(req, res) {
   }
 }
 
-const getWishlist = async (req, res) => {
+const getWishlist = async (req: any, res: NextApiResponse) => {
   const { userId } = req;
 
   try {
@@ -29,12 +34,14 @@ const getWishlist = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    const AllProductId = user.wishlist.map((item) => item?.productID);
+    const AllProductId = user.wishlist.map(
+      (item: ISchemaWishlist) => item?.productID
+    );
     const cartDetails = await Product.find({
       _id: { $in: AllProductId },
     }).select("_id title price discountPercentage rating thumbnail");
     res.status(200).json({ success: true, data: cartDetails });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error fetching cart",
@@ -43,7 +50,7 @@ const getWishlist = async (req, res) => {
   }
 };
 
-const addItemToWishlist = async (req, res) => {
+const addItemToWishlist = async (req: any, res: NextApiResponse) => {
   const { productId } = req.body;
   const { userId } = req;
   try {
@@ -54,7 +61,7 @@ const addItemToWishlist = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
     const isProductInWishlist = user.wishlist.some(
-      (item) => item?.productID === productId
+      (item: ISchemaWishlist) => item?.productID === productId
     );
     if (isProductInWishlist) {
       return res
@@ -64,7 +71,7 @@ const addItemToWishlist = async (req, res) => {
     user.wishlist.push({ productID: productId });
     await user.save();
     res.status(200).json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error adding item to cart",
@@ -73,7 +80,7 @@ const addItemToWishlist = async (req, res) => {
   }
 };
 
-const removeItemFromWishlist = async (req, res) => {
+const removeItemFromWishlist = async (req: any, res: NextApiResponse) => {
   const { productId } = req.body;
   const { userId } = req;
 
@@ -86,11 +93,11 @@ const removeItemFromWishlist = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
     user.wishlist = user.wishlist.filter(
-      (item) => item.productID !== productId
+      (item: ISchemaWishlist) => item.productID !== productId
     );
     await user.save();
     res.status(200).json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: "Error removing item from cart",

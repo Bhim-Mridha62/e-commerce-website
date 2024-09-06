@@ -109,10 +109,10 @@ export interface IOrder {
       time?: string;
     };
   };
-  OrderStatus?: string;
+  OrderStatus: string;
   cancelReason?: string;
   DeliveryDate?: string;
-  OrderDate?: string;
+  OrderDate: string;
 }
 export interface IContactUs {
   phone: string;
