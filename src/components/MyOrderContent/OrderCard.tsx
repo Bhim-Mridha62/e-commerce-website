@@ -1,15 +1,16 @@
+import { IOrder } from "@/types/types";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
-import { Button } from "antd";
 import { useRouter } from "next/router";
-const OrderCard = ({ product }) => {
+import React from "react";
+const OrderCard = ({ product }: { product: IOrder }) => {
   const orderStatusColour = GetOrderStatusColour(product?.OrderStatus);
   const router = useRouter();
-  const handelGiveRate = (e) => {
+  const handelGiveRate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     router.push(`/myorder/${product?.productID}`);
   };
-  const handelProductDetails = (e) => {
+  const handelProductDetails = (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();
     router.push(`/product/${product?.productID}`);
   };
