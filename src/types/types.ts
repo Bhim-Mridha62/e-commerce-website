@@ -140,3 +140,19 @@ export interface IProfileCartWishlist {
   price: number;
   title: string;
 }
+export interface INamePicId {
+  name_pic_id: NamePicId;
+  updateProfile: any;
+  setName_pic_id: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      profile_pic: string;
+      _id: string;
+    }>
+  >;
+}
+export interface NamePicId {
+  name: string;
+  profile_pic: string;
+  _id: string;
+}

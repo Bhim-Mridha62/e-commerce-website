@@ -10,10 +10,12 @@ const AddressForm = ({
   isFormOpen,
   handleFormClose,
   address,
+  updateProfile,
 }: {
   isFormOpen: boolean;
   handleFormClose: () => void;
   address: IAddress;
+  updateProfile: (values: IAddress, isUser: boolean, user: any) => void;
 }) => {
   const formik = useFormik<IAddress>({
     initialValues: {
@@ -28,8 +30,7 @@ const AddressForm = ({
     },
     validationSchema: DeliveryAddressSchema,
     onSubmit: (values) => {
-      console.log("Form submitted with values:", values);
-      // API call or further processing can be done here
+      updateProfile(values, false, {});
     },
   });
   useEffect(() => {

@@ -9,8 +9,13 @@ import { CameraOutlined, EditOutlined, UserOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { useAuthData } from "@/service/Auth";
+import { INamePicId } from "@/types/types";
 
-const ImageContent = (src: any) => {
+const ImageContent: React.FC<INamePicId> = ({
+  name_pic_id,
+  setName_pic_id,
+  updateProfile,
+}) => {
   const [crop, setCrop] = React.useState<Crop>({
     unit: "px",
     width: 50,
@@ -33,16 +38,9 @@ const ImageContent = (src: any) => {
   const previewCanvasRef = useRef<any>(null);
   const [fileMetaData, setFileMetaData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [imageSrc, setImageSrc] = useState("");
-  const { postImage } = useAuthData();
-  const FileName = "66673d93fca33bd03f677b42_Profile_pic";
+  const { postImage, deleteImage } = useAuthData();
   useEffect(() => {
     setCrop(crop);
-    setImageSrc(
-      window.localStorage.getItem("image") !== null
-        ? window.localStorage.getItem("image") + "?" + new Date().getTime()
-        : ""
-    );
   }, [loading, crop]);
 
   function handleChange(e: any) {
@@ -94,7 +92,9 @@ const ImageContent = (src: any) => {
     return fetch(croppedimg?.imageData64)
       .then((response) => response.blob())
       .then((blob) => {
-        let profilepic = FileName;
+        let profilepic = name_pic_id?._id
+          ? name_pic_id?._id + "Profile_pic"
+          : "Profile_pic";
         const file = new File([blob], profilepic, { type: "image/jpeg" });
         return file;
       })
@@ -174,7 +174,9 @@ const ImageContent = (src: any) => {
     return fetch(file)
       .then((response) => response.blob())
       .then(async (blob) => {
-        let profilepic = FileName;
+        let profilepic = name_pic_id?._id
+          ? name_pic_id?._id + "Profile_pic"
+          : "Profile_pic";
         fileData = new File([blob], profilepic, { type: blob?.type });
         const compress = new Compress();
         const resizedImage = await compress?.compress([fileData], {
@@ -210,9 +212,21 @@ const ImageContent = (src: any) => {
       let file = new FormData();
       file.append("file", resizedFile);
       console.log(file, resizedFile, "resizedFile");
+      if (name_pic_id?.profile_pic) {
+        await deleteImage(name_pic_id?.profile_pic);
+      }
       const res = await postImage(file);
       if (res?.data?.success) {
         console.log(res?.data?.imageUrl, "imageUrl");
+        updateProfile({}, true, {
+          name: name_pic_id?.name || "",
+          profile_pic: res?.data?.imageUrl || "",
+          _id: name_pic_id?._id || "",
+        });
+        setName_pic_id((prev) => ({
+          ...prev,
+          profile_pic: res?.data?.imageUrl,
+        }));
         handleCancel();
         notification.success({ message: "Image Uploaded Successfully" });
       } else {
@@ -235,14 +249,18 @@ const ImageContent = (src: any) => {
       <div className="md:mx-2 relative flex justify-center">
         {/* <Avatar size={105}  > */}
         <div className="profile-Editimage">
-          {imageSrc ? (
+          {name_pic_id?.profile_pic ? (
             <Image
               width={110}
               loading="lazy"
               // priority
               className="rounded-full"
               height={110}
-              src={imageSrc ? imageSrc : "/images/dummyUser.png"}
+              src={
+                name_pic_id?.profile_pic
+                  ? name_pic_id?.profile_pic
+                  : "/images/dummyUser.png"
+              }
               alt={"profile Image "}
               // loader={({ src }) => `${src}`}
             />

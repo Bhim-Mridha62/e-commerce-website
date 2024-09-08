@@ -146,5 +146,27 @@ async function getProfile(req: any, res: NextApiResponse) {
     return res.status(500).json(error);
   }
 }
+async function putProfile(req: any, res: NextApiResponse) {
+  try {
+    const { userId } = req;
+    const { address, isUser, user } = req?.body;
+    const UpdateData = isUser ? { ...user } : { address: { ...address } };
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: UpdateData },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res?.status(500).json({
+      success: false,
+      message: "Something wrong please try again",
+    });
+  }
+}
 async function postProfile() {}
-async function putProfile() {}

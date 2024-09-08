@@ -6,7 +6,7 @@ import {
   LogoutOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Tabs, Badge, Input } from "antd";
+import { Button, Card, Tabs, Badge, Input, notification } from "antd";
 import ImageContent from "./imageUpload";
 import { useAuthData } from "@/service/Auth";
 import { useEffect, useState } from "react";
@@ -14,12 +14,25 @@ import { BsCurrencyRupee } from "react-icons/bs";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
 import DeliverDetails from "../common/DeliverDetails";
-import { IAddress, IOrder, IProfileCartWishlist } from "@/types/types";
+import {
+  IAddress,
+  IOrder,
+  IProfileCartWishlist,
+  NamePicId,
+} from "@/types/types";
 import { useUser } from "@/context/authContext";
 import AddressForm from "../common/addressFrom";
+import { RiShoppingCart2Fill } from "react-icons/ri";
+import { letterOnlyRegex } from "@/utils/client/regEx";
 export default function Account() {
-  const { getProfile } = useAuthData();
-  const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
+  const { getProfile, putProfile } = useAuthData();
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const [address, setAddress] = useState<IAddress>({});
+  const [name_pic_id, setName_pic_id] = useState({
+    name: "",
+    profile_pic: "",
+    _id: "",
+  });
   const [profile, setProfile] = useState<any>({});
   const { user } = useUser();
   useEffect(() => {
@@ -32,37 +45,81 @@ export default function Account() {
       const res = await getProfile();
       if (res?.status === 200) {
         console.log(res);
+        setAddress(res?.data?.user?.address);
+        setName_pic_id({
+          name: res.data?.user.name,
+          profile_pic: res.data?.user.profile_pic,
+          _id: res.data?.user?._id,
+        });
         setProfile(res?.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const handerAddress = (data: IAddress) => {
-    handleFormClose;
-    if (data?.name == "") {
-      //add login here
-    } else {
-      //update login here
+  const updateProfile = async (
+    values?: IAddress,
+    isUser?: boolean,
+    user?: NamePicId
+  ) => {
+    try {
+      console.log({ address: values, isUser: isUser, user: user }, "bhim");
+      const res = await putProfile({
+        address: values,
+        isUser: isUser,
+        user: user,
+      });
+      if (res?.data?.success) {
+        if (!isUser) {
+          setAddress(values as IAddress);
+          notification.success({
+            message: isUser
+              ? "Update Profile successfully"
+              : "Update Address successfully",
+          });
+        }
+        setIsFormOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-  console.log(profile?.user?.address?.name);
+
+  // logout function
   const HandeLogout = () => {
     localStorage?.clear();
     window?.location?.reload();
   };
+
+  // Address form open state
   const handleFormClose = () => {
     setIsFormOpen(!isFormOpen);
+  };
+
+  // name update
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    if (letterOnlyRegex.test(inputValue)) {
+      setName_pic_id((prev) => ({
+        ...prev,
+        name: inputValue,
+      }));
+    }
   };
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
         <Card className="lg:col-span-1 text-center">
           <div className="">
-            <ImageContent imageUrl={profile?.user?.profile_pic || ""} />
+            <ImageContent
+              name_pic_id={name_pic_id}
+              setName_pic_id={setName_pic_id}
+              updateProfile={updateProfile}
+            />
           </div>
-          <h3 className="mt-4 text-lg font-semibold">Jane Doe</h3>
-          <p className="text-gray-500">Premium Member</p>
+          <h3 className="mt-4 text-lg font-semibold">
+            {name_pic_id?.name || ""}
+          </h3>
           <div className="mt-4">
             <Badge
               count="Member since March 2020"
@@ -111,7 +168,16 @@ export default function Account() {
                 >
                   Name
                 </label>
-                <Input placeholder={profile?.user?.name} />
+                <Input
+                  onChange={handleNameChange}
+                  value={name_pic_id?.name}
+                  placeholder="Enter Name"
+                />
+                {name_pic_id?.name === "" ? (
+                  <p className="text-red-500">Name is required.</p>
+                ) : (
+                  ""
+                )}
               </div>
               <div>
                 <label
@@ -137,7 +203,11 @@ export default function Account() {
                 <Input id="password" type="password" placeholder="••••••••" />
               </div>
             </div>
-            <Button block className="mt-4">
+            <Button
+              onClick={() => updateProfile({}, true, name_pic_id)}
+              block
+              className="mt-4"
+            >
               Save Changes
             </Button>
           </Card>
@@ -247,7 +317,7 @@ export default function Account() {
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <HeartOutlined className="text-gray-500 text-2xl" />
+                          <RiShoppingCart2Fill className="text-gray-500 text-2xl" />
                         </div>
                         <div>
                           <p className="font-medium">Product {item?.title}</p>
@@ -270,18 +340,9 @@ export default function Account() {
               <Card title="Shipping Addresses">
                 <div className="space-y-4">
                   <div className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0">
-                    <DeliverDetails
-                      addressDetails={profile?.user?.address}
-                      isAccount={true}
-                    />
-                    <Button
-                      // onClick={() => handerAddress(profile?.user?.address)}
-                      onClick={handleFormClose}
-                      size="small"
-                    >
-                      {profile?.user?.address.name === ""
-                        ? "Add Address"
-                        : "Update Address"}
+                    <DeliverDetails addressDetails={address} isAccount={true} />
+                    <Button onClick={handleFormClose} size="small">
+                      {address.name === "" ? "Add Address" : "Update Address"}
                     </Button>
                   </div>
                 </div>
@@ -293,7 +354,8 @@ export default function Account() {
       <AddressForm
         isFormOpen={isFormOpen}
         handleFormClose={handleFormClose}
-        address={profile?.user?.address}
+        address={address}
+        updateProfile={updateProfile}
       />
     </div>
   );
