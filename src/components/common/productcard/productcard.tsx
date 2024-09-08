@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Rate } from "antd";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { FcLike } from "react-icons/fc";
@@ -9,11 +9,15 @@ import isMobile from "@/utils/client/isMobile";
 import { FaRegHeart } from "react-icons/fa6";
 import { useAuthData } from "@/service/Auth";
 import Image from "next/image";
-const ProductCard = ({ product, user }) => {
+import { Product } from "@/types/types";
+const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
   const [islike, setLslike] = useState(false);
   const { Postwishlist } = useAuthData();
 
-  const handleAddwishlist = async (event, id) => {
+  const handleAddwishlist = async (
+    event: React.MouseEvent<HTMLSpanElement>,
+    id: string
+  ) => {
     event.stopPropagation();
     setLslike(!islike);
     try {
@@ -24,7 +28,7 @@ const ProductCard = ({ product, user }) => {
   };
   const router = useRouter();
   const Mobile = isMobile();
-  const Productdetails = (id) => {
+  const Productdetails = (id: string) => {
     router.push(`/product/${id}`);
   };
 

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Carousel, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useAuthData } from "@/service/Auth";
+import { ICarousel } from "@/types/types";
 
 const Homecarousel = () => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<ICarousel[]>([]);
   const { getcarousel } = useAuthData();
   useEffect(() => {
     fetchImages();

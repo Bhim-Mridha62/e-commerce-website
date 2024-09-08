@@ -4,9 +4,10 @@ import ProductCard from "../common/productcard/productcard";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
 import { useAuthData } from "@/service/Auth";
+import { Product } from "@/types/types";
 
 function Homecard() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { GetAllProduct } = useAuthData();
   const { user } = useUser();

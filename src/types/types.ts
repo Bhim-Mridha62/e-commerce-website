@@ -5,14 +5,14 @@ export interface SignInFormValues {
   password?: string;
 }
 export interface Product {
-  _id?: string;
-  title?: string;
-  price?: number;
-  discountPercentage?: number;
+  _id: string;
+  title: string;
+  price: number;
+  discountPercentage: number;
   rating?: number;
-  thumbnail?: string;
-  quantity?: number;
-  Size?: string;
+  thumbnail: string;
+  quantity: number;
+  Size: string;
 }
 
 // Define ProductData type as an array of Product objects
@@ -154,5 +154,14 @@ export interface INamePicId {
 export interface NamePicId {
   name: string;
   profile_pic: string;
+  _id: string;
+}
+export interface Icategory {
+  _id?: string;
+  image?: string;
+  category?: string;
+}
+export interface ICarousel {
+  imageUrl: string;
   _id: string;
 }
