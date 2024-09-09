@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Empty, Result } from "antd";
+import { Button, Result } from "antd";
 const NoResults = () => {
   return (
     <div className="">

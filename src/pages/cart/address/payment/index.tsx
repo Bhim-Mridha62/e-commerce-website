@@ -25,9 +25,12 @@ const PaymentOptions = () => {
   const { postorder } = useAuthData();
   const router = useRouter();
   const { data, address } = router.query;
-  const priceDetails = useMemo(() => decodeData(data), [data]);
+  const priceDetails = useMemo(() => decodeData(data as string), [data]);
 
-  const decodedAddressDetails = useMemo(() => decodeData(address), [address]);
+  const decodedAddressDetails = useMemo(
+    () => decodeData(address as any),
+    [address]
+  );
   const [addressDetails, setAddressDetails] = useState(decodedAddressDetails);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ const PaymentOptions = () => {
     setIsModalVisible(!isModalVisible);
   };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (values: any) => {
     setAddressDetails(values);
     setIsModalVisible(false);
 
@@ -102,13 +105,15 @@ const PaymentOptions = () => {
       setIsSubmitting(false);
     }
   };
+  //@ts-ignore
   const openNotificationWithIcon = (type, message, description) => {
+    //@ts-ignore
     notification[type]({
       message: message,
       description: description,
     });
   };
-  const HandelPaymentOption = (e) => {
+  const HandelPaymentOption = (e: any) => {
     setPayment(e?.target?.value);
   };
   return (

@@ -2,7 +2,7 @@ import { Facebook, Google } from "@/utils/client/svg-icon";
 import { Button, Divider, message } from "antd";
 import {
   FacebookAuthProvider,
-  GoogleAuthProvider,
+  // GoogleAuthProvider,
   getAuth,
   signInWithPopup,
 } from "firebase/auth";
@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import { app } from "../../../firebaseConfig";
 import { useAuthData } from "@/service/Auth";
 import { useUser } from "@/context/authContext";
-import axios from "axios";
 const auth = getAuth(app);
 
 const AutoSignInUp = () => {
@@ -26,6 +25,7 @@ const AutoSignInUp = () => {
       CreateUser(code);
     }
     if (router) {
+      //@ts-ignore
       setIsSignIn(router.pathname === "/sign-in");
     }
   }, [router]);
@@ -69,24 +69,24 @@ const AutoSignInUp = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Facebook Access Token.
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        // const credential = FacebookAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
         console.log("User signed in with Facebook:", user);
       })
       .catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
+        // const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.email;
+        // const email = error.email;
         // The AuthCredential type that was used.
-        const credential = FacebookAuthProvider.credentialFromError(error);
+        // const credential = FacebookAuthProvider.credentialFromError(error);
         console.error("Error during Facebook sign-in:", errorMessage);
       });
   };
-  const CreateUser = async (token) => {
+  const CreateUser = async (token: any) => {
     try {
       const res = await PostCreateUser({ token: token });
       if (res?.status == 200 || res?.status == 201) {
@@ -99,7 +99,7 @@ const AutoSignInUp = () => {
         UpdateUser();
         router.push("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       message.error(error?.response?.data?.message);
     }
   };

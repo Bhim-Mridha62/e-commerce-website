@@ -1,10 +1,10 @@
 import Account from "@/components/Account/account";
 import NotLoggedIn from "@/components/Account/noLoggedIn";
-import { useUser } from "@/context/authContext";
+// import { useUser } from "@/context/authContext";
 import React, { useEffect, useState } from "react";
 
 function index() {
-  const { user } = useUser();
+  // const { user } = useUser();
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);

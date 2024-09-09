@@ -159,7 +159,7 @@ export interface NamePicId {
 export interface Icategory {
   _id?: string;
   image?: string;
-  category?: string;
+  category: string;
 }
 export interface ICarousel {
   imageUrl: string;

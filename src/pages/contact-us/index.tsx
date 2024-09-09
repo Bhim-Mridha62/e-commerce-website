@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 // import Contact from "@/components/ContactUs/contact";
 import dynamic from "next/dynamic";
 import Loading from "@/components/Loading/Loading";
 const Contact = dynamic(() => import("@/components/ContactUs/contact"), {
-  loading:()=> <Loading />,
+  loading: () => <Loading />,
 });
 function Contactus() {
   return (

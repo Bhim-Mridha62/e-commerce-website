@@ -6,10 +6,11 @@ import PriceDetails from "@/components/common/PriceDetails";
 import { Collapse } from "antd";
 import { useRouter } from "next/router";
 import { decodeData, encodeData } from "@/utils/client/encoding";
+import { IAddress } from "@/types/types";
 const index = () => {
   const router = useRouter();
   const { data } = router.query;
-  const priceDetails = decodeData(data);
+  const priceDetails = decodeData(data as string);
   const initialValues = {
     name: "",
     phone: "",
@@ -21,11 +22,11 @@ const index = () => {
     buildingAddress: "",
   };
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values: IAddress, { resetForm }: any) => {
     const addressData = {
       ...values,
     };
-    const encodedAddressData = encodeData(addressData);
+    const encodedAddressData = encodeData(addressData as string);
     router.push(
       `/cart/address/payment?data=${data}&address=${encodedAddressData}`
     );

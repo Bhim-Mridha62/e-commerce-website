@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ProductCard from "../common/productcard/productcard";
 import NoResults from "./noResults";
 

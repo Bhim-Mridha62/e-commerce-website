@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuthData } from "@/service/Auth";
+import { message } from "antd";
+import { Icategory } from "@/types/types";
 function index() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Icategory[]>([]);
   const router = useRouter();
   const { getCategories } = useAuthData();
   useEffect(() => {
@@ -17,7 +19,7 @@ function index() {
       message.error("Error fetching categories");
     }
   };
-  const handleCategory = (category) => {
+  const handleCategory = (category: string) => {
     console.log(category, "category");
     router.push(`/category/${category}`);
   };

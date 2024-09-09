@@ -58,25 +58,29 @@ const SignUpForm = () => {
   });
 
   const setupRecaptcha = () => {
+    //@ts-ignore
     if (!window?.recaptchaVerifier) {
+      //@ts-ignore
       window.recaptchaVerifier = new RecaptchaVerifier(
         auth,
         "recaptcha-container",
         {
           size: "invisible",
-          callback: (response) => {
+          callback: () => {
             handleSendCode();
           },
           "expired-callback": () => {
             // Reset reCAPTCHA
           },
         },
+        //@ts-ignore
         auth
       );
     }
   };
   const handleSendCode = () => {
     setupRecaptcha();
+    //@ts-ignore
     const appVerifier = window?.recaptchaVerifier;
     const phoneNumber = `+91${formik?.values?.emailOrPhone}`;
     console.log(phoneNumber, "phoneNumber");
