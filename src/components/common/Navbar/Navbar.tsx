@@ -184,7 +184,10 @@ const Navbar: React.FC = () => {
           </div>
           <div className="flex gap-1 md:gap-5">
             {user ? (
-              <span onClick={HandeLogin} className="cursor-pointer">
+              <span
+                onClick={HandeLogin}
+                className="cursor-pointer md:block hidden"
+              >
                 Logout
               </span>
             ) : (
@@ -236,7 +239,7 @@ const Navbar: React.FC = () => {
         width={isMobile() ? 290 : 378}
         onClose={opensidebar}
         open={visible}
-        extra={<Image src="/logo.png" alt="logo" height={20} width={20} />}
+        extra={<Image src="/logo.png" alt="logo" height={80} width={80} />}
       >
         <div>
           <SidebarContent opensidebar={opensidebar} />
