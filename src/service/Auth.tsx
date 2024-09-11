@@ -129,8 +129,8 @@ const deleteImage = async (url: string) => {
 const postContactUs = async (data: IContactUs) => {
   return Apimethod(`/api/contact-us`, "post", data, false);
 };
-const getProfile = async () => {
-  return Apimethod(`/api/profile`, "get", {}, false);
+const getProfile = async (q: number = 0) => {
+  return Apimethod(`/api/profile?isAddress=${q}`, "get", {}, false);
 };
 const putProfile = async (data: any) => {
   return Apimethod(`/api/profile`, "put", data, false);

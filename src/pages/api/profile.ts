@@ -26,9 +26,16 @@ export default async function handler(
 }
 async function getProfile(req: any, res: NextApiResponse) {
   const { userId } = req;
+  const { isAddress } = req.query;
   try {
     if (!userId) {
       return res.status(404).json({ message: "User Not Found" });
+    }
+
+    // isAddress if 1 return only address for Address auto field in order page
+    if (Number(isAddress)) {
+      const Address = await User.findById(userId).select("address");
+      return res.status(200).send(Address);
     }
 
     // Get total count of orders
