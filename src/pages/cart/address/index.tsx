@@ -60,8 +60,9 @@ const index = () => {
     enableReinitialize: true,
   });
   return (
-    <div className="m-4">
+    <div className="md:w-[70%] mx-auto mt-7 px-4">
       <Collapse
+        expandIconPosition="end"
         ghost
         items={[
           {
@@ -73,20 +74,22 @@ const index = () => {
           },
         ]}
       />
-      <p className="text-xl text-black font-bold mb-1">
-        Enter Delivery Address
+      <p className="text-xl text-black font-bold mb-1">Delivery Details</p>
+      <p className="text-gray-600">
+        Please provide your delivery information to ensure a smooth shopping
+        experience.
       </p>
       <form onSubmit={formik.handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="name" className="text-gray-700 font-semibold">
-              <span className="text-red-500">*</span> Name
+              <span className="text-red-500">*</span> Full Name
             </label>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="Enter your name"
+              placeholder="Enter your full name"
               className="border border-gray-300 text-black rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -253,12 +256,31 @@ const index = () => {
             </div>
           ) : null}
         </div>
-        <div className="flex justify-center mt-6">
+        <div className="bg-blue-50 p-4 rounded-lg mb-4">
+          <h3 className="text-lg font-semibold text-blue-800 mb-2">
+            Delivery Tips
+          </h3>
+          <ul className="list-disc list-inside text-sm text-blue-700 space-y-1">
+            <li>Double-check your PIN code to ensure accurate delivery.</li>
+            <li>
+              Include a landmark near your location for easier navigation.
+            </li>
+            <li>
+              If you're in an apartment, mention the floor and flat number.
+            </li>
+            <li>Provide an alternate phone number for backup contact.</li>
+          </ul>
+        </div>
+        <div className="flex items-center md:flex-row flex-col md:gap-0 gap-4 justify-between">
+          <p className="text-sm text-gray-500 mr-auto">
+            Fields marked with <span className="text-red-500">*</span> are
+            required
+          </p>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
           >
-            Submit
+            Save Address
           </button>
         </div>
       </form>
