@@ -1,14 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import {
-  Radio,
-  Space,
-  Divider,
-  Collapse,
-  Modal,
-  message,
-  notification,
-  Button,
-} from "antd";
+import { Collapse, Modal, message, notification } from "antd";
 import PriceDetails from "@/components/common/PriceDetails";
 import DeliverDetails from "@/components/common/DeliverDetails";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -17,16 +8,20 @@ import { decodeData, encodeData } from "@/utils/client/encoding";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
 import { districts } from "@/utils/client/districts";
 import { useAuthData } from "@/service/Auth";
+import { FaCreditCard, FaLandmark, FaClock } from "react-icons/fa";
+import { GiSmartphone } from "react-icons/gi";
+import { CashOnDelivery } from "@/utils/client/svg-icon";
+import { useUser } from "@/context/authContext";
 
 const PaymentOptions = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [payment, setPayment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { postorder } = useAuthData();
   const router = useRouter();
   const { data, address } = router.query;
   const priceDetails = useMemo(() => decodeData(data as string), [data]);
-
+  const [selectedOption, setSelectedOption] = useState("");
+  const { user } = useUser();
   const decodedAddressDetails = useMemo(
     () => decodeData(address as any),
     [address]
@@ -58,7 +53,11 @@ const PaymentOptions = () => {
     });
   };
   const HandelConfirmOrder = async () => {
-    if (payment != "cod") {
+    if (!user) {
+      notification.error({ message: "Please login to proceed." });
+      return;
+    }
+    if (selectedOption != "cod") {
       return message.info("Please select a payment method");
     }
     setIsSubmitting(true);
@@ -113,11 +112,41 @@ const PaymentOptions = () => {
       description: description,
     });
   };
-  const HandelPaymentOption = (e: any) => {
-    setPayment(e?.target?.value);
-  };
+  const paymentMethods = [
+    {
+      id: "upi",
+      name: "Pay by any UPI app",
+      icon: <GiSmartphone className="w-6 h-6" />,
+      description: "Fast and secure payment using your preferred UPI app",
+    },
+    {
+      id: "card",
+      name: "Credit / Debit / ATM Card",
+      icon: <FaCreditCard className="w-6 h-6" />,
+      description: "Add and secure cards as per RBI guidelines",
+    },
+    {
+      id: "netbanking",
+      name: "Net Banking",
+      icon: <FaLandmark className="w-6 h-6" />,
+      description:
+        "This instrument has low success, use UPI or cards for better experience",
+    },
+    {
+      id: "emi",
+      name: "EMI (Easy Installments)",
+      icon: <FaClock className="w-6 h-6" />,
+      description: "Convert your purchase into easy monthly installments",
+    },
+    {
+      id: "cod",
+      name: "Cash on Delivery",
+      icon: <CashOnDelivery className="w-8 h-8" />,
+      description: "Pay when your order is delivered",
+    },
+  ];
   return (
-    <>
+    <div className="md:w-[70%] mx-auto">
       <Collapse
         ghost
         items={[
@@ -150,43 +179,75 @@ const PaymentOptions = () => {
         ]}
       />
       <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold mb-4 text-black">Payment Options</h2>
-        <Radio.Group className="w-full" onChange={HandelPaymentOption}>
-          <Space direction="vertical" className="w-full">
-            <Radio value="upi" disabled className="w-full">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <span>Pay by any UPI app</span>
-                </div>
+        <div className="mb-6 space-y-2">
+          <h2 className="text-2xl font-bold text-gray-800">Payment Options</h2>
+          <p className="text-gray-600">
+            Choose your preferred payment method to complete your purchase.
+          </p>
+        </div>
+        <div className="space-y-4">
+          {paymentMethods.map((method) => (
+            <label
+              key={method.id}
+              className={`flex items-center p-2 md:p-4 border rounded-lg cursor-pointer transition-colors ${
+                selectedOption === method.id
+                  ? selectedOption != "cod"
+                    ? "border-red-500 bg-red-50"
+                    : "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="radio"
+                name="paymentOption"
+                value={method.id}
+                checked={selectedOption === method.id}
+                onChange={() => setSelectedOption(method.id)}
+                className="hidden"
+              />
+              <div className="flex-shrink-0 mr-4 text-gray-500">
+                {method.icon}
               </div>
-            </Radio>
-            <Divider />
-            <Radio disabled value="card" className="w-full">
-              Credit / Debit / ATM Card
-              <span className="text-gray-500 block">
-                Add and secure cards as per RBI guidelines
-              </span>
-            </Radio>
-            <Divider />
-            <Radio disabled value="netbanking" className="w-full">
-              Net Banking
-              <span className="text-gray-500 block">
-                This instrument has low success, use UPI or cards for better
-                experience
-              </span>
-            </Radio>
-            <Divider />
-            <Radio disabled value="emi" className="w-full">
-              EMI (Easy Installments)
-            </Radio>
-            <Divider />
-            <Radio value="cod" className="w-full">
-              Cash on Delivery
-            </Radio>
-          </Space>
-        </Radio.Group>
+              <div className="flex-grow">
+                <div className="font-medium text-gray-700">{method.name}</div>
+                <div className="text-sm text-gray-500">
+                  {method.description}
+                </div>
+                {method.id != "cod" ? (
+                  <div className="text-red-500">Not available</div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </label>
+          ))}
+        </div>
       </div>
-      <div className="text-center my-5">
+      <div className="mt-8 space-y-4 px-4 md:px-0">
+        <p className="text-sm text-gray-600">
+          By selecting a payment method, you agree to our{" "}
+          <a href="#" className="text-blue-600 hover:underline">
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a href="#" className="text-blue-600 hover:underline">
+            Privacy Policy
+          </a>
+          .
+        </p>
+        <button
+          className={`mx-auto py-3 px-4 ${
+            selectedOption !== "cod"
+              ? "bg-gray-500 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              : "bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          }`}
+          onClick={HandelConfirmOrder}
+          disabled={isSubmitting || selectedOption !== "cod"}
+        >
+          CONFIRM ORDER
+        </button>
+      </div>
+      {/* <div className="text-center my-5">
         <Button
           onClick={HandelConfirmOrder}
           disabled={isSubmitting}
@@ -194,7 +255,7 @@ const PaymentOptions = () => {
         >
           CONFIRM ORDER
         </Button>
-      </div>
+      </div> */}
       {addressDetails && (
         <Modal
           title="Update Delivery Address"
@@ -384,7 +445,7 @@ const PaymentOptions = () => {
           </Formik>
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 

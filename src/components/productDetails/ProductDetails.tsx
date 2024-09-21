@@ -9,6 +9,7 @@ import {
   Select,
   Spin,
   message,
+  notification,
 } from "antd";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { BsCurrencyRupee } from "react-icons/bs";
@@ -61,6 +62,10 @@ const ProductDetail = () => {
     setCurrentImageIndex(index);
   };
   const handleBuyNow = () => {
+    if (!user) {
+      notification.error({ message: "Please login to proceed." });
+      return;
+    }
     if (!selectedSize) {
       return message.info("Please Select Size");
     }
@@ -79,6 +84,10 @@ const ProductDetail = () => {
   };
   const HandelAddToCart = async (id: string) => {
     try {
+      if (!user) {
+        notification.error({ message: "Please login to proceed." });
+        return;
+      }
       if (!selectedSize) {
         message.info("Please Select Size");
       } else {
