@@ -69,7 +69,9 @@ const Navbar: React.FC = () => {
   };
 
   useEffect(() => {
-    cartCountRef.current = UpdateCartCount;
+    if (user) {
+      cartCountRef.current = UpdateCartCount;
+    }
   }, [cartCountRef]);
 
   useEffect(() => {
