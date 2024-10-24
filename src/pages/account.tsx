@@ -1,10 +1,10 @@
 import Account from "@/components/Account/account";
 import NotLoggedIn from "@/components/Account/noLoggedIn";
-// import { useUser } from "@/context/authContext";
+import { useUser } from "@/context/authContext";
 import React, { useEffect, useState } from "react";
 
 function index() {
-  // const { user } = useUser();
+  const { user } = useUser();
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -14,7 +14,7 @@ function index() {
     return null; // Ensures client-side rendering to avoid mismatch
   }
 
-  return <div>{true ? <Account /> : <NotLoggedIn />}</div>;
+  return <div>{user ? <Account /> : <NotLoggedIn />}</div>;
 }
 
 export default index;
