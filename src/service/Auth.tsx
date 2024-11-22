@@ -1,21 +1,21 @@
 import { IContactUs } from "@/types/types";
 import Axios from "@/utils/client/axios";
-// import { message } from "antd";
+import { message } from "antd";
 const Cookie = () => {
   let auth = window.localStorage.getItem("Authorization");
   return {
     Authorization: auth && `Bearer ${auth ? auth : ""}`,
   };
 };
-// const Errors = (res: any) => {
-//   if (res?.status == 401) {
-//     window.localStorage.clear();
-//   } else if (res?.status == 409 || res?.status == 422 || res?.status == 404) {
-//     if (res?.data?.message !== "Products not found") {
-//       message.error(res?.data?.message);
-//     }
-//   }
-// };
+const Errors = (res: any) => {
+  if (res?.status == 401) {
+    window.localStorage.clear();
+  } else if (res?.status == 409 || res?.status == 422 || res?.status == 404) {
+    if (res?.data?.message !== "Products not found") {
+      message.error(res?.data?.message);
+    }
+  }
+};
 const Apimethod = async (
   url: string,
   method: string,
@@ -31,7 +31,7 @@ const Apimethod = async (
         if (response?.status == 401) {
           window.localStorage.clear();
         }
-        return response;
+        Errors(response);
       })
     : await Axios.request({
         url: url ? url : "",
@@ -42,7 +42,7 @@ const Apimethod = async (
         if (response?.status == 401) {
           window.localStorage.clear();
         }
-        return response;
+        Errors(response);
       });
   return data;
 };
