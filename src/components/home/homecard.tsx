@@ -9,6 +9,7 @@ import { Product } from "@/types/types";
 function Homecard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [productLength, setProductLength] = useState<number>(0);
   const { GetAllProduct } = useAuthData();
   const { user } = useUser();
   const [skip, setSkip] = useState(0);
@@ -22,6 +23,9 @@ function Homecard() {
           ...prevProducts,
           ...response?.data?.data,
         ]);
+        if (products.length === 0) {
+          setProductLength(response?.data?.length);
+        }
         setLoading(false);
       }
     } catch (error) {
@@ -31,7 +35,9 @@ function Homecard() {
     }
   }
   useEffect(() => {
-    fetchData(); // Initial data fetch
+    if (products.length < productLength || products.length === 0) {
+      fetchData(); // Initial data fetch
+    }
 
     const handleScroll = () => {
       const { scrollTop, clientHeight, scrollHeight } =
