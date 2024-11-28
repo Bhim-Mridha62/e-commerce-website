@@ -57,3 +57,12 @@ input[type="number"]::-webkit-outer-spin-button {
 .ant-list-item-meta-title {
   margin-block-end: 0px !important;
 }
+.AccountSection-Dropdown > .ant-dropdown-menu {
+  box-shadow: 0px 0px 15px 2px #c3bfbf;
+}
+.AccountSection-Dropdown > .ant-dropdown-menu > .ant-dropdown-menu-item:hover {
+  color: var(--theme-red);
+}
+.AccountSection-Dropdown > .ant-dropdown-menu .Active_Navbar_Menu {
+  color: var(--theme-red) !important;
+}

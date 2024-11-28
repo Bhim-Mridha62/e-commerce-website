@@ -1,6 +1,7 @@
 import { useUser } from "@/context/authContext";
 import { Dropdown, MenuProps } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { CiLogout } from "react-icons/ci";
 import { FaUserShield } from "react-icons/fa";
@@ -12,95 +13,95 @@ import { SlEarphonesAlt } from "react-icons/sl";
 
 const AccountSection = () => {
   const { user, HandelLogout } = useUser();
-
-  const items: MenuProps["items"] = [
+  const { pathname } = useRouter();
+  const menuData = [
     {
       key: "1",
-      label: (
-        <Link href="/" className="flex items-center gap-2">
-          <IoHomeOutline className="text-lg" />
-          <span>Home</span>
-        </Link>
-      ),
+      href: "/",
+      icon: <IoHomeOutline className="text-lg" />,
+      label: "Home",
     },
     {
       key: "2",
-      label: (
-        <Link href="/account" className="flex items-center gap-2">
-          <FiUser className="text-lg" />
-          <span>Manage My Account</span>
-        </Link>
-      ),
+      href: "/account",
+      icon: <FiUser className="text-lg" />,
+      label: "Manage My Account",
     },
     {
       key: "3",
-      label: (
-        <Link href="/cart" className="flex items-center gap-2">
-          <IoCartOutline className="text-lg" />
-          <span>Cart</span>
-        </Link>
-      ),
+      href: "/cart",
+      icon: <IoCartOutline className="text-lg" />,
+      label: "Cart",
     },
     {
       key: "4",
-      label: (
-        <Link href="/myorder" className="flex items-center gap-2">
-          <LiaShoppingBagSolid className="text-lg" />
-          <span>My Order</span>
-        </Link>
-      ),
+      href: "/myorder",
+      icon: <LiaShoppingBagSolid className="text-lg" />,
+      label: "My Order",
     },
     {
       key: "5",
-      label: (
-        <Link href="/mywishlist" className="flex items-center gap-2">
-          <IoMdHeartEmpty className="text-lg" />
-          <span>My Wishlist</span>
-        </Link>
-      ),
+      href: "/mywishlist",
+      icon: <IoMdHeartEmpty className="text-lg" />,
+      label: "My Wishlist",
     },
     {
       key: "6",
-      label: (
-        <Link href="/contact-us" className="flex items-center gap-2">
-          <SlEarphonesAlt className="" />
-          <span>Contact Us</span>
-        </Link>
-      ),
+      href: "/contact-us",
+      icon: <SlEarphonesAlt />,
+      label: "Contact Us",
     },
     {
       key: "7",
+      href: "/sign-in",
+      icon: <FaUserShield />,
+      label: "Sign In",
       className: user ? "!hidden" : "flex",
-      label: (
-        <Link href="/sign-in" className="flex items-center gap-2">
-          <FaUserShield />
-          <span>Sign In</span>
-        </Link>
-      ),
     },
     {
       key: "8",
+      href: "/sign-up",
+      icon: <IoCreateOutline />,
+      label: "Sign Up",
       className: user ? "!hidden" : "flex",
-      label: (
-        <Link href="/sign-up" className="flex items-center gap-2">
-          <IoCreateOutline />
-          <span>Sign Up</span>
-        </Link>
-      ),
-    },
-    {
-      key: "9",
-      className: user ? "flex" : "!hidden",
-      label: (
-        <div onClick={HandelLogout} className="flex items-center gap-2">
-          <CiLogout className="text-lg" />
-          <span>Logout</span>
-        </div>
-      ),
     },
   ];
+  const logoutItem = {
+    key: "9",
+    label: (
+      <div onClick={HandelLogout} className="flex items-center gap-2">
+        <CiLogout className="text-lg" />
+        <span>Logout</span>
+      </div>
+    ),
+    className: user ? "flex" : "!hidden",
+  };
+  const items: MenuProps["items"] = [
+    ...menuData.map(({ key, href, icon, label, className }) => ({
+      key,
+      className,
+      label: (
+        <Link
+          href={href}
+          className={`flex items-center gap-2 ${
+            pathname === href ? "Active_Navbar_Menu" : ""
+          }`}
+        >
+          {icon}
+          <span>{label}</span>
+        </Link>
+      ),
+    })),
+    logoutItem, // Add logout item separately
+  ];
+  console.log(pathname);
+
   return (
-    <Dropdown className="flex" menu={{ items }}>
+    <Dropdown
+      className="flex bg-black"
+      overlayClassName="AccountSection-Dropdown"
+      menu={{ items }}
+    >
       <FiUser
         // onClick={opensidebar}
         className="text-2xl msm:text-3xl cursor-pointer text-theme-white bg-theme-red rounded-full p-[6px]"

@@ -158,11 +158,21 @@ const Navbar: React.FC = () => {
             </p>
           </div>
           <div className="flex gap-3 lg:gap-10 text-sm lg:text-base">
-            <Link href="/" className=" hidden md:flex">
+            <Link
+              href="/"
+              className={`hover:text-theme-red ${
+                router.pathname === "/" ? "text-theme-red" : ""
+              }`}
+            >
               Home
             </Link>
             {!user && (
-              <Link href="/sign-in" className="hidden md:flex">
+              <Link
+                href="/sign-in"
+                className={`hover:text-theme-red ${
+                  router.pathname === "/sign-in" ? "text-theme-red" : ""
+                }`}
+              >
                 Sign In
               </Link>
             )}
@@ -189,7 +199,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-6">
             {!isMobile && (
               <Badge
-                className="text-theme-red"
+                color="var(--theme-blue)"
                 count={cartLength}
                 overflowCount={9}
               >
