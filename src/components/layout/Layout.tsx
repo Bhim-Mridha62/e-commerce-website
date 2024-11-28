@@ -1,15 +1,15 @@
 import { UserProvider } from "@/context/authContext";
 import dynamic from "next/dynamic";
 import React from "react";
-import Navbar from "./common/Navbar/Navbar";
+import Navbar from "./Navbar/Navbar";
 import { Ichildren } from "@/types/types";
-const Footer = dynamic(() => import("./common/Footer/Footer"));
+const Footer = dynamic(() => import("./Footer/Footer"), { ssr: false });
 const Layout: React.FC<Ichildren> = ({ children }) => {
   return (
-    <div>
+    <div className="text-theme-black">
       <UserProvider>
         <Navbar />
-        <main className="min-h-64">{children}</main>
+        <main className="min-h-[50vh]">{children}</main>
         <Footer />
       </UserProvider>
     </div>

@@ -26,8 +26,16 @@ export const UserProvider = ({ children }: any) => {
       setUser(storedUser);
     }
   };
+  const HandelLogout = () => {
+    if (user && typeof window !== "undefined") {
+      localStorage?.clear();
+      window?.location?.reload();
+    }
+  };
   return (
-    <UserContext.Provider value={{ user, cartCountRef, UpdateUser }}>
+    <UserContext.Provider
+      value={{ user, cartCountRef, UpdateUser, HandelLogout }}
+    >
       {children}
     </UserContext.Provider>
   );

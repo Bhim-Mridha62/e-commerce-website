@@ -31,6 +31,7 @@ export interface UserContextType {
   // cartCountRef: RefObject<HTMLDivElement | undefined>;
   cartCountRef: React.MutableRefObject<(() => void) | null>;
   UpdateUser: () => void;
+  HandelLogout: () => void;
 }
 export interface AutoCompleteOptions {
   label: string;
