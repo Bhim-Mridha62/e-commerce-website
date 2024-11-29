@@ -24,7 +24,6 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const { cartCountRef, user } = useUser();
   const { AllCartData, getSearch } = useAuthData();
-  const [lastScrollPosition, setLastScrollPosition] = useState<number>(0);
   const isMobile = useIsMobile();
   const [autoCompleteOptions, setAutoCompleteOptions] = useState<
     IAutoComplete[]
@@ -55,17 +54,6 @@ const Navbar: React.FC = () => {
       cartCountRef.current = UpdateCartCount;
     }
   }, [cartCountRef]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollPosition =
-        window.pageYOffset || document.documentElement?.scrollTop;
-      setLastScrollPosition(currentScrollPosition);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollPosition]);
 
   const handleSearchEnter = async (
     e: React.KeyboardEvent<HTMLInputElement>
