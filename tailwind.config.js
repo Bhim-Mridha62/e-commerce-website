@@ -15,6 +15,7 @@ module.exports = {
         "theme-red": "#DB4444",
         "theme-border": "#d9d9d9",
         "theme-green": "#38CB89",
+        "theme-text-grey": "#6b7280",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

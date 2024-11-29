@@ -1,0 +1,17 @@
+import { IHomePageSectionHeading } from "@/types/types";
+import React from "react";
+const HomePageSectionHeading: React.FC<IHomePageSectionHeading> = ({
+  className,
+}) => {
+  return (
+    <div className={`${className} mb-8`}>
+      <p className="text-theme-red text-sm font-semibold flex items-center gap-2 mb-2">
+        <span className="bg-theme-red h-[38px] inline-flex w-[13px] rounded"></span>{" "}
+        Featured
+      </p>
+      <h2 className="text-2xl md:text-3xl font-bold">New Arrival</h2>
+    </div>
+  );
+};
+
+export default HomePageSectionHeading;
