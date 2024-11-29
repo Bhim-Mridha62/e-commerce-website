@@ -6,7 +6,6 @@ import {
   Menu,
   Modal,
   Rate,
-  Select,
   Spin,
   message,
   notification,
@@ -20,11 +19,12 @@ import { FaRegHeart } from "react-icons/fa6";
 import { useUser } from "@/context/authContext";
 import { encodeData } from "@/utils/client/encoding";
 import { DownOutlined } from "@ant-design/icons";
+import SizeSelector from "./sizeSelector";
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [Product, setProduct] = useState<any>([]);
   const [quantity, setQuantity] = useState<any>(1);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedSize, setSelectedSize] = useState<string>("");
   const [islike, setLslike] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -198,22 +198,12 @@ const ProductDetail = () => {
               <p className="text-lg text-gray-700 mb-2">
                 {Product?.description}
               </p>
-              <div className="">
+              <div className="flex gap-2 my-2">
                 Size :{" "}
-                <Select
-                  style={{ width: 200 }}
-                  placeholder="Select Size"
-                  optionFilterProp="children"
-                  value={selectedSize}
-                  onChange={(value) => setSelectedSize(value)}
-                  options={[
-                    { value: "S", label: "S" },
-                    { value: "M", label: "M" },
-                    { value: "L", label: "L" },
-                    { value: "XL", label: "XL" },
-                    { value: "2XL", label: "2XL" },
-                    { value: "3XL", label: "3XL" },
-                  ]}
+                <SizeSelector
+                  selectedSize={selectedSize}
+                  sizes={Product?.sizes}
+                  setSelectedSize={setSelectedSize}
                 />
               </div>
               <h2 className="text-2xl font-bold mb-2">{Product?.title}</h2>
