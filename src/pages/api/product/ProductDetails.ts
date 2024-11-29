@@ -13,7 +13,9 @@ export default async function handler(
   } else {
     try {
       const { id } = req.query;
-      const data = await Product.findById(id).select("-reviews -__v");
+      const data = await Product.findById(id).select(
+        "-reviews -__v -Originalprice"
+      );
       if (data) {
         res.status(200).json({ data: data });
       } else {
