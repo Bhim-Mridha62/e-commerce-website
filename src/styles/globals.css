@@ -68,3 +68,17 @@ input[type="number"]::-webkit-outer-spin-button {
 .AccountSection-Dropdown > .ant-dropdown-menu .Active_Navbar_Menu {
   color: var(--theme-red) !important;
 }
+.custom-slide {
+  width: 200px !important; /* Fixed width for each slide */
+  height: 300px;
+}
+.swiper-navigation-buttons > .swiper-button-prev::after,
+.swiper-button-next::after {
+  content: "" !important;
+}
+@media (max-width: 768px) {
+  .custom-slide {
+    width: 140px !important; /* Fixed width for each slide on smaller screens */
+    height: 250px;
+  }
+}
