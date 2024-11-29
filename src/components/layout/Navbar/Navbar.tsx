@@ -184,17 +184,19 @@ const Navbar: React.FC = () => {
               label: renderOption(item),
             }))}
             onSelect={(value) => setInputValue(value)}
-            className="w-[70%] md:w-[30%] bg-theme-grey navbar-autoComplete-input"
+            className="w-[70%] md:w-[30%] relative"
             // filterOption={filterOption}
           >
-            <Input
-              value={inputValue}
-              prefix={<IoIosSearch className="inline-flex text-xl" />}
-              onChange={(e) => setInputValue(e?.target?.value)}
-              placeholder="Search for products, brands and more"
-              className="flex"
-              onKeyDown={handleSearchEnter}
-            />
+            <div className="relative w-full">
+              <input
+                value={inputValue}
+                onChange={(e) => setInputValue(e?.target?.value)}
+                placeholder="Search for products, brands and more"
+                className="flex bg-theme-grey py-2 pl-2 pr-7 md:pr-10 outline-none rounded-md w-full"
+                onKeyDown={handleSearchEnter}
+              />
+              <IoIosSearch className="absolute right-1 md:right-3 top-1/2 transform -translate-y-1/2 text-xl text-gray-500 pointer-events-none" />
+            </div>
           </AutoComplete>
           <div className="flex items-center gap-6">
             {!isMobile && (
