@@ -15,7 +15,7 @@ function Categories() {
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
-      setCategories(response.data.data);
+      setCategories(response?.data?.data);
     } catch (error) {
       message.error("Error fetching categories");
     }
