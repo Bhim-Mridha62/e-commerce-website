@@ -168,4 +168,6 @@ export interface ICarousel {
 }
 export interface IHomePageSectionHeading {
   className: string;
+  bottomHeading: string;
+  topHeading: string;
 }
