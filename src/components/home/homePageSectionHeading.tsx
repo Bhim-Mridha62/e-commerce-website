@@ -11,7 +11,7 @@ const HomePageSectionHeading: React.FC<IHomePageSectionHeading> = ({
         <span className="bg-theme-red h-[38px] inline-flex w-[13px] rounded"></span>{" "}
         {topHeading}
       </p>
-      <h2 className="text-2xl md:text-3xl font-bold"> {bottomHeading}</h2>
+      <h2 className="text-xl md:text-3xl font-bold"> {bottomHeading}</h2>
     </div>
   );
 };

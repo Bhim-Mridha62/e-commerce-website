@@ -134,10 +134,10 @@ const Navbar: React.FC = () => {
   return (
     <>
       <div
-        className={`sticky top-0 z-[999] transition-transform duration-300 ease-in-out border-b border-theme-border `}
+        className={`sticky top-0 z-[999] transition-transform duration-300 ease-in-out border-b border-theme-border bg-theme-white`}
       >
         <WelcomeSection />
-        <div className="flex items-center gap-2 justify-between h-auto p-1 md:px-10 bg-theme-white w-full md:w-[90%] mx-auto">
+        <div className="flex items-center gap-2 justify-between h-auto p-1 bg-theme-white w-full md:w-[90%] mx-auto">
           <div
             onClick={() => router.push("/")}
             className="cursor-pointer flex flex-col md:flex-row items-center md:gap-2"

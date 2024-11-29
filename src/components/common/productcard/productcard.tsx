@@ -32,7 +32,7 @@ const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
   return (
     <div
       onClick={() => Productdetails(product?._id)}
-      className="w-[200px] h-[300px] relative"
+      className="w-[140px] md:w-[200px] h-[250px] md:h-[300px] relative"
     >
       {product?.discountPercentage > 30 && (
         <span className="bg-theme-red text-theme-white rounded-tl-lg text-xs absolute left-0 top-0 py-2 px-1 rounded-br-lg">
