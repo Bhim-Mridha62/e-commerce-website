@@ -166,16 +166,6 @@ const Navbar: React.FC = () => {
             >
               Home
             </Link>
-            {!user && (
-              <Link
-                href="/sign-in"
-                className={`hover:text-theme-red ${
-                  router.pathname === "/sign-in" ? "text-theme-red" : ""
-                }`}
-              >
-                Sign In
-              </Link>
-            )}
           </div>
           <AutoComplete
             // open={false}
