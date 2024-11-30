@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Rate } from "antd";
 import { FcLike } from "react-icons/fc";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
@@ -7,6 +6,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import { useAuthData } from "@/service/Auth";
 import Image from "next/image";
 import { Product } from "@/types/types";
+import { Rating } from "@fluentui/react-rating";
 const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
   const [islike, setLslike] = useState(false);
   const { Postwishlist } = useAuthData();
@@ -64,41 +64,38 @@ const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
       <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">
         {product?.title}
       </p>
-      <p className="">
-        <Rate
-          allowHalf
-          disabled
-          className="text-base"
-          value={product?.rating}
+      <p className="flex items-center">
+        <Rating
+          size="large"
+          step={0.5}
+          className="text-theme-golden pointer-events-none cursor-default"
+          value={Number(product?.rating)}
         />
         <span className="text-theme-border px-1 rounded text-sm ml-1">
-          ({product?.rating?.toFixed(1)}★)
+          ({product?.rating}★)
         </span>
-        {/* <span className="bg-theme-green px-1 rounded text-sm ml-1">
-          {product.rating?.toFixed(1)}★
-        </span> */}
       </p>
-      <p className="flex gap-2 text-sm">
+      <p className="flex gap-1 text-xs items-center">
         <span className="text-theme-green font-semibold">
           ₹{product?.price}
         </span>
-        <del className="font-semibold text-theme-red">
-          ₹
-          {calculateDiscountedPrice(
-            product?.price,
-            product?.discountPercentage
-          )}
-        </del>
-        {/* <span className="text-theme-white bg-theme-red rounded-md text-xs px-1">
-          -{Math.round(product.discountPercentage)}%
-        </span> */}
+        {product?.discountPercentage > 0 && (
+          <>
+            <del className="font-semibold text-theme-red text-sm">
+              ₹
+              {calculateDiscountedPrice(
+                product?.price,
+                product?.discountPercentage
+              )}
+            </del>
+            {product?.discountPercentage <= 30 && (
+              <span className="bg-theme-green text-theme-white rounded px-1">
+                -{product?.discountPercentage}%
+              </span>
+            )}
+          </>
+        )}
       </p>
-      {/* <div className={stylehome.buyandadddiv}>
-        <button style={{ background: 'rgb(235 154 101)' }} onClick={() => buynowbutton({ product, count: 1 })}>Buy now</button>
-        <button onClick={() => HandelAddtoCart(product.id)} className={stylehome.Productaddbutton}>
-          Add to <RiShoppingCart2Fill />
-        </button>
-      </div> */}
     </div>
   );
 };

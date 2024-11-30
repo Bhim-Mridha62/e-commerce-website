@@ -1,5 +1,4 @@
 import { useAuthData } from "@/service/Auth";
-import { Rate } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import EmptyWishlist from "./EmptyWishlist";
@@ -7,6 +6,7 @@ import { useRouter } from "next/router";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
 import { IProduct } from "@/types/types";
+import { Rating } from "@fluentui/react-rating";
 
 const WishlistContent = () => {
   const [wishlist, setWishlist] = useState<IProduct[]>([]);
@@ -90,8 +90,17 @@ const WishlistContent = () => {
                     </div>
                   </div>
                   <div className="flex items-center mb-2">
-                    <Rate className="text-xs" value={item?.rating} disabled />
-                    <span className="ml-2 text-sm">(55)</span>
+                    <Rating
+                      size="large"
+                      step={0.5}
+                      className="text-theme-golden pointer-events-none cursor-default"
+                      value={Number(item?.rating)}
+                    />
+                    {44 > 0 && (
+                      <span className="mx-2 text-sm text-theme-blue">
+                        {`Rated by ${44} people`}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <button

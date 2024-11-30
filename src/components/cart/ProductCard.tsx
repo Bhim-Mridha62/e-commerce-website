@@ -1,14 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Input,
-  Menu,
-  Modal,
-  Rate,
-  Select,
-} from "antd";
+import { Button, Divider, Dropdown, Input, Menu, Modal, Select } from "antd";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { useState } from "react";
 import { useAuthData } from "@/service/Auth";
@@ -17,6 +8,7 @@ import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { encodeData } from "@/utils/client/encoding";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Rating } from "@fluentui/react-rating";
 //@ts-ignore
 const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState<any>(1);
@@ -146,8 +138,17 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
             </p>
             {/* <p className="mb-2">Brand: {product.brand}</p> */}
             <div className="flex items-center mb-2">
-              <Rate className="text-xs" value={product?.rating} disabled />
-              <span className="ml-2 text-sm">(55)</span>
+              <Rating
+                size="large"
+                step={0.5}
+                className="text-theme-golden pointer-events-none cursor-default"
+                value={Number(product?.rating)}
+              />
+              {44 > 0 && (
+                <span className="mx-2 text-sm text-theme-blue">
+                  {`Rated by ${44} people`}
+                </span>
+              )}
             </div>
             <div className="flex items-center mb-2">
               <span className="text-gray-500 line-through">
