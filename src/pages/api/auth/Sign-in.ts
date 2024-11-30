@@ -24,14 +24,13 @@ export default async function handler(
       return res.status(404).json({ message: "invalid Password" });
     }
     const jwtToken = CreateToken(user._id);
-    user.SecretToken = jwtToken;
     const sanitizedUser = {
       _id: user._id,
       name: user.name,
       emailOrPhone: user.emailOrPhone,
       cart: user.cart,
       wishlist: user.wishlist,
-      SecretToken: user.SecretToken,
+      SecretToken: jwtToken,
     };
     await user.save();
     res.status(201).json({ message: "Sign sucessfully", user: sanitizedUser });
