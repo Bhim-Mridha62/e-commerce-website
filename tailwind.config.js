@@ -14,7 +14,8 @@ module.exports = {
         "theme-grey": "#F5F5F5",
         "theme-red": "#DB4444",
         "theme-border": "#d9d9d9",
-        "theme-green": "#38CB89",
+        "theme-green": "#388E3C",
+        "theme-golden": "#ffa41c",
         "theme-text-grey": "#6b7280",
       },
       backgroundImage: {

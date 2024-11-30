@@ -10,7 +10,9 @@ const Categories = dynamic(
 const Homecarousel = dynamic(
   () => import("@/components/home/CarouselImage/CarouselImage")
 );
-const Homecard = dynamic(() => import("@/components/home/homecard"));
+const Homecard = dynamic(() => import("@/components/home/homecard"), {
+  ssr: false,
+});
 // const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -23,7 +25,7 @@ export default function Home() {
         {/* <Homecarousel /> */}
         {/* <Categories /> */}
         <ToDayFlashSales />
-        <Homecard />
+        {/* <Homecard /> */}
         <NewArrival />
         <FeaturesSection />
       </div>
