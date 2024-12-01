@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Divider, Select } from "antd";
+import { Button, Divider } from "antd";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { useState } from "react";
 import { useAuthData } from "@/service/Auth";
@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Rating } from "@fluentui/react-rating";
 import QuantityButton from "../productDetails/quantityButton";
+import SizeSelector from "../productDetails/sizeSelector";
 //@ts-ignore
 const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState<any>(1);
@@ -75,29 +76,18 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
           </div>
           <div className="w-3/4 pl-4">
             <h2 className="text-lg font-bold">{product?.title}</h2>
-            <p className="mb-2">
+            <div className="mb-2 flex gap-2 items-center">
               Size:{" "}
-              <Select
-                style={{ width: 130 }}
-                placeholder="Select Size"
-                optionFilterProp="children"
-                value={selectedSize}
-                onChange={(value) => {
+              <SizeSelector
+                sizes={product?.sizes}
+                selectedSize={selectedSize}
+                setSelectedSize={(value) => {
                   setSelectedSize(value),
                     UpdateProductData(value, product?._id, quantity),
                     HandelAddToCart(value, product?._id, quantity);
                 }}
-                options={[
-                  { value: "S", label: "S" },
-                  { value: "M", label: "M" },
-                  { value: "L", label: "L" },
-                  { value: "XL", label: "XL" },
-                  { value: "2XL", label: "2XL" },
-                  { value: "3XL", label: "3XL" },
-                ]}
               />
-            </p>
-            {/* <p className="mb-2">Brand: {product.brand}</p> */}
+            </div>
             <div className="flex items-center mb-2">
               <Rating
                 size="large"

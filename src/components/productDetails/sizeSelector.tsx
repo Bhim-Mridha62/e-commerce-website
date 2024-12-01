@@ -17,7 +17,6 @@ const SizeSelector: React.FC<SizeSelectorProps> = ({
       setSelectedSize(size);
     }
   };
-  console.log(selectedSize);
 
   return (
     <div className="flex space-x-3">
