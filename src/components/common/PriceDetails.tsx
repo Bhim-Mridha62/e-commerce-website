@@ -9,7 +9,7 @@ function PriceDetails({ productData }: { productData: any }) {
     router.pathname?.split("/")[2]?.toLocaleLowerCase() === "address";
 
   const products = Array.isArray(productData) ? productData : [productData];
-  console.log(products, "PriceDetails");
+  console.log(products, "Price Price Details");
   const totalItems = products?.length || 0;
   const totalPrice = products
     .reduce((acc, product) => acc + product.price * product.quantity, 0)

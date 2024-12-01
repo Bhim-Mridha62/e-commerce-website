@@ -1,11 +1,12 @@
 // ReviewItem.js
 import { getLetterColors } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
-import { Image, List, Popconfirm, Rate, Space } from "antd";
+import { Image, List, Popconfirm, Space } from "antd";
 import { AiFillDislike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import React, { useState } from "react";
+import { Rating } from "@fluentui/react-rating";
 
 const IconText = ({
   icon,
@@ -115,9 +116,13 @@ const ReviewItem = ({
           </p>
         }
         description={
-          <div className="">
-            <Rate className="text-sm" allowHalf disabled value={data?.rating} />
-            <span className="ml-2">{data?.rating}</span>
+          <div className="flex items-center">
+            <Rating
+              size="medium"
+              className="text-theme-golden pointer-events-none cursor-default"
+              value={Number(data?.rating)}
+            />
+            <span className="ml-1 ">{data?.rating}</span>
           </div>
         }
       />

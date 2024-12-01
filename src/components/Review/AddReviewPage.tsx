@@ -1,14 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Rate,
-  Button,
-  Input,
-  Upload,
-  message,
-  Image,
-  notification,
-} from "antd";
+import { Button, Input, Upload, message, Image, notification } from "antd";
 import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import "tailwindcss/tailwind.css";
 import { getRatingSpan } from "@/utils/client/colourCode";
@@ -17,6 +9,7 @@ import { GiveRatingSchema } from "@/Schemas/client/FormSchema";
 import { useUser } from "@/context/authContext";
 import { useRouter } from "next/router";
 import { useAuthData } from "@/service/Auth";
+import { Rating } from "@fluentui/react-rating";
 // import Image from "next/image";
 
 const AddReviewPage = () => {
@@ -121,10 +114,11 @@ const AddReviewPage = () => {
         <div className="flex-1 text-black">
           <div className="border p-4 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Rate This Product</h2>
-            <Rate
-              onChange={handleRatingChange}
+            <Rating
+              className="text-theme-golden"
               value={formik?.values?.rating}
-            />{" "}
+              onChange={(_, rating) => handleRatingChange(rating?.value)}
+            />
             {formik?.values?.rating !== 0 &&
               getRatingSpan(formik?.values?.rating)}
             {formik?.touched?.rating && formik?.errors?.rating ? (
@@ -194,7 +188,7 @@ const AddReviewPage = () => {
                     type="primary"
                     htmlType="submit"
                     loading={loading}
-                    className="bg-orange-600 hover:bg-orange-500 border-none"
+                    className="bg-theme-red hover:bg-orange-500 border-none"
                   >
                     {loading ? "Submitting..." : "Submit"}
                   </Button>

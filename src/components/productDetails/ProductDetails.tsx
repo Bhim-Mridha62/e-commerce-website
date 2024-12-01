@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Dropdown,
-  Input,
-  Menu,
-  Modal,
-  Rate,
-  Select,
-  Spin,
-  message,
-  notification,
-} from "antd";
+import { Spin, message, notification } from "antd";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { BsCurrencyRupee } from "react-icons/bs";
 import ReviewSection from "./ReviewSection";
@@ -19,15 +9,16 @@ import { FcLike } from "react-icons/fc";
 import { FaRegHeart } from "react-icons/fa6";
 import { useUser } from "@/context/authContext";
 import { encodeData } from "@/utils/client/encoding";
-import { DownOutlined } from "@ant-design/icons";
+import SizeSelector from "./sizeSelector";
+import { Rating } from "@fluentui/react-rating";
+import QuantityButton from "./quantityButton";
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [Product, setProduct] = useState<any>([]);
   const [quantity, setQuantity] = useState<any>(1);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedSize, setSelectedSize] = useState<string>("");
   const [islike, setLslike] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { user, cartCountRef } = useUser();
 
   const router = useRouter();
@@ -107,34 +98,7 @@ const ProductDetail = () => {
       console.log(error);
     }
   };
-  const handleMenuClick = (e: any) => {
-    if (e.key === "custom") {
-      setIsModalVisible(true);
-    } else {
-      setQuantity(Number(e.key));
-    }
-  };
 
-  const handleOk = () => {
-    if (!(quantity < 0 || quantity == "")) {
-      setIsModalVisible(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (!(quantity < 0 || quantity == "")) {
-      setIsModalVisible(false);
-    }
-  };
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">1</Menu.Item>
-      <Menu.Item key="2">2</Menu.Item>
-      <Menu.Item key="3">3</Menu.Item>
-      <Menu.Item key="4">4</Menu.Item>
-      <Menu.Item key="custom">Custom</Menu.Item>
-    </Menu>
-  );
   return (
     <>
       <Spin spinning={loading} delay={500}>
@@ -198,30 +162,32 @@ const ProductDetail = () => {
               <p className="text-lg text-gray-700 mb-2">
                 {Product?.description}
               </p>
-              <div className="">
+              <div className="flex gap-2 my-2">
                 Size :{" "}
-                <Select
-                  style={{ width: 200 }}
-                  placeholder="Select Size"
-                  optionFilterProp="children"
-                  value={selectedSize}
-                  onChange={(value) => setSelectedSize(value)}
-                  options={[
-                    { value: "S", label: "S" },
-                    { value: "M", label: "M" },
-                    { value: "L", label: "L" },
-                    { value: "XL", label: "XL" },
-                    { value: "2XL", label: "2XL" },
-                    { value: "3XL", label: "3XL" },
-                  ]}
+                <SizeSelector
+                  selectedSize={selectedSize}
+                  sizes={Product?.sizes}
+                  setSelectedSize={setSelectedSize}
                 />
               </div>
               <h2 className="text-2xl font-bold mb-2">{Product?.title}</h2>
               <h2 className=" font-bold mb-2">Brand: {Product?.brand}</h2>
               <h3 className=" mb-2">Category: {Product?.category}</h3>
-              <div className="mb-2">
-                <Rate allowHalf disabled value={Product?.rating} />{" "}
-                {Product?.rating}
+              <div className="mb-2 flex gap-2 items-center">
+                <Rating
+                  size="large"
+                  step={0.5}
+                  className="text-theme-golden pointer-events-none cursor-default"
+                  value={Number(Product?.rating)}
+                />{" "}
+                {44 > 0 && (
+                  <span className="mx-2 text-sm text-theme-blue">
+                    {`Rated by ${44} people`}
+                  </span>
+                )}
+                <span className="bg-theme-green px-2 text-sm rounded-md h-fit text-theme-white">
+                  {Product?.rating}★
+                </span>
               </div>
               <div className="text-lg mb-2 text-[#26a541]">
                 Number of Stock:{" "}
@@ -250,47 +216,18 @@ const ProductDetail = () => {
                   {Math.round(Product?.discountPercentage)}%OFF
                 </span>
               </p>
-              <div className="flex items-center mt-2 gap-2 rounded-lg">
+              <div className="flex items-center mt-2">
                 Quantity:
-                <Dropdown
-                  overlay={menu}
-                  placement="bottomRight"
-                  arrow={{
-                    pointAtCenter: true,
-                  }}
-                  trigger={["click"]}
-                >
-                  <span className="cursor-pointer">
-                    {quantity}
-                    <DownOutlined className="ml-2" />
-                  </span>
-                </Dropdown>
+                <QuantityButton
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  className="m-2"
+                />
               </div>
             </div>
             <ReviewSection id={Product?._id} />
           </div>
         </div>
-        {isModalVisible && (
-          <Modal
-            maskClosable={false}
-            width={250}
-            title="Custom Quantity"
-            open={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            okButtonProps={{ style: { background: "black" } }}
-          >
-            <Input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="Enter custom quantity"
-            />
-            {(quantity < 0 || quantity == "") && (
-              <span className="text-[#ff0505]">Quantity is require</span>
-            )}
-          </Modal>
-        )}
       </Spin>
     </>
   );
