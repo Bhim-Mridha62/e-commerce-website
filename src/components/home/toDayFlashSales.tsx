@@ -11,6 +11,7 @@ import { Product } from "@/types/types";
 import ProductCard from "../common/productcard/productcard";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import ProductCardSkeleton from "../common/productcard/productCardSkeleton";
+import Button from "../common/button";
 
 const ToDayFlashSales = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -79,6 +80,15 @@ const ToDayFlashSales = () => {
             ))
           )}
         </Swiper>
+      </div>
+      <div className="text-center mt-8">
+        <Button
+          text="View All Products"
+          className=" mx-auto"
+          onClick={() => {
+            console.log("onClick");
+          }}
+        />
       </div>
     </div>
   );
