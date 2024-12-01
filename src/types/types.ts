@@ -31,6 +31,7 @@ export interface UserContextType {
   // cartCountRef: RefObject<HTMLDivElement | undefined>;
   cartCountRef: React.MutableRefObject<(() => void) | null>;
   UpdateUser: () => void;
+  HandelLogout: () => void;
 }
 export interface AutoCompleteOptions {
   label: string;
@@ -164,4 +165,9 @@ export interface Icategory {
 export interface ICarousel {
   imageUrl: string;
   _id: string;
+}
+export interface IHomePageSectionHeading {
+  className: string;
+  bottomHeading: string;
+  topHeading: string;
 }

@@ -1,4 +1,3 @@
-// import faker from 'faker';
 import mongoose from "mongoose";
 
 // Define the schema for product reviews
@@ -11,13 +10,14 @@ const reviewSchema = new mongoose.Schema({
   dislike: { type: Number, default: 0 }, // The number of dislikes the review received
   comment: { type: String, default: "" }, // The comment text of the review
   images: { type: [String], default: [] }, // Any images attached to the review
-  postdAt: { type: String, default: "" }, // The date the review was posted
+  postdAt: { type: Date, default: Date.now },
 });
 
 const productSchema = new mongoose.Schema({
   title: { type: String, default: "" },
   description: { type: String, default: "" },
   price: { type: Number, default: 0 },
+  Originalprice: { type: Number, default: 0 },
   discountPercentage: { type: Number, default: 0 },
   rating: { type: Number, default: 0 },
   stock: { type: Number, default: 0 },
@@ -29,6 +29,16 @@ const productSchema = new mongoose.Schema({
   gender: { type: String, default: "" },
   color: { type: String, default: "" },
   fabric: { type: String, default: "" },
+  sizes: {
+    color: { type: String, default: "" },
+    S: { type: Number, default: 0 },
+    fabric: { type: String, default: "" },
+    M: { type: Number, default: 0 },
+    L: { type: Number, default: 0 },
+    XL: { type: Number, default: 0 },
+    "2XL": { type: Number, default: 0 },
+    "3XL": { type: Number, default: 0 },
+  },
 });
 // export const Product = mongoose.model('Products', productSchema);
 export default mongoose.models.Product ||

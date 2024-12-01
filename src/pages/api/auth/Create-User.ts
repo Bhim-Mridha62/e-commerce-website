@@ -92,7 +92,6 @@ const handleUserData = async (
       });
 
       const jwtToken = CreateToken(newUser._id);
-      newUser.SecretToken = jwtToken;
       newUser.profile_pic_path = picture;
 
       await newUser.save();
@@ -103,7 +102,7 @@ const handleUserData = async (
         emailOrPhone: newUser.emailOrPhone,
         cart: newUser.cart,
         wishlist: newUser.wishlist,
-        SecretToken: newUser.SecretToken,
+        SecretToken: jwtToken,
       };
 
       return res.status(200).json({ data: sanitizedUser });
