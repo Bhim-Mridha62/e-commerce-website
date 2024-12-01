@@ -35,11 +35,6 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       console.log(error);
     }
   };
-  const onQuantityChange = (value: number) => {
-    setQuantity(Number(value));
-    UpdateProductData(selectedSize, product?._id, Number(value));
-    HandelAddToCart(selectedSize, product?._id, Number(value));
-  };
 
   const handleBuyNow = () => {
     const { title, discountPercentage, price, thumbnail, _id } = product;
@@ -70,7 +65,12 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
             <div className="flex items-center mt-2 gap-2 rounded-lg">
               <QuantityButton
                 quantity={quantity}
-                onQuantityChange={onQuantityChange}
+                setQuantity={(value: number) => {
+                  setQuantity(Number(value));
+                  UpdateProductData(selectedSize, product?._id, Number(value));
+                  HandelAddToCart(selectedSize, product?._id, Number(value));
+                }}
+                className=""
               />
             </div>
           </div>

@@ -2,46 +2,35 @@ import { Tooltip } from "antd";
 import React from "react";
 interface QuantityButtonProps {
   quantity: number;
-  className?: string;
-  setQuantity?: (value: number) => void;
-  onQuantityChange?: (value: number) => void;
+  setQuantity: any;
+  className: string;
 }
 const QuantityButton: React.FC<QuantityButtonProps> = ({
   quantity,
   setQuantity,
-  onQuantityChange,
   className,
 }) => {
   // Function to handle increment
   const increment = () => {
-    console.log("am i call");
-
-    if (quantity < 5) {
-      const newQuantity = quantity + 1;
-      setQuantity?.(newQuantity);
-      onQuantityChange?.(newQuantity); //for cart page
-    }
+    if (quantity < 5) setQuantity(quantity + 1);
   };
 
   // Function to handle decrement
   const decrement = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity?.(newQuantity);
-      onQuantityChange?.(newQuantity);
-    }
+    if (quantity > 1) setQuantity(quantity - 1);
   };
 
   // Handle direct input (to prevent invalid values)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10);
     if (!isNaN(newValue) && newValue >= 0 && newValue <= 5) {
-      setQuantity?.(newValue);
-      onQuantityChange?.(newValue);
+      setQuantity(newValue);
     }
   };
   return (
-    <div className={`${className} flex items-center border rounded-md w-fit`}>
+    <div
+      className={`${className} flex items-center border rounded-md w-fit m-4`}
+    >
       {/* Decrement Button */}
       <button
         onClick={decrement}
