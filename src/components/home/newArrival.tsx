@@ -36,7 +36,7 @@ const NewArrival = () => {
     },
   ];
   return (
-    <section className="py-12">
+    <section className="py-6 md:py-12">
       <div className="md:w-[90%] mx-auto px-2 md:px-0">
         {/* Header */}
         <HomePageSectionHeading
