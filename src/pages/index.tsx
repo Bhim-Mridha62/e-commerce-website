@@ -1,4 +1,5 @@
 import FeaturesSection from "@/components/common/featuresSection";
+import LimitedEdition from "@/components/home/limitedEdition";
 import NewArrival from "@/components/home/newArrival";
 import ToDayFlashSales from "@/components/home/toDayFlashSales";
 import dynamic from "next/dynamic";
@@ -26,9 +27,15 @@ export default function Home() {
       </Head>
       <div className="">
         {/* <Homecarousel /> */}
-        <ToDayFlashSales />
+        <ToDayFlashSales topHeading="Today's" bottomHeading="Flash Sales" />
         <Categories />
         {/* <Homecard /> */}
+        <LimitedEdition />
+        <ToDayFlashSales
+          topHeading="This Month"
+          isBestSelling={true}
+          bottomHeading="Best Selling Products"
+        />
         <NewArrival />
         <FeaturesSection />
       </div>
