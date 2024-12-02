@@ -15,6 +15,7 @@
   --theme-green: #388e3c;
   --theme-golden: "#ffa41c";
   --theme-text-grey: "#6b7280";
+  --theme-bg-green: "#e7f8ec";
 }
 
 @media (prefers-color-scheme: dark) {
