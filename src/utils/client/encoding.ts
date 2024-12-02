@@ -2,7 +2,7 @@ export const encodeData = (data: string) => {
   try {
     const json = JSON.stringify(data);
     const base64 = btoa(json);
-    return `a${base64}a`;
+    return base64;
   } catch (error) {
     console.error("Encoding error:", error);
     return null;
@@ -12,9 +12,8 @@ export const encodeData = (data: string) => {
 // Function to decode data
 export const decodeData = (encodedData: string) => {
   try {
-    if (encodedData?.startsWith("a") && encodedData?.endsWith("a")) {
-      const base64 = encodedData?.slice(1, -1);
-      const json = atob(base64);
+    if (encodedData) {
+      const json = atob(encodedData);
       return JSON.parse(json);
     } else {
       throw new Error("Invalid encoded data format");
