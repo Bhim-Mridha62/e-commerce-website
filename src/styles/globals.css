@@ -82,6 +82,42 @@ input[type="number"]::-webkit-outer-spin-button {
 .swiper-button-next::after {
   content: "" !important;
 }
+.Best-seller-label {
+  z-index: 1;
+  font-size: 14px;
+  padding: 2px 8px;
+  top: 0;
+  left: 0;
+  position: absolute;
+  color: var(--theme-white);
+  background-color: var(--theme-blue);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.Best-seller-label::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%; /* Start outside the span */
+  width: 200%; /* Large enough to cover the span */
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  animation: waveTransition 2s linear infinite;
+}
+@keyframes waveTransition {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
 @media (max-width: 768px) {
   .custom-slide-categories {
     width: 110px !important;

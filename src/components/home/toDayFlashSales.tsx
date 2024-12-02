@@ -12,11 +12,21 @@ import ProductCard from "../common/productcard/productcard";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import ProductCardSkeleton from "../common/productcard/productCardSkeleton";
 import Button from "../common/button";
+import useIsMobile from "@/utils/client/isMobile";
 
-const ToDayFlashSales = () => {
+const ToDayFlashSales = ({
+  isBestSelling = false,
+  topHeading,
+  bottomHeading,
+}: {
+  isBestSelling?: boolean;
+  topHeading: string;
+  bottomHeading: string;
+}) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { GetAllProduct } = useAuthData();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     fetchData();
@@ -44,17 +54,27 @@ const ToDayFlashSales = () => {
         <div className="md:mb-4 flex justify-between">
           <HomePageSectionHeading
             className=""
-            topHeading="Today's"
-            bottomHeading="Flash Sales"
+            topHeading={topHeading}
+            bottomHeading={bottomHeading}
           />
-          <div className="swiper-navigation-buttons w-24 relative flex">
-            <button className="swiper-button-prev bg-gray rounded-full !size-8 md:!size-10 ml-[-10px] bg-theme-border">
-              <GoChevronLeft className="text-black !size-6" />
-            </button>
-            <button className="swiper-button-next bg-gray rounded-full !size-8 md:!size-10 bg-theme-border ">
-              <GoChevronRight className="text-black !size-6" />
-            </button>
-          </div>
+          {isBestSelling ? (
+            <Button
+              text="View All"
+              className="h-fit my-auto"
+              onClick={() => {
+                console.log("onClick");
+              }}
+            />
+          ) : (
+            <div className="swiper-navigation-buttons w-24 relative flex">
+              <button className="swiper-button-prev bg-gray rounded-full !size-8 md:!size-10 ml-[-10px] bg-theme-border">
+                <GoChevronLeft className="text-black !size-6" />
+              </button>
+              <button className="swiper-button-next bg-gray rounded-full !size-8 md:!size-10 bg-theme-border ">
+                <GoChevronRight className="text-black !size-6" />
+              </button>
+            </div>
+          )}
         </div>
         <Swiper
           modules={[Navigation]}
@@ -75,21 +95,29 @@ const ToDayFlashSales = () => {
           ) : (
             products.map((product) => (
               <SwiperSlide key={product?._id} className="custom-slide">
-                <ProductCard key={product._id} product={product} user={false} />
+                <ProductCard
+                  isBestSelling={isBestSelling}
+                  key={product._id}
+                  product={product}
+                  user={false}
+                  isMobile={isMobile}
+                />
               </SwiperSlide>
             ))
           )}
         </Swiper>
       </div>
-      <div className="text-center mt-8">
-        <Button
-          text="View All Products"
-          className=" mx-auto"
-          onClick={() => {
-            console.log("onClick");
-          }}
-        />
-      </div>
+      {!isBestSelling && (
+        <div className="text-center mt-8">
+          <Button
+            text="View All Products"
+            className=" mx-auto"
+            onClick={() => {
+              console.log("onClick");
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
