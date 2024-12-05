@@ -5,8 +5,10 @@ import "swiper/css/pagination";
 import { RightOutlined } from "@ant-design/icons";
 import { useAuthData } from "@/service/Auth";
 import { ICarousel } from "@/types/types";
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from "next/link";
+import Image from "next/image";
 
 const Homecarousel = () => {
   const [images, setImages] = useState<ICarousel[]>([]);
@@ -180,24 +182,31 @@ const Homecarousel = () => {
 
         {/* Banner Section */}
         <div className="w-3/4 p-4">
-          <Swiper modules={[Navigation]}>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            loop
+            navigation
+            pagination={{ clickable: true }}
+          >
             {images.map((slide, index) => (
               <SwiperSlide key={index}>
-                <div
-                  className="relative w-full h-[300px] overflow-hidden"
-                  style={{
-                    backgroundImage: `url(${slide.imageUrl})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                >
-                  {/* <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start p-8 text-white">
-                    <h2 className="text-2xl font-bold">{slide.title||}</h2>
-                    <p className="text-lg mt-2">{slide.subtitle}</p>
-                    <button className="mt-4 px-4 py-2 bg-white text-black rounded-md">
-                      Shop Now →
-                    </button>
-                  </div> */}
+                <div className="bg-theme-black flex flex-row text-theme-white p-4 h-72">
+                  <div className="flex flex-col gap-3 md:gap-5 flex-1 mt-5 md:mt-0">
+                    <h2 className="text-2xl font-bold">{slide.title}</h2>
+                    <p className="text-lg mt-2">{slide.description}</p>
+                    <Link href={"/"} className="shop-now-buttom-banner">
+                      Shop Now <span>→</span>
+                    </Link>
+                  </div>
+                  <div className="flex-1 flex justify-center items-center relative image-with-reflection">
+                    <Image
+                      src={slide.imageUrl}
+                      alt="Limited Time Offer"
+                      width={1000}
+                      height={1000}
+                      className="mdb:h-40 w-auto mb-auto"
+                    />
+                  </div>
                 </div>
               </SwiperSlide>
             ))}
