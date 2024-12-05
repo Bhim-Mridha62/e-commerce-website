@@ -41,7 +41,7 @@ const LimitedEdition = () => {
   }, []);
   return (
     <div className="py-6 md:py-12 w-[90%] mx-auto border-b border-theme-border">
-      <div className="bg-black flex flex-col-reverse md:flex-row text-white p-4">
+      <div className="bg-theme-black flex flex-col-reverse md:flex-row text-theme-white p-4">
         <div className="flex flex-col gap-3 md:gap-5 flex-1 mt-5 md:mt-0">
           <p className="text-lg md:text-xl font-semibold text-red-500">
             Limited Time Offer!
@@ -55,28 +55,28 @@ const LimitedEdition = () => {
           </p>
           <div className="flex space-x-2">
             {/* Days */}
-            <div className="flex flex-col items-center justify-center w-12 h-12 bg-white text-black rounded-full">
+            <div className="flex flex-col items-center justify-center w-12 h-12 bg-theme-white text-theme-black rounded-full">
               <span className="text-xs font-semibold h-[12px]">
                 {timeLeft.days}
               </span>
               <span className="text-[10px] font-medium">Days</span>
             </div>
             {/* Hours */}
-            <div className="flex flex-col items-center justify-center w-12 h-12 bg-white text-black rounded-full">
+            <div className="flex flex-col items-center justify-center w-12 h-12 bg-theme-white text-theme-black rounded-full">
               <span className="text-xs font-semibold h-[12px]">
                 {timeLeft.hours}
               </span>
               <span className="text-[10px] font-medium">Hours</span>
             </div>
             {/* Minutes */}
-            <div className="flex flex-col items-center justify-center w-12 h-12 bg-white text-black rounded-full">
+            <div className="flex flex-col items-center justify-center w-12 h-12 bg-theme-white text-theme-black rounded-full">
               <span className="text-xs font-semibold h-[12px]">
                 {timeLeft.minutes}
               </span>
               <span className="text-[10px] font-medium">Minutes</span>
             </div>
             {/* Seconds */}
-            <div className="flex flex-col items-center justify-center w-12 h-12 bg-white text-black rounded-full">
+            <div className="flex flex-col items-center justify-center w-12 h-12 bg-theme-white text-theme-black rounded-full">
               <span className="text-xs font-semibold h-[12px]">
                 {timeLeft.seconds}
               </span>
