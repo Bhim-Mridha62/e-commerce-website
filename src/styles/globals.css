@@ -27,7 +27,8 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: var(--theme-black);
+  font-family: emoji;
 }
 
 @layer utilities {
