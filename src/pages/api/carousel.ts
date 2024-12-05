@@ -20,7 +20,7 @@ export default async function handler(
 
 const getImages = async (_: NextApiRequest, res: NextApiResponse) => {
   try {
-    const images = await CarouselImage.find().select("-__v -_id");
+    const images = await CarouselImage.find().select("-__v _id");
     res.status(200).json(images);
   } catch (error: any) {
     res.status(500).json({

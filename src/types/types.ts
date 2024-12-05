@@ -165,6 +165,8 @@ export interface Icategory {
 export interface ICarousel {
   imageUrl: string;
   _id: string;
+  title: string;
+  description: string;
 }
 export interface IHomePageSectionHeading {
   className: string;
