@@ -158,4 +158,8 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 140px !important; /* Fixed width for each slide on smaller screens */
     height: 250px;
   }
+  .shop-now-buttom-banner {
+    margin-top: inherit;
+    margin-bottom: auto;
+  }
 }

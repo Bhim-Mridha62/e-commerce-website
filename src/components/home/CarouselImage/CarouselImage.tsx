@@ -118,10 +118,10 @@ const Homecarousel = () => {
   console.log(images, "img");
   return (
     <div>
-      <div className="flex">
+      <div className="flex md:flex-row flex-col">
         {/* Sidebar */}
-        <div className="w-1/4 bg-gray-50 p-4 border-r">
-          <ul>
+        <div className="md:w-1/4 bg-gray-50 p-4 border-r hidden md:block">
+          <ul className="flex md:block">
             {categories.map((category) => (
               <li
                 key={category.name}
@@ -132,7 +132,7 @@ const Homecarousel = () => {
                 <span>{category.name}</span>
                 {category?.subcategories && (
                   <>
-                    <RightOutlined />
+                    <RightOutlined className="rotate-90 md:rotate-0 ml-1 md:ml-0" />
                     {openCategory === category.name && (
                       <div className="absolute top-0 left-full bg-gray-50 border z-10 p-4 w-60 shadow-lg">
                         <ul>
@@ -181,7 +181,7 @@ const Homecarousel = () => {
         </div>
 
         {/* Banner Section */}
-        <div className="w-3/4 p-4">
+        <div className="md:w-3/4 p-4">
           <Swiper
             modules={[Navigation, Pagination]}
             loop
@@ -190,15 +190,19 @@ const Homecarousel = () => {
           >
             {images.map((slide, index) => (
               <SwiperSlide key={index}>
-                <div className="bg-theme-black flex flex-row text-theme-white p-4 h-72">
-                  <div className="flex flex-col gap-3 md:gap-5 flex-1 mt-5 md:mt-0">
-                    <h2 className="text-2xl font-bold">{slide.title}</h2>
-                    <p className="text-lg mt-2">{slide.description}</p>
+                <div className="bg-theme-black flex flex-row text-theme-white p-1 md:p-4 h-40 md:h-72">
+                  <div className="flex flex-col gap-2 md:gap-5 md:flex-1">
+                    <h2 className="text-[18px] md:text-2xl font-bold">
+                      {slide.title}
+                    </h2>
+                    <p className="text-xs md:text-lg md:mt-2">
+                      {slide.description}
+                    </p>
                     <Link href={"/"} className="shop-now-buttom-banner">
                       Shop Now <span>→</span>
                     </Link>
                   </div>
-                  <div className="flex-1 flex justify-center items-center relative image-with-reflection">
+                  <div className="md:flex-1 flex justify-center items-center relative image-with-reflection w-[60%] md:w-full">
                     <Image
                       src={slide.imageUrl}
                       alt="Limited Time Offer"
