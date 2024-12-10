@@ -12,17 +12,18 @@ function PriceDetails({ productData }: { productData: any }) {
   console.log(products, "Price Price Details");
   const totalItems = products?.length || 0;
   const totalPrice = products
-    .reduce((acc, product) => acc + product.price * product.quantity, 0)
+    .reduce((acc, product) => acc + product?.price * product?.quantity, 0)
     .toFixed(0);
   const totalDiscount = products
     .reduce(
       (acc, product) =>
         acc +
-        ((product.price * product.discountPercentage) / 100) * product.quantity,
+        ((product?.price * product?.discountPercentage) / 100) *
+          product?.quantity,
       0
     )
     .toFixed(0);
-  const totalAmount = (totalPrice - totalDiscount).toFixed(0);
+  const totalAmount = (totalPrice - totalDiscount)?.toFixed(0);
   const totalSavings = totalDiscount;
 
   const handlePlaceOrder = () => {
