@@ -149,6 +149,52 @@ input[type="number"]::-webkit-outer-spin-button {
 .shop-now-buttom-banner:hover span {
   margin-left: 5px; /* Moves the arrow slightly on hover */
 }
+.form-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-item input,
+.form-item textarea,
+.form-item select {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: solid 1px #ccc;
+  transition: all 0.3s ease;
+  padding: 12px 15px;
+  border-radius: 4px;
+  outline: none;
+  font-size: 14px;
+}
+.form-item label {
+  position: absolute;
+  z-index: 2;
+  top: 13px;
+  left: 15px;
+  font-size: 14px;
+  background: #fff;
+  padding: 0 5px;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.form-item input:focus + label,
+textarea .form-item :focus + label,
+.form-item select:focus + label,
+.form-item input:not(:placeholder-shown) + label,
+.form-item textarea:not(:placeholder-shown) + label,
+.form-item select:not(:placeholder-shown) + label {
+  font-size: 12px;
+  top: -5px;
+  color: #1773b0;
+}
+.form-item input:focus,
+.form-item textarea:focus,
+.form-item select:focus {
+  border-color: #1773b0;
+  box-shadow: 0 0 0 1px #1773b0;
+}
 @media (max-width: 768px) {
   .custom-slide-categories {
     width: 110px !important;
