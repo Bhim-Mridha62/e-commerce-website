@@ -78,7 +78,10 @@ const handleUserData = async (
 
     if (existingUser) {
       if (password === name) {
-        res.status(201).json({ data: existingUser });
+        const jwtToken = CreateToken(existingUser?._id);
+        res
+          .status(201)
+          .json({ data: { ...existingUser, SecretToken: jwtToken } });
       } else {
         return res.status(409).json({ message: "User already exists" });
       }
