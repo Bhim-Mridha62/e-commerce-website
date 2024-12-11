@@ -131,7 +131,7 @@ const AddressFrom = ({ formik, isSave = false }: AddressFormProps) => {
               type="text"
               id="village"
               name="village"
-              placeholder="Enter your village"
+              placeholder=""
               className=""
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

@@ -53,7 +53,7 @@ const index = () => {
   });
   return (
     <div className="grid grid-cols-2">
-      <div className="border-theme-border border-r px-8">
+      <div className="border-theme-border border-r pl-24 pr-8 py-10">
         <AddressFrom formik={formik} isSave />
         <ShippingMethod formik={formik} priceDetails={priceDetails} />
       </div>

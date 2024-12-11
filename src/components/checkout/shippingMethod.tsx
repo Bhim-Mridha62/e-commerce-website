@@ -159,7 +159,7 @@ const ShippingMethod = ({ formik, priceDetails }: AddressFormProps) => {
         </div>
       </div>
       <button
-        className={`mx-auto py-3 px-4 w-full text-white font-medium rounded-md bg-[#1773b0] hover:bg-[#105989] mb-8`}
+        className={`mx-auto py-3 px-4 w-full text-white font-medium rounded-md bg-[#1773b0] hover:bg-[#105989]`}
         onClick={HandelConfirmOrder}
         disabled={isSubmitting || selectedOption !== "cod"}
       >
