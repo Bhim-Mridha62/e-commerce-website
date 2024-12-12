@@ -164,6 +164,7 @@ const Navbar: React.FC = () => {
             <div onClick={() => router.push("/")} className="cursor-pointer">
               <Image src="/logo.png" alt="logo" height={40} width={100} />
             </div>
+            tests tsest
             <AutoComplete
               // open={false}
               options={autoCompleteOptions.map((item) => ({
