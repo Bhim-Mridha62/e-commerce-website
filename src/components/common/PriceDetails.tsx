@@ -32,7 +32,7 @@ function PriceDetails({
           <h2 className="text-lg font-semibold">Order summary</h2>
         </div>
       )}
-      {priceDetails.map((item: any) => (
+      {priceDetails?.map((item: any) => (
         <div key={item?._id} className="flex flex-col gap-2">
           <div className="flex justify-between gap-2">
             <div className="flex gap-2">

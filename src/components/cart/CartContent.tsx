@@ -8,16 +8,20 @@ import { useUser } from "@/context/authContext";
 import { ProductData } from "@/types/types";
 
 const CartContent = () => {
-  const [productData, setProductData] = useState<ProductData>([]);
+  const [priceDetails, setPriceDetails] = useState<ProductData>([]);
   const { AllCartData, RemoveCartData } = useAuthData();
   const [loading, setLoading] = useState(true);
   const { user, cartCountRef } = useUser();
-
+  //totoal price all product
+  const totalAmount = priceDetails.reduce(
+    (acc: number, itme: any) => acc + itme?.price * itme?.quantity,
+    0
+  );
   const fetchData = async () => {
     try {
       const res = await AllCartData();
       if (res?.status === 200) {
-        setProductData(res?.data?.data);
+        setPriceDetails(res?.data?.data);
       }
     } catch (error) {
       console.error(error);
@@ -47,12 +51,12 @@ const CartContent = () => {
   };
 
   const UpdateProductData = (Size: string, productId: string, qty: number) => {
-    let updateData = productData?.map((data: any) => {
+    let updateData = priceDetails?.map((data: any) => {
       if (data?._id == productId) {
         return { ...data, quantity: qty, Size: Size };
       } else return data;
     });
-    setProductData(updateData);
+    setPriceDetails(updateData);
   };
 
   if (loading) {
@@ -62,9 +66,9 @@ const CartContent = () => {
   return (
     <div className="container mx-auto mt-4">
       {user ? (
-        productData.length ? (
+        priceDetails.length ? (
           <>
-            {productData.map((product: any) => (
+            {priceDetails.map((product: any) => (
               <ProductCard
                 key={product?._id}
                 product={product}
@@ -72,7 +76,10 @@ const CartContent = () => {
                 UpdateProductData={UpdateProductData}
               />
             ))}
-            <PriceDetails productData={productData} />
+            <PriceDetails
+              priceDetails={priceDetails}
+              totalAmount={totalAmount}
+            />
           </>
         ) : (
           <EmptyCart IsLogin={true} />
