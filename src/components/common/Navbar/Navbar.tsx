@@ -159,6 +159,7 @@ const Navbar: React.FC = () => {
           hide ? "-translate-y-[59%] lsm:translate-y-0" : "translate-y-0"
         }`}
       >
+        efiuefi
         <div className="w-full sticky justify-between items-center h-auto flex text-white p-1 md:px-10">
           <div className="flex items-center gap-2 lsm:w-[70%]">
             <div onClick={() => router.push("/")} className="cursor-pointer">
