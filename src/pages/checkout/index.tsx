@@ -57,8 +57,10 @@ const index = () => {
         <AddressFrom formik={formik} isSave />
         <ShippingMethod formik={formik} priceDetails={priceDetails} />
       </div>
-      <div className="bg-[#f5f5f5]">
-        {priceDetails && <PriceDetails productData={priceDetails} />}
+      <div className="bg-[#f5f5f5] pr-24 pl-8 py-10">
+        {priceDetails && (
+          <PriceDetails priceDetails={priceDetails} isSticky={true} />
+        )}
       </div>
     </div>
   );
