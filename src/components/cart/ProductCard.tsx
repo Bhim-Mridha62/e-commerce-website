@@ -48,7 +48,7 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       selectedSize,
       _id,
     });
-    router.push(`/cart/address?data=${encodedQuery}`);
+    router.push(`/checkout?data=${encodedQuery}`);
   };
   return (
     <>

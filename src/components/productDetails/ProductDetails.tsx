@@ -76,7 +76,7 @@ const ProductDetail = () => {
       selectedSize,
       _id,
     });
-    router.push(`/cart/address?data=${encodedQuery}`);
+    router.push(`/checkout?data=${encodedQuery}`);
   };
   const HandelAddToCart = async (id: string) => {
     try {
