@@ -17,6 +17,7 @@ export default function Home() {
         <title>mkgzest</title>
       </Head>
       <div className="px-1 msm:px-10">
+        a fol apple
         <Categories />
         <Homecarousel />
         <Homecard />
