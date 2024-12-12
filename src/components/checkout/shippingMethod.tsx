@@ -8,11 +8,19 @@ import { CashOnDelivery } from "@/utils/client/svg-icon";
 import { useUser } from "@/context/authContext";
 import { IAddress } from "@/types/types";
 import { FormikProps } from "formik";
+import PriceDetails from "../common/PriceDetails";
 interface AddressFormProps {
   formik: FormikProps<IAddress>;
   priceDetails: any;
+  isMobile: boolean;
+  totalAmount: number;
 }
-const ShippingMethod = ({ formik, priceDetails }: AddressFormProps) => {
+const ShippingMethod = ({
+  formik,
+  priceDetails,
+  isMobile,
+  totalAmount,
+}: AddressFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { postorder } = useAuthData();
   const router = useRouter();
@@ -28,10 +36,7 @@ const ShippingMethod = ({ formik, priceDetails }: AddressFormProps) => {
     }
     setIsSubmitting(true);
     try {
-      let products = Array.isArray(priceDetails)
-        ? priceDetails
-        : [priceDetails];
-      for (const product of products) {
+      for (const product of priceDetails) {
         let orderData = {
           productID: product?._id,
           quantity: product?.quantity,
@@ -158,6 +163,13 @@ const ShippingMethod = ({ formik, priceDetails }: AddressFormProps) => {
           ))}
         </div>
       </div>
+      {isMobile && priceDetails[0] && (
+        <PriceDetails
+          priceDetails={priceDetails}
+          totalAmount={totalAmount}
+          showSummaryText={true}
+        />
+      )}
       <button
         className={`mx-auto py-3 px-4 w-full text-white font-medium rounded-md bg-[#1773b0] hover:bg-[#105989]`}
         onClick={HandelConfirmOrder}

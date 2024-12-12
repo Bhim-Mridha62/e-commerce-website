@@ -29,7 +29,7 @@ const AddressFrom = ({ formik, isSave = false }: AddressFormProps) => {
             </div>
           ) : null}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
           <div className="form-item">
             <input
               type="text"
@@ -62,7 +62,7 @@ const AddressFrom = ({ formik, isSave = false }: AddressFormProps) => {
             <label htmlFor="alternatePhone">Alternate Phone Number</label>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
           <div className="form-item">
             <input
               type="text"
@@ -100,7 +100,7 @@ const AddressFrom = ({ formik, isSave = false }: AddressFormProps) => {
             ) : null}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
           <div className="form-item">
             <select
               id="district"
