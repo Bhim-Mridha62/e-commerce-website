@@ -13,6 +13,7 @@ export interface Product {
   thumbnail: string;
   quantity: number;
   Size: string;
+  sizes: any;
 }
 
 // Define ProductData type as an array of Product objects

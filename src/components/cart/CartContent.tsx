@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import PriceDetails from "../common/PriceDetails";
 import { useAuthData } from "@/service/Auth";
 import EmptyCart from "./EmptyCart";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
 import { ProductData } from "@/types/types";
+import CartProductPricingDetails from "./cartProductPricingDetails";
 
 const CartContent = () => {
   const [priceDetails, setPriceDetails] = useState<ProductData>([]);
   const { AllCartData, RemoveCartData } = useAuthData();
   const [loading, setLoading] = useState(true);
   const { user, cartCountRef } = useUser();
-  //totoal price all product
-  const totalAmount = priceDetails.reduce(
-    (acc: number, itme: any) => acc + itme?.price * itme?.quantity,
-    0
-  );
   const fetchData = async () => {
     try {
       const res = await AllCartData();
@@ -64,23 +59,24 @@ const CartContent = () => {
   }
 
   return (
-    <div className="container mx-auto mt-4">
+    <div className="mx-auto">
       {user ? (
         priceDetails.length ? (
-          <>
-            {priceDetails.map((product: any) => (
-              <ProductCard
-                key={product?._id}
-                product={product}
-                HandelRemove={HandelRemove}
-                UpdateProductData={UpdateProductData}
-              />
-            ))}
-            <PriceDetails
-              priceDetails={priceDetails}
-              totalAmount={totalAmount}
-            />
-          </>
+          <div className="mdb:flex">
+            <div className="mdb:w-[65%] mdb:border-r border-theme-border mdb:pl-10">
+              {priceDetails.map((product: any) => (
+                <ProductCard
+                  key={product?._id}
+                  product={product}
+                  HandelRemove={HandelRemove}
+                  UpdateProductData={UpdateProductData}
+                />
+              ))}
+            </div>
+            <div className="mdb:w-[35%] bg-[#f5f5f5] md:px-10">
+              <CartProductPricingDetails priceDetails={priceDetails} />
+            </div>
+          </div>
         ) : (
           <EmptyCart IsLogin={true} />
         )

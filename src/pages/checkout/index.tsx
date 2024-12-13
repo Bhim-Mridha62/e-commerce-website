@@ -27,7 +27,7 @@ const index = () => {
 
   //totoal price all product
   const totalAmount = priceDetails.reduce(
-    (acc: number, itme: any) => acc + itme?.price * itme?.quantity,
+    (acc: number, item: any) => (acc + item?.price) * item?.quantity,
     0
   );
   const { user } = useUser();
