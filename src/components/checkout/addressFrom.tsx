@@ -6,11 +6,18 @@ import { Checkbox } from "antd";
 interface AddressFormProps {
   formik: FormikProps<IAddress>;
   isSave?: boolean;
+  isAccountPage?: boolean;
 }
-const AddressFrom = ({ formik, isSave = false }: AddressFormProps) => {
+const AddressFrom = ({
+  formik,
+  isSave = false,
+  isAccountPage = false,
+}: AddressFormProps) => {
   return (
     <>
-      <p className="text-xl text-black font-bold mb-4">Delivery Details</p>
+      {!isAccountPage && (
+        <p className="text-xl text-black font-bold mb-4">Delivery Details</p>
+      )}
       <form onSubmit={formik.handleSubmit}>
         <div className="form-item">
           <input
