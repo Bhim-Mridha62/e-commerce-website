@@ -65,7 +65,7 @@ const ShippingMethod = ({
         "Order confirmed! Thank you for your purchase."
       );
 
-      router.push("/myorder");
+      router.push("/order");
     } catch (error) {
       openNotificationWithIcon(
         "error",

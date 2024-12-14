@@ -26,7 +26,7 @@ function Footer() {
               </Link>
             </div>
             <div className="flex items-center flex-col text-xs py-1 border-l border-theme-border flex-grow hover:text-theme-red">
-              <Link href={`/myorder`}>
+              <Link href={`/order`}>
                 <LiaShoppingBagSolid className="text-lg mx-auto" />
                 <span>Order</span>
               </Link>
