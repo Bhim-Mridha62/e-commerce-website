@@ -3,7 +3,7 @@ import React from "react";
 interface QuantityButtonProps {
   quantity: number;
   setQuantity: any;
-  className: string;
+  className?: string;
 }
 const QuantityButton: React.FC<QuantityButtonProps> = ({
   quantity,
@@ -28,9 +28,7 @@ const QuantityButton: React.FC<QuantityButtonProps> = ({
     }
   };
   return (
-    <div
-      className={`${className} flex items-center border rounded-md w-fit m-4`}
-    >
+    <div className={`flex items-center border rounded-md w-fit ${className}`}>
       {/* Decrement Button */}
       <button
         onClick={decrement}

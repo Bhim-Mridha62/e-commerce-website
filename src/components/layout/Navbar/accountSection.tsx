@@ -35,7 +35,7 @@ const AccountSection = () => {
     },
     {
       key: "4",
-      href: "/myorder",
+      href: "/order",
       icon: <LiaShoppingBagSolid className="text-lg" />,
       label: "My Order",
     },

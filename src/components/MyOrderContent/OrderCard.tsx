@@ -8,7 +8,7 @@ const OrderCard = ({ product }: { product: IOrder }) => {
   const router = useRouter();
   const handelGiveRate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    router.push(`/myorder/${product?.productID}`);
+    router.push(`/order/${product?.productID}`);
   };
   const handelProductDetails = (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();

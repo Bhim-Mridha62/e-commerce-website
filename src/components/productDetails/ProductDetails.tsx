@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { useRouter } from "next/router";
 import { Spin, message, notification } from "antd";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
@@ -12,6 +13,10 @@ import { encodeData } from "@/utils/client/encoding";
 import SizeSelector from "./sizeSelector";
 import { Rating } from "@fluentui/react-rating";
 import QuantityButton from "./quantityButton";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 const ProductDetail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [Product, setProduct] = useState<any>([]);
@@ -71,7 +76,7 @@ const ProductDetail = () => {
       selectedSize,
       _id,
     });
-    router.push(`/cart/address?data=${encodedQuery}`);
+    router.push(`/checkout?data=${encodedQuery}`);
   };
   const HandelAddToCart = async (id: string) => {
     try {
@@ -106,21 +111,52 @@ const ProductDetail = () => {
           <div className="pt-4 md:p-4 w-full md:w-1/2">
             <div className="flex gap-2">
               {""}
-              <div className="flex w-[20%] justify-between  flex-col space-y-2">
-                {Product &&
-                  Product?.images?.map((image: string, index: number) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt={Product.title}
-                      className={`w-16 h-16 cursor-pointer object-contain border ${
-                        index === currentImageIndex
-                          ? "border-blue-500"
-                          : "border-gray-300"
-                      }`}
-                      onClick={() => handleImageClick(index)}
-                    />
-                  ))}
+              <div className="flex w-[20%] justify-between  flex-col space-y-2 relative">
+                <button
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10 bg-theme-border p-2 rounded-full shadow hover:bg-gray-100"
+                  id="product-swiper-button-prev"
+                >
+                  <FaChevronUp />
+                </button>
+
+                {Product && (
+                  <Swiper
+                    direction="vertical"
+                    loop
+                    spaceBetween={10}
+                    slidesPerView={4}
+                    centeredSlides={true}
+                    // initialSlide={currentImageIndex}
+                    navigation={{
+                      nextEl: "#product-swiper-button-next",
+                      prevEl: "#product-swiper-button-prev",
+                    }}
+                    className="h-[280px] md:h-[400px]"
+                    modules={[Navigation]}
+                    // slidesPerView="auto"
+                  >
+                    {Product?.images?.map((image: string, index: number) => (
+                      <SwiperSlide key={index}>
+                        <img
+                          src={image}
+                          alt={Product.title}
+                          className={`w-16 h-16 cursor-pointer object-contain border ${
+                            index === currentImageIndex
+                              ? "border-blue-500"
+                              : "border-gray-300"
+                          }`}
+                          onClick={() => handleImageClick(index)}
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
+                <button
+                  className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-10 bg-theme-border p-2 rounded-full shadow hover:bg-gray-100"
+                  id="product-swiper-button-next"
+                >
+                  <FaChevronDown />
+                </button>
               </div>
               <div className='"w-[80%] h-100% relative'>
                 {user && Product && (
@@ -138,7 +174,7 @@ const ProductDetail = () => {
                 <img
                   src={Product?.images?.[currentImageIndex]}
                   alt={Product?.title}
-                  className="w-[300px] h-[400px] object-contain"
+                  className="w-[300px] h-[280px] md:h-[400px] object-contain"
                 />
               </div>
             </div>

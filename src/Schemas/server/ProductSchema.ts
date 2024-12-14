@@ -30,9 +30,7 @@ const productSchema = new mongoose.Schema({
   color: { type: String, default: "" },
   fabric: { type: String, default: "" },
   sizes: {
-    color: { type: String, default: "" },
     S: { type: Number, default: 0 },
-    fabric: { type: String, default: "" },
     M: { type: Number, default: 0 },
     L: { type: Number, default: 0 },
     XL: { type: Number, default: 0 },
