@@ -7,7 +7,17 @@ import { useAuthData } from "@/service/Auth";
 import Image from "next/image";
 import { Product } from "@/types/types";
 import { Rating } from "@fluentui/react-rating";
-const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
+const ProductCard = ({
+  product,
+  user,
+  isBestSelling = false,
+  isMobile = false,
+}: {
+  product: Product;
+  user?: any;
+  isBestSelling?: boolean;
+  isMobile?: boolean;
+}) => {
   const [islike, setLslike] = useState(false);
   const { Postwishlist } = useAuthData();
 
@@ -34,10 +44,14 @@ const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
       onClick={() => Productdetails(product?._id)}
       className="w-[140px] md:w-[200px] h-[250px] md:h-[300px] relative"
     >
-      {product?.discountPercentage > 30 && (
+      {isBestSelling ? (
+        <span className="Best-seller-label">Best seller</span>
+      ) : product?.discountPercentage > 30 ? (
         <span className="bg-theme-red text-theme-white rounded-tl-lg text-xs absolute left-0 top-0 py-2 px-1 rounded-br-lg">
           -{product?.discountPercentage}%
         </span>
+      ) : (
+        ""
       )}
       {user && (
         <span
@@ -66,12 +80,12 @@ const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
       </p>
       <p className="flex items-center">
         <Rating
-          size="large"
+          size={isMobile ? "medium" : "large"}
           step={0.5}
           className="text-theme-golden pointer-events-none cursor-default"
           value={Number(product?.rating)}
         />
-        <span className="text-theme-border px-1 rounded text-sm ml-1">
+        <span className="text-theme-border md:px-1 rounded text-xs md:text-sm ml-1">
           ({product?.rating}★)
         </span>
       </p>
@@ -81,14 +95,14 @@ const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
         </span>
         {product?.discountPercentage > 0 && (
           <>
-            <del className="font-semibold text-theme-red text-sm">
+            <del className="font-semibold text-theme-red text-xs md:text-sm">
               ₹
               {calculateDiscountedPrice(
                 product?.price,
                 product?.discountPercentage
               )}
             </del>
-            {product?.discountPercentage <= 30 && (
+            {(product?.discountPercentage <= 30 || isBestSelling) && (
               <span className="bg-theme-green text-theme-white rounded px-1">
                 -{product?.discountPercentage}%
               </span>

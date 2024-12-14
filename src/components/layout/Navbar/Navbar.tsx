@@ -122,6 +122,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <div
+        id="navbar-header"
         className={`sticky top-0 z-[999] transition-transform duration-300 ease-in-out border-b border-theme-border bg-theme-white`}
       >
         <WelcomeSection />

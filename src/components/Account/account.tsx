@@ -6,7 +6,7 @@ import {
   LogoutOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Tabs, Badge, Input, notification } from "antd";
+import { Button, Card, Tabs, Badge, Input, notification, Modal } from "antd";
 import ImageContent from "./imageUpload";
 import { useAuthData } from "@/service/Auth";
 import { useEffect, useState } from "react";
@@ -21,9 +21,11 @@ import {
   NamePicId,
 } from "@/types/types";
 import { useUser } from "@/context/authContext";
-import AddressForm from "../common/addressFrom";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { letterOnlyRegex } from "@/utils/client/regEx";
+import { useFormik } from "formik";
+import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
+import AddressFrom from "../checkout/addressFrom";
 export default function Account() {
   const { getProfile, putProfile } = useAuthData();
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
@@ -40,6 +42,28 @@ export default function Account() {
       getProfileData();
     }
   }, [user]);
+  useEffect(() => {
+    if (address?.name) {
+      formik.setValues(address);
+    }
+  }, [address]);
+  const formik = useFormik<IAddress>({
+    initialValues: {
+      name: "",
+      phone: "",
+      alternatePhone: "",
+      pincode: "",
+      state: "Odisha",
+      district: "",
+      village: "",
+      buildingAddress: "",
+    },
+    validationSchema: DeliveryAddressSchema,
+    onSubmit: (values) => {
+      //@ts-ignore
+      updateProfile(values, false, {});
+    },
+  });
   const getProfileData = async () => {
     try {
       const res = await getProfile();
@@ -351,12 +375,19 @@ export default function Account() {
           </Tabs>
         </div>
       </div>
-      <AddressForm
-        isFormOpen={isFormOpen}
-        handleFormClose={handleFormClose}
-        address={address}
-        updateProfile={updateProfile}
-      />
+      <Modal
+        maskClosable={false}
+        title="Update Delivery Address"
+        open={isFormOpen}
+        onCancel={handleFormClose}
+        onOk={(e: any) => {
+          formik.handleSubmit(e); // Pass the event to Formik's handleSubmit
+        }}
+        okButtonProps={{ style: { background: "black" } }}
+        okText="Update"
+      >
+        <AddressFrom formik={formik} isAccountPage={true} />
+      </Modal>
     </div>
   );
 }

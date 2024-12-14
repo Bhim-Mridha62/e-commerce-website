@@ -13,6 +13,7 @@ export interface Product {
   thumbnail: string;
   quantity: number;
   Size: string;
+  sizes: any;
 }
 
 // Define ProductData type as an array of Product objects
@@ -165,6 +166,8 @@ export interface Icategory {
 export interface ICarousel {
   imageUrl: string;
   _id: string;
+  title: string;
+  description: string;
 }
 export interface IHomePageSectionHeading {
   className: string;

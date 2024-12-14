@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Divider } from "antd";
-import { MdOutlineDeleteForever } from "react-icons/md";
+import { Divider } from "antd";
 import { useState } from "react";
 import { useAuthData } from "@/service/Auth";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
@@ -10,6 +9,7 @@ import Link from "next/link";
 import { Rating } from "@fluentui/react-rating";
 import QuantityButton from "../productDetails/quantityButton";
 import SizeSelector from "../productDetails/sizeSelector";
+import Image from "next/image";
 //@ts-ignore
 const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState<any>(1);
@@ -48,96 +48,93 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       selectedSize,
       _id,
     });
-    router.push(`/cart/address?data=${encodedQuery}`);
+    router.push(`/checkout?data=${encodedQuery}`);
   };
   return (
     <>
-      <div className="mb-4 p-2 md:p-4">
-        <div className="flex text-black">
-          <div className="w-1/4">
-            <Link href={`/product/${product?._id}`}>
-              <img
-                src={product?.thumbnail}
-                alt={product?.title}
-                className="w-full h-auto rounded"
-              />
-            </Link>
-            <div className="flex items-center mt-2 gap-2 rounded-lg">
-              <QuantityButton
-                quantity={quantity}
-                setQuantity={(value: number) => {
-                  setQuantity(Number(value));
-                  UpdateProductData(selectedSize, product?._id, Number(value));
-                  HandelAddToCart(selectedSize, product?._id, Number(value));
-                }}
-                className=""
-              />
-            </div>
-          </div>
-          <div className="w-3/4 pl-4">
-            <h2 className="text-lg font-bold">{product?.title}</h2>
-            <div className="mb-2 flex gap-2 items-center">
-              Size:{" "}
-              <SizeSelector
-                sizes={product?.sizes}
-                selectedSize={selectedSize}
-                setSelectedSize={(value) => {
-                  setSelectedSize(value),
-                    UpdateProductData(value, product?._id, quantity),
-                    HandelAddToCart(value, product?._id, quantity);
-                }}
-              />
-            </div>
-            <div className="flex items-center mb-2">
-              <Rating
-                size="large"
-                step={0.5}
-                className="text-theme-golden pointer-events-none cursor-default"
-                value={Number(product?.rating)}
-              />
-              {44 > 0 && (
-                <span className="mx-2 text-sm text-theme-blue">
-                  {`Rated by ${44} people`}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center mb-2">
-              <span className="text-gray-500 line-through">
-                ₹
-                {calculateDiscountedPrice(
-                  product?.price,
-                  product?.discountPercentage
-                ) * quantity}
-              </span>
-              <span className="ml-2 text-xl font-bold">
-                ₹{product?.price * quantity}
-              </span>
-              <span className="ml-2 text-green-600">
-                {Math.round(product?.discountPercentage)}% off
-              </span>
-            </div>
-          </div>
+      <div className="md:flex text-black p-2 md:p-4">
+        <div className="md:w-1/4 bg-theme-grey">
+          <Link href={`/product/${product?._id}`}>
+            <Image
+              src={product?.thumbnail}
+              alt={product?.title}
+              width={1000}
+              height={1000}
+              className="object-contain w-64 h-auto"
+            />
+          </Link>
         </div>
-        <p className="text-[#000000a1]">
-          Delivery by {"May 24 ,fri"}{" "}
-          <del className="font-semibold mx-1"> ₹40</del>
-          <span className="text-green-600">FREE</span>
-        </p>
-        <div className="flex justify-center mt-4 gap-2">
-          <Button
-            onClick={() => HandelRemove(product?._id)}
-            icon={<MdOutlineDeleteForever />}
-            className="bg-red-500 text-white"
-          >
-            Remove
-          </Button>
-          <Button
-            onClick={handleBuyNow}
-            className="bg-[#1677ff]"
-            type="primary"
-          >
-            Buy this now
-          </Button>
+        <div className="md:w-3/4 md:pl-4">
+          <h2 className="text-lg font-bold">{product?.title}</h2>
+          <div className="mb-2 flex gap-2 items-center">
+            Size:{" "}
+            <SizeSelector
+              sizes={product?.sizes}
+              selectedSize={selectedSize}
+              setSelectedSize={(value) => {
+                setSelectedSize(value),
+                  UpdateProductData(value, product?._id, quantity),
+                  HandelAddToCart(value, product?._id, quantity);
+              }}
+            />
+          </div>
+          <div className="flex items-center mb-2">
+            <Rating
+              size="large"
+              step={0.5}
+              className="text-theme-golden pointer-events-none cursor-default"
+              value={Number(product?.rating)}
+            />
+            {44 > 0 && (
+              <span className="mx-2 text-sm text-theme-blue">
+                {`Rated by ${44} people`}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2 rounded-lg">
+            <QuantityButton
+              quantity={quantity}
+              setQuantity={(value: number) => {
+                setQuantity(Number(value));
+                UpdateProductData(selectedSize, product?._id, Number(value));
+                HandelAddToCart(selectedSize, product?._id, Number(value));
+              }}
+            />
+          </div>
+          <div className="flex items-center mb-2">
+            <span className="text-gray-500 line-through">
+              ₹
+              {calculateDiscountedPrice(
+                product?.price,
+                product?.discountPercentage
+              ) * quantity}
+            </span>
+            <span className="ml-2 text-xl font-bold">
+              ₹{product?.price * quantity}
+            </span>
+            <span className="ml-2 text-green-600">
+              {Math.round(product?.discountPercentage)}% off
+            </span>
+          </div>
+          <p className="text-[#000000a1]">
+            Delivery by {"May 24 ,fri"}{" "}
+            <del className="font-semibold mx-1"> ₹40</del>
+            <span className="text-green-600">FREE</span>
+          </p>
+          <div className="flex mt-4 gap-2">
+            <button
+              onClick={() => HandelRemove(product?._id)}
+              className="border-2 border-theme-red bg-theme-white text-theme-red py-1 px-4 hover:bg-theme-red hover:text-theme-white hover:border-theme-red transition-colors duration-300 ease-in-out"
+            >
+              Remove
+            </button>
+            <button
+              onClick={handleBuyNow}
+              className="border-2 border-theme-black bg-theme-white py-1 px-4 text-theme-black hover:bg-theme-black hover:text-theme-white hover:border-theme-black transition-colors duration-300 ease-in-out"
+            >
+              Buy Now
+            </button>
+          </div>
         </div>
       </div>
       <Divider />

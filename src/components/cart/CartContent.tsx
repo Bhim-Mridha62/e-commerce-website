@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import PriceDetails from "../common/PriceDetails";
 import { useAuthData } from "@/service/Auth";
 import EmptyCart from "./EmptyCart";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
 import { ProductData } from "@/types/types";
+import CartProductPricingDetails from "./cartProductPricingDetails";
 
 const CartContent = () => {
-  const [productData, setProductData] = useState<ProductData>([]);
+  const [priceDetails, setPriceDetails] = useState<ProductData>([]);
   const { AllCartData, RemoveCartData } = useAuthData();
   const [loading, setLoading] = useState(true);
   const { user, cartCountRef } = useUser();
-
   const fetchData = async () => {
     try {
       const res = await AllCartData();
       if (res?.status === 200) {
-        setProductData(res?.data?.data);
+        setPriceDetails(res?.data?.data);
       }
     } catch (error) {
       console.error(error);
@@ -47,12 +46,12 @@ const CartContent = () => {
   };
 
   const UpdateProductData = (Size: string, productId: string, qty: number) => {
-    let updateData = productData?.map((data: any) => {
+    let updateData = priceDetails?.map((data: any) => {
       if (data?._id == productId) {
         return { ...data, quantity: qty, Size: Size };
       } else return data;
     });
-    setProductData(updateData);
+    setPriceDetails(updateData);
   };
 
   if (loading) {
@@ -60,20 +59,24 @@ const CartContent = () => {
   }
 
   return (
-    <div className="container mx-auto mt-4">
+    <div className="mx-auto">
       {user ? (
-        productData.length ? (
-          <>
-            {productData.map((product: any) => (
-              <ProductCard
-                key={product?._id}
-                product={product}
-                HandelRemove={HandelRemove}
-                UpdateProductData={UpdateProductData}
-              />
-            ))}
-            <PriceDetails productData={productData} />
-          </>
+        priceDetails.length ? (
+          <div className="mdb:flex">
+            <div className="mdb:w-[65%] mdb:border-r border-theme-border mdb:pl-10">
+              {priceDetails.map((product: any) => (
+                <ProductCard
+                  key={product?._id}
+                  product={product}
+                  HandelRemove={HandelRemove}
+                  UpdateProductData={UpdateProductData}
+                />
+              ))}
+            </div>
+            <div className="mdb:w-[35%] bg-[#f5f5f5] md:px-10">
+              <CartProductPricingDetails priceDetails={priceDetails} />
+            </div>
+          </div>
         ) : (
           <EmptyCart IsLogin={true} />
         )
