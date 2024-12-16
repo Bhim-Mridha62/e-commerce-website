@@ -23,7 +23,6 @@
     "bcrypt": "^5.1.1",
     "compress.js": "^2.1.2",
     "dotenv": "^16.4.4",
-    "firebase": "^10.12.2",
     "formik": "^2.4.5",
     "fuse.js": "^7.0.0",
     "googleapis": "^142.0.0",
