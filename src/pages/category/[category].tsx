@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import SEO from "@/components/common/seo";
 
 // Dynamic import for ProductCard to enable lazy loading
 const ProductCard = dynamic(
@@ -37,14 +38,21 @@ const CategoryPage = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div>
-      <h1 className="font-bold text-3xl">Related Products of {category}</h1>
-      <div className="flex flex-wrap justify-center mt-10 gap px-10 gap-10">
-        {products.map((product: any) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <>
+      <SEO
+        title={`Category - ${category} - SD FASHION SHOP`}
+        description={`Explore products in the ${category} category at SD FASHION SHOP.`}
+        url={`category/${category}`}
+      />
+      <div>
+        <h1 className="font-bold text-3xl">Related Products of {category}</h1>
+        <div className="flex flex-wrap justify-center mt-10 gap px-10 gap-10">
+          {products.map((product: any) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

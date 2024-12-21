@@ -1,4 +1,5 @@
 "use client";
+import SEO from "@/components/common/seo";
 import FilterContent from "@/components/search/filterContent";
 import Search from "@/components/search/Search";
 import { useAuthData } from "@/service/Auth";
@@ -12,6 +13,7 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [product, setProduct] = useState<any>();
   const router = useRouter();
+  const { query } = router?.query;
   const { getSearch } = useAuthData();
   useEffect(() => {
     if (window) {
@@ -19,7 +21,6 @@ const Index = () => {
     }
   }, []);
   useEffect(() => {
-    const { query } = router?.query;
     if (query) {
       GetSearchProduct(query as string);
     }
@@ -66,55 +67,62 @@ const Index = () => {
   ];
 
   return (
-    <section className={`text-black ${isMobile ? "" : "bg-[#e7e7e7] pt-4"}`}>
-      {isMobile ? (
-        <div>
-          <div className="flex border-b mb-3 sticky bg-white z-[2] top-[40px] border-gray-400">
-            <div className="flex-1 cursor-pointer py-3 px-4 text-center text-xl border-r border-gray-400">
-              <Dropdown
-                menu={{ items }}
-                placement="bottomRight"
-                trigger={["click"]}
-                arrow
+    <>
+      <SEO
+        title={`Search results for "${query}"`}
+        description={`Discover the best results for "${query}" at SD FASHION SHOP.`}
+        url={`/search?query=${query}`}
+      />
+      <section className={`text-black ${isMobile ? "" : "bg-[#e7e7e7] pt-4"}`}>
+        {isMobile ? (
+          <div>
+            <div className="flex border-b mb-3 sticky bg-white z-[2] top-[40px] border-gray-400">
+              <div className="flex-1 cursor-pointer py-3 px-4 text-center text-xl border-r border-gray-400">
+                <Dropdown
+                  menu={{ items }}
+                  placement="bottomRight"
+                  trigger={["click"]}
+                  arrow
+                >
+                  <div>
+                    <TbArrowsSort className="inline-flex mr-3" />
+                    Sort By
+                  </div>
+                </Dropdown>
+              </div>
+              <div
+                onClick={showModal}
+                className="flex-1 cursor-pointer py-3 px-4 text-center text-[21px]"
               >
                 <div>
-                  <TbArrowsSort className="inline-flex mr-3" />
-                  Sort By
+                  <FaSearchengin className="inline-flex mr-3" />
+                  Filter
                 </div>
-              </Dropdown>
-            </div>
-            <div
-              onClick={showModal}
-              className="flex-1 cursor-pointer py-3 px-4 text-center text-[21px]"
-            >
-              <div>
-                <FaSearchengin className="inline-flex mr-3" />
-                Filter
               </div>
             </div>
-          </div>
-          <Search product={product} />
-        </div>
-      ) : (
-        <div className="mx-8 bg-white h-[90vh] flex">
-          <div className="HideScroll w-[30%] overflow-scroll">
-            <FilterContent />
-          </div>
-          <div className="HideScroll mt-12 w-[70%] overflow-scroll">
             <Search product={product} />
           </div>
-        </div>
-      )}
-      <Modal
-        title="Filter"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={null}
-        maskClosable={false}
-      >
-        <FilterContent />
-      </Modal>
-    </section>
+        ) : (
+          <div className="mx-8 bg-white h-[90vh] flex">
+            <div className="HideScroll w-[30%] overflow-scroll">
+              <FilterContent />
+            </div>
+            <div className="HideScroll mt-12 w-[70%] overflow-scroll">
+              <Search product={product} />
+            </div>
+          </div>
+        )}
+        <Modal
+          title="Filter"
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          footer={null}
+          maskClosable={false}
+        >
+          <FilterContent />
+        </Modal>
+      </section>
+    </>
   );
 };
 

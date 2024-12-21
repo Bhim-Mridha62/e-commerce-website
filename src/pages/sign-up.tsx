@@ -1,12 +1,14 @@
-import Head from "next/head";
 import React from "react";
 import SignUpForm from "@/components/SignInUpForm/SignUp";
+import SEO from "@/components/common/seo";
 function index() {
   return (
     <>
-      <Head>
-        <title>Sign-up | </title>
-      </Head>
+      <SEO
+        title="Sign Up"
+        description="Create an account on SD FASHION SHOP and start shopping now."
+        url="sign-up"
+      />
       <div>
         <SignUpForm />
       </div>

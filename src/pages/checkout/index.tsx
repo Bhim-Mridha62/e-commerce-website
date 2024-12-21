@@ -11,6 +11,7 @@ import AddressFrom from "@/components/checkout/addressFrom";
 import ShippingMethod from "@/components/checkout/shippingMethod";
 import { Collapse } from "antd";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import SEO from "@/components/common/seo";
 
 const index = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -74,59 +75,68 @@ const index = () => {
     },
   });
   return (
-    <div className="grid mdb:grid-cols-2">
-      {isMobile && priceDetails[0] && (
-        <Collapse
-          items={[
-            {
-              label: (
-                <div className="flex justify-between my-2 px-4 lsm:px-24">
-                  <span className="text-[#105989]">
-                    {isExpanded ? "Hide" : "Show"} order summary{" "}
-                    <MdKeyboardArrowDown
-                      className={`inline-flex text-xl ml-1 transform transition-transform duration-[0.5s] ${
-                        isExpanded ? "rotate-180" : ""
-                      }`}
-                    />
-                  </span>
-                  <span className="font-semibold text-xl">₹{totalAmount}</span>
-                </div>
-              ),
-              showArrow: false,
-              children: (
-                <PriceDetails
-                  priceDetails={priceDetails}
-                  isSticky={true}
-                  totalAmount={totalAmount}
-                />
-              ),
-            },
-          ]}
-          bordered={false}
-          rootClassName="bhim"
-          className="checkout-page-collapse"
-          onChange={(key) => setIsExpanded(!!key.length)}
-        />
-      )}
-      <div className="border-theme-border mdb:border-r px-4 lsm:px-24 mdb:pl-24 mdb:pr-8 pt-5 mdb:pt-10 pb-10">
-        <AddressFrom formik={formik} isSave />
-        <ShippingMethod
-          formik={formik}
-          priceDetails={priceDetails}
-          isMobile={isMobile}
-          totalAmount={totalAmount}
-        />
-      </div>
-      {!isMobile && priceDetails[0] && (
-        <div className="bg-[#f5f5f5] pr-24 pl-8 py-10">
-          <PriceDetails
+    <>
+      <SEO
+        title="Checkout"
+        description="Complete your purchase securely at SD FASHION SHOP."
+        url="checkout"
+      />
+      <div className="grid mdb:grid-cols-2">
+        {isMobile && priceDetails[0] && (
+          <Collapse
+            items={[
+              {
+                label: (
+                  <div className="flex justify-between my-2 px-4 lsm:px-24">
+                    <span className="text-[#105989]">
+                      {isExpanded ? "Hide" : "Show"} order summary{" "}
+                      <MdKeyboardArrowDown
+                        className={`inline-flex text-xl ml-1 transform transition-transform duration-[0.5s] ${
+                          isExpanded ? "rotate-180" : ""
+                        }`}
+                      />
+                    </span>
+                    <span className="font-semibold text-xl">
+                      ₹{totalAmount}
+                    </span>
+                  </div>
+                ),
+                showArrow: false,
+                children: (
+                  <PriceDetails
+                    priceDetails={priceDetails}
+                    isSticky={true}
+                    totalAmount={totalAmount}
+                  />
+                ),
+              },
+            ]}
+            bordered={false}
+            rootClassName="bhim"
+            className="checkout-page-collapse"
+            onChange={(key) => setIsExpanded(!!key.length)}
+          />
+        )}
+        <div className="border-theme-border mdb:border-r px-4 lsm:px-24 mdb:pl-24 mdb:pr-8 pt-5 mdb:pt-10 pb-10">
+          <AddressFrom formik={formik} isSave />
+          <ShippingMethod
+            formik={formik}
             priceDetails={priceDetails}
-            isSticky={true}
+            isMobile={isMobile}
             totalAmount={totalAmount}
           />
         </div>
-      )}
-    </div>
+        {!isMobile && priceDetails[0] && (
+          <div className="bg-[#f5f5f5] pr-24 pl-8 py-10">
+            <PriceDetails
+              priceDetails={priceDetails}
+              isSticky={true}
+              totalAmount={totalAmount}
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
