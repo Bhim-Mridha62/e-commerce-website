@@ -1,7 +1,8 @@
 import React from "react";
-import Head from "next/head";
 import dynamic from "next/dynamic";
 import Loading from "@/components/Loading/Loading"; // Assuming you have a Loading component
+import { useRouter } from "next/router";
+import SEO from "@/components/common/seo";
 
 // Dynamically import AddReviewPage with a fallback
 const AddReviewPage = dynamic(
@@ -13,13 +14,17 @@ const AddReviewPage = dynamic(
 );
 
 const Index: React.FC = () => {
+  const router = useRouter();
+  const productId = router?.query?.productId;
   return (
     <>
-      <Head>
-        <title>Give Review</title>
-      </Head>
+      <SEO
+        title={`Reviews for ${productId}`}
+        description={`Read customer reviews for ${productId} at SD FASHION SHOP.`}
+        url={`/order/=${productId}`}
+      />
       <div>
-        <AddReviewPage />
+        <AddReviewPage ReviewProductId={productId as string} />
       </div>
     </>
   );

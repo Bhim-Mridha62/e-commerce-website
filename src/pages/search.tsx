@@ -71,7 +71,7 @@ const Index = () => {
       <SEO
         title={`Search results for "${query}"`}
         description={`Discover the best results for "${query}" at SD FASHION SHOP.`}
-        url={`/search?query=${query}`}
+        url={`search?query=${query}`}
       />
       <section className={`text-black ${isMobile ? "" : "bg-[#e7e7e7] pt-4"}`}>
         {isMobile ? (

@@ -12,7 +12,7 @@ import { useAuthData } from "@/service/Auth";
 import { Rating } from "@fluentui/react-rating";
 // import Image from "next/image";
 
-const AddReviewPage = () => {
+const AddReviewPage = ({ ReviewProductId }: { ReviewProductId: string }) => {
   const { user } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [imageloading, setImageLoading] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const AddReviewPage = () => {
       try {
         setLoading(true);
         let data = {
-          productID: router?.query?.productId,
+          productID: ReviewProductId,
           username: user?.name,
           userId: user?._id,
           rating: values?.rating,
@@ -42,7 +42,7 @@ const AddReviewPage = () => {
         if (res?.status === 201) {
           setLoading(false);
           message.success(res?.data?.message);
-          router.push(`/product/${router?.query?.productId}`);
+          router.push(`/product/${ReviewProductId}`);
         } else {
           setLoading(false);
           message.error("Something wrong Please Try again");
