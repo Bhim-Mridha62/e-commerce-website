@@ -19,7 +19,7 @@ const SizeSelector: React.FC<SizeSelectorProps> = ({
   };
 
   return (
-    <div className="flex space-x-3">
+    <div className="flex space-x-3 flex-wrap">
       {Object.entries(sizes || {}).map(([size, count]) => (
         <Tooltip title={count === 0 ? "Not available" : ""}>
           <button

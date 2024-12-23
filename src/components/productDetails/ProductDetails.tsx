@@ -198,7 +198,7 @@ const ProductDetail = () => {
               <p className="text-lg text-gray-700 mb-2">
                 {Product?.description}
               </p>
-              <div className="flex gap-2 my-2">
+              <div className="flex gap-2 my-2 whitespace-nowrap">
                 Size :{" "}
                 <SizeSelector
                   selectedSize={selectedSize}
