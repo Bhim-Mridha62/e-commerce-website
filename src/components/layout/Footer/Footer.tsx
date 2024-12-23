@@ -5,7 +5,7 @@ import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FiUser } from "react-icons/fi";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { IoCartOutline } from "react-icons/io5";
+import { IoCartOutline, IoHomeOutline } from "react-icons/io5";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { LuSend } from "react-icons/lu";
 import { MdOutlineHeadsetMic } from "react-icons/md";
@@ -19,6 +19,12 @@ function Footer() {
       {isMobile ? (
         <div className="fixed bottom-0 z-[999] bg-theme-grey border-t border-theme-border w-full">
           <div className="flex justify-around">
+            <div className="flex items-center flex-col text-xs py-1 border-l border-theme-border flex-grow hover:text-theme-red">
+              <Link href={`/`}>
+                <IoHomeOutline className="text-lg mx-auto" />
+                <span>Home</span>
+              </Link>
+            </div>
             <div className="flex items-center flex-col text-xs py-1 border-l border-theme-border flex-grow hover:text-theme-red">
               <Link href={`/account`}>
                 <FiUser className="text-lg mx-auto" />

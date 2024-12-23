@@ -146,16 +146,18 @@ const Navbar: React.FC = () => {
               <span className="h-[2px] md:h-1 w-2 lg:w-6 bg-gradient-to-b from-red-500 to-yellow-500 rounded"></span>
             </p>
           </div>
-          <div className="flex gap-3 lg:gap-10 text-sm lg:text-base">
-            <Link
-              href="/"
-              className={`hover:text-theme-red ${
-                router.pathname === "/" ? "text-theme-red" : ""
-              }`}
-            >
-              Home
-            </Link>
-          </div>
+          {!isMobile && (
+            <div className="flex gap-3 lg:gap-10 text-sm lg:text-base">
+              <Link
+                href="/"
+                className={`hover:text-theme-red ${
+                  router.pathname === "/" ? "text-theme-red" : ""
+                }`}
+              >
+                Home
+              </Link>
+            </div>
+          )}
           <AutoComplete
             // open={false}
             options={autoCompleteOptions.map((item) => ({
