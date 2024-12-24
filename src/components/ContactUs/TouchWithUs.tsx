@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
+import React, { memo } from "react";
 import { BiCurrentLocation } from "react-icons/bi";
 import { BsFillTelephoneForwardFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { FaFacebookSquare } from "react-icons/fa";
 import { AiFillTwitterCircle, AiFillLinkedin } from "react-icons/ai";
 import Link from "next/link";
-function TouchWithUs() {
+const TouchWithUs = memo(() => {
   const SERVICE_PHONE = process.env.NEXT_PUBLIC_SERVICE_PHONE;
   const SERVICE_EMAIL = process.env.NEXT_PUBLIC_SERVICE_EMAIL;
   return (
@@ -46,6 +46,6 @@ function TouchWithUs() {
       </div>
     </div>
   );
-}
+});
 
 export default TouchWithUs;

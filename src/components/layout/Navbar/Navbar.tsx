@@ -1,7 +1,7 @@
 import { AutoComplete, Badge } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useAuthData } from "@/service/Auth";
@@ -18,7 +18,7 @@ const AccountSection = dynamic(() => import("./accountSection"), {
   ssr: false,
 });
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = memo(() => {
   const [inputValue, setInputValue] = useState<string>("");
   const [cartLength, setCartLength] = useState<number>(0);
   const router = useRouter();
@@ -197,6 +197,6 @@ const Navbar: React.FC = () => {
       </div>
     </>
   );
-};
+});
 
 export default Navbar;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { Divider } from "antd";
 import { useState } from "react";
 import { useAuthData } from "@/service/Auth";
@@ -11,7 +11,7 @@ import QuantityButton from "../productDetails/quantityButton";
 import SizeSelector from "../productDetails/sizeSelector";
 import Image from "next/image";
 //@ts-ignore
-const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
+const ProductCard = memo(({ product, HandelRemove, UpdateProductData }) => {
   const [quantity, setQuantity] = useState<any>(1);
   const [selectedSize, setSelectedSize] = useState<any>(null);
   const router = useRouter();
@@ -140,6 +140,6 @@ const ProductCard = ({ product, HandelRemove, UpdateProductData }) => {
       <Divider />
     </>
   );
-};
+});
 
 export default ProductCard;

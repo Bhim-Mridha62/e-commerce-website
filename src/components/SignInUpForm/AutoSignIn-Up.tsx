@@ -2,10 +2,10 @@ import { Facebook, Google } from "@/utils/client/svg-icon";
 import { Button, Divider, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useAuthData } from "@/service/Auth";
 import { useUser } from "@/context/authContext";
-const AutoSignInUp = () => {
+const AutoSignInUp = memo(() => {
   const [isSignIn, setIsSignIn] = useState();
   const { PostCreateUser } = useAuthData();
   const { UpdateUser } = useUser();
@@ -69,6 +69,6 @@ const AutoSignInUp = () => {
       </div>
     </>
   );
-};
+});
 
 export default AutoSignInUp;

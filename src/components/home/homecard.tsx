@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 // import Productskeleton from "../common/productskeleton";
 import ProductCard from "../common/productcard/productcard";
 import Loading from "../Loading/Loading";
@@ -6,7 +6,7 @@ import { useUser } from "@/context/authContext";
 import { useAuthData } from "@/service/Auth";
 import { Product } from "@/types/types";
 
-function Homecard() {
+const Homecard = memo(() => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [productLength, setProductLength] = useState<number>(0);
@@ -67,6 +67,6 @@ function Homecard() {
       )}
     </div>
   );
-}
+});
 
 export default Homecard;

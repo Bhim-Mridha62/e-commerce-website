@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 
 interface CountdownProps {
   targetDate?: Date;
 }
 
-const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
+const Countdown: React.FC<CountdownProps> = memo(({ targetDate }) => {
   // Initialize targetDate once using useRef
   const targetDateRef = useRef<Date>(
     targetDate ? targetDate : new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
@@ -90,6 +90,6 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Countdown;

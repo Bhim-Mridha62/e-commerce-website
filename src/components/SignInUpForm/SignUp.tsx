@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useFormik } from "formik";
 import { Input, Modal, message, Radio } from "antd";
 import { SignUpSchema } from "@/Schemas/client/FormSchema";
@@ -19,7 +19,7 @@ import { useUser } from "@/context/authContext";
 
 const auth = getAuth(app);
 
-const SignUpForm = () => {
+const SignUpForm = memo(() => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] =
     useState<boolean>(false);
@@ -282,6 +282,6 @@ const SignUpForm = () => {
       <AutoSignInUp />
     </>
   );
-};
+});
 
 export default SignUpForm;

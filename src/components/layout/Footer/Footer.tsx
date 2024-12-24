@@ -1,7 +1,7 @@
 import useIsMobile from "@/utils/client/isMobile";
 import { Phone, Mail } from "@/utils/client/svg-icon";
 import Link from "next/link";
-import React from "react";
+import React, { memo } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FiUser } from "react-icons/fi";
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -9,7 +9,7 @@ import { IoCartOutline, IoHomeOutline } from "react-icons/io5";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { LuSend } from "react-icons/lu";
 import { MdOutlineHeadsetMic } from "react-icons/md";
-function Footer() {
+const Footer = memo(() => {
   const SERVICE_PHONE = process.env.NEXT_PUBLIC_SERVICE_PHONE;
   const SERVICE_EMAIL = process.env.NEXT_PUBLIC_SERVICE_EMAIL;
   const isMobile = useIsMobile();
@@ -161,6 +161,6 @@ function Footer() {
       </div>
     </>
   );
-}
+});
 
 export default Footer;

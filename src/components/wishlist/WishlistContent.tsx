@@ -1,5 +1,5 @@
 import { useAuthData } from "@/service/Auth";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import EmptyWishlist from "./EmptyWishlist";
 import { useRouter } from "next/router";
@@ -8,7 +8,7 @@ import { useUser } from "@/context/authContext";
 import { IProduct } from "@/types/types";
 import { Rating } from "@fluentui/react-rating";
 
-const WishlistContent = () => {
+const WishlistContent = memo(() => {
   const [wishlist, setWishlist] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const { Getwishlist, Deletewishlist } = useAuthData();
@@ -120,6 +120,6 @@ const WishlistContent = () => {
   ) : (
     <EmptyWishlist IsLogin={false} />
   );
-};
+});
 
 export default WishlistContent;
