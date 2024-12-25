@@ -16,7 +16,7 @@ import QuantityButton from "./quantityButton";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import PolicySection from "../common/PolicySection";
+import PolicySection from "../common/policySection";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const ProductDetail = memo(() => {
