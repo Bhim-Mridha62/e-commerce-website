@@ -77,6 +77,7 @@ export default function AdvancedOrderTracking() {
       // Set active step based on order progress
       const steps = Object.keys(data.StatusOrder);
       steps.forEach((step, index) => {
+        //@ts-ignore
         if (data?.StatusOrder[step]?.status == "InHere") {
           setActiveStep(index + 1);
         }
