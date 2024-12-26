@@ -267,7 +267,7 @@ const Account = React.memo(() => {
                         </div>
                       </div>
                       <Badge
-                        color={GetOrderStatusColour(order?.OrderStatus)}
+                        color={GetOrderStatusColour(order?.OrderStatus).colour}
                         text={order?.OrderStatus}
                       />
                     </div>

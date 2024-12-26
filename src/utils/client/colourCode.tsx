@@ -1,17 +1,23 @@
 export function GetOrderStatusColour(status: string) {
   let colour;
+  let bgColour;
   if (status === "pending") {
-    colour = "#fd7e14"; // Blue
+    colour = "#fd7e14"; // Orange
+    bgColour = "#fff4e6"; // Light Orange
   } else if (status === "Delivered" || status === "Done") {
     colour = "#10b981"; // Green
+    bgColour = "#e6fffa"; // Light Green
   } else if (status === "cancelled") {
     colour = "#ef4444"; // Red
+    bgColour = "#ffe6e6"; // Light Red
   } else if (status === "returned") {
     colour = "#6f42c1"; // Purple
+    bgColour = "#f3e8ff"; // Light Purple
   } else {
     colour = "#6b7280"; // Gray
+    bgColour = "#f3f4f6"; // Light Gray
   }
-  return colour;
+  return { colour, bgColour };
 }
 export const getRatingSpan = (rating: number) => {
   let text = "";
