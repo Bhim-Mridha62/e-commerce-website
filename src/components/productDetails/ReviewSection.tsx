@@ -5,6 +5,8 @@ import { List, message } from "antd";
 import React, { memo, useEffect, useState } from "react";
 import ReviewItem from "./ReviewItem"; // Import the new component
 import { IReview } from "@/types/types";
+// import { GoChevronRight } from "react-icons/go";
+import { IoIosArrowDroprightCircle } from "react-icons/io";
 
 const ReviewSection = memo(({ id }: { id: string }) => {
   const [review, setReview] = useState([]);
@@ -93,9 +95,10 @@ const ReviewSection = memo(({ id }: { id: string }) => {
           footer={
             <p
               onClick={HandelAllReview}
-              className=" cursor-pointer text-base hover:text-blue-700"
+              className=" cursor-pointer text-xs md:text-base text-theme-red flex items-center gap-2 font-semibold"
             >
-              See All review
+              VIEW ALL REVIEWS{" "}
+              <IoIosArrowDroprightCircle className="text-theme-red size-6 md:size-7" />
             </p>
           }
           renderItem={(data) => (

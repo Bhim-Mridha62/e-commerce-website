@@ -5,19 +5,9 @@ import { SignUpSchema } from "@/Schemas/client/FormSchema";
 import { useAuthData } from "@/service/Auth";
 import { useRouter } from "next/router";
 import { FiLock, FiPhone, FiUser } from "react-icons/fi";
-import {
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-  PhoneAuthProvider,
-  signInWithCredential,
-  getAuth,
-} from "firebase/auth";
-import { app } from "../../../firebaseConfig";
 import { TfiEmail } from "react-icons/tfi";
 import AutoSignInUp from "./AutoSignIn-Up";
 import { useUser } from "@/context/authContext";
-
-const auth = getAuth(app);
 
 const SignUpForm = memo(() => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -25,9 +15,8 @@ const SignUpForm = memo(() => {
     useState<boolean>(false);
   const [isotp, setIsotp] = useState<boolean>(false);
   const [contactMethod, setContactMethod] = useState("phone");
-  const { HandelSignUp, HandelverifyOTP, PostCreateUser } = useAuthData();
+  const { HandelSignUp, HandelverifyOTP } = useAuthData();
   const [otp, setOtp] = useState<any>(false);
-  const [verificationId, setVerificationId] = useState("");
   const { UpdateUser } = useUser();
   const router = useRouter();
 
@@ -57,74 +46,11 @@ const SignUpForm = memo(() => {
     },
   });
 
-  const setupRecaptcha = () => {
-    //@ts-ignore
-    if (!window?.recaptchaVerifier) {
-      //@ts-ignore
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: () => {
-            handleSendCode();
-          },
-          "expired-callback": () => {
-            // Reset reCAPTCHA
-          },
-        },
-        //@ts-ignore
-        auth
-      );
-    }
-  };
-  const handleSendCode = () => {
-    setupRecaptcha();
-    //@ts-ignore
-    const appVerifier = window?.recaptchaVerifier;
-    const phoneNumber = `+91${formik?.values?.emailOrPhone}`;
-    console.log(phoneNumber, "phoneNumber");
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        setVerificationId(confirmationResult.verificationId);
-        setOtp(true);
-      })
-      .catch((error) => {
-        setOtp(true);
-        console.error("Error during signInWithPhoneNumber:", error);
-      });
-  };
-
-  const handleVerifyCode = async () => {
-    try {
-      const credential = PhoneAuthProvider.credential(verificationId, otp);
-      const result = await signInWithCredential(auth, credential);
-      console.log("User signed in:", result);
-      message.success("Phone number verified successfully");
-      try {
-        const res = await PostCreateUser(formik?.values);
-        console.log(res, "res");
-        if (res?.status == 201) {
-          message.success(res?.data?.message);
-          window.localStorage.setItem(
-            "Authorization",
-            res?.data?.user?.SecretToken
-          );
-          window.localStorage.setItem("User", JSON.stringify(res?.data?.user));
-          setIsotp(false);
-          router.back();
-        }
-      } catch (error: any) {
-        message.error(error?.response?.data?.message);
-      }
-    } catch (error) {
-      message.error("Invalid OTP. Please try again.");
-    }
-  };
+  const handleSendCode = () => {};
 
   const handleOk = async () => {
     if (contactMethod === "phone") {
-      await handleVerifyCode();
+      // await handleVerifyCode();
     } else {
       try {
         const res = await HandelverifyOTP({

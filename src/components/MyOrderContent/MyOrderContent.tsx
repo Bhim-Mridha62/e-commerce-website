@@ -92,7 +92,7 @@ const MyOrderContent = memo(() => {
 
   return user ? (
     items?.length ? (
-      <div className="min-h-[30vh]">
+      <div className="">
         <div className="mx-2 md:mx-20">
           <h1 className="text-xl font-semibold text-center my-4">My Orders</h1>
           <div className="relative mb-4 my-4">
@@ -121,20 +121,12 @@ const MyOrderContent = memo(() => {
           <hr className="my-4" />
         </div>
         {items?.map((data: IOrder) => (
-          <div className="flex gap-2 mb-8">
-            <div className="w-full md:w-[70%] mx-4 md:ml-20">
-              <OrderCard
-                key={data?._id}
-                product={data}
-                getUserOrder={getUserOrder}
-              />
-            </div>
-            {!isMobile && (
-              <div className="w-[30%]">
-                {" "}
-                <TimelineData StatusOrder={data} getUserOrder={getUserOrder} />
-              </div>
-            )}
+          <div className="w-full md:w-[70%] px-4">
+            <OrderCard
+              key={data?._id}
+              product={data}
+              getUserOrder={getUserOrder}
+            />
           </div>
         ))}
       </div>

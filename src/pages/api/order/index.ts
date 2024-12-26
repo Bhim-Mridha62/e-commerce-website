@@ -21,7 +21,7 @@ export default async function handler(
     case "GET":
       return verifyUser(getOrdersByUser)(req, res);
     case "POST":
-      return verifyUser(addOrder)(req, res);
+      return verifyUser(CreateOrder)(req, res);
     case "PUT":
       return verifyUser(updateOrderStatus)(req, res);
     default:
@@ -29,7 +29,7 @@ export default async function handler(
   }
 }
 
-async function addOrder(req: any, res: NextApiResponse) {
+async function CreateOrder(req: any, res: NextApiResponse) {
   try {
     const { userId } = req;
     const { productID, quantity, title, size, image, price, address } =

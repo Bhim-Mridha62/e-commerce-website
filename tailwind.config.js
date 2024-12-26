@@ -18,6 +18,8 @@ module.exports = {
         "theme-golden": "#ffa41c",
         "theme-text-grey": "#6b7280",
         "theme-bg-green": "#e7f8ec",
+        "theme-bg-red": "#fde8e8",
+        "theme-border-red": "#fa9090",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
