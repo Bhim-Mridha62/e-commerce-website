@@ -21,7 +21,7 @@ export default async function handler(
     case "GET":
       return verifyUser(getOrdersByUser)(req, res);
     case "POST":
-      return verifyUser(addOrder)(req, res);
+      return verifyUser(CreateOrder)(req, res);
     case "PUT":
       return verifyUser(updateOrderStatus)(req, res);
     default:
@@ -29,7 +29,7 @@ export default async function handler(
   }
 }
 
-async function addOrder(req: any, res: NextApiResponse) {
+async function CreateOrder(req: any, res: NextApiResponse) {
   try {
     const { userId } = req;
     const { productID, quantity, title, size, image, price, address } =
@@ -155,14 +155,31 @@ async function updateOrderStatus(req: NextApiRequest, res: NextApiResponse) {
 async function getOrdersByUser(req: any, res: NextApiResponse) {
   try {
     const { userId } = req;
-
+    const { order_id } = req.query;
+    // If an order_id is provided, fetch the specific order details
+    if (order_id) {
+      const order_details = await Order.findById(order_id).select("-__V");
+      return res.status(200).json({ success: true, data: order_details });
+    }
     if (!userId) {
       return res
         .status(400)
         .json({ success: false, message: "Missing userId" });
     }
 
-    const orders = await Order.find({ userId }).select("-userId -__v");
+    const orders = await Order.find({ userId }).select({
+      cancelReason: 1,
+      productID: 1,
+      quantity: 1,
+      title: 1,
+      size: 1,
+      image: 1,
+      price: 1,
+      OrderStatus: 1,
+      DeliveryDate: 1,
+      OrderDate: 1,
+      "address.name": 1,
+    });
 
     return res.status(200).json({ success: true, data: orders });
   } catch (error: any) {

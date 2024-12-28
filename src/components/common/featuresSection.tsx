@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import { SlEarphonesAlt } from "react-icons/sl";
 import { TbTruckDelivery } from "react-icons/tb";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
-const FeaturesSection = () => {
+const FeaturesSection = memo(() => {
   const features = [
     {
       icon: <TbTruckDelivery className="text-2xl" />,
@@ -49,6 +49,6 @@ const FeaturesSection = () => {
       </section>
     </>
   );
-};
+});
 
 export default FeaturesSection;

@@ -1,13 +1,12 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { useFormik } from "formik";
 import { ContactUsSchema } from "@/Schemas/client/FormSchema";
 import { notification } from "antd";
 import { useAuthData } from "@/service/Auth";
 import { IContactUs } from "@/types/types";
 import { CgSpinnerTwo } from "react-icons/cg";
-
-export default function Contact() {
+const Contact = memo(() => {
   const { postContactUs } = useAuthData();
   const [loading, setLoading] = useState<boolean>(false);
   const formik = useFormik<IContactUs>({
@@ -211,4 +210,5 @@ export default function Contact() {
       </div>
     </section>
   );
-}
+});
+export default Contact;

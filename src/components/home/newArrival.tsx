@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import HomePageSectionHeading from "./homePageSectionHeading";
 
-const NewArrival = () => {
+const NewArrival = memo(() => {
   const items = [
     {
       title: "PlayStation 5",
@@ -80,6 +80,6 @@ const NewArrival = () => {
       </div>
     </section>
   );
-};
+});
 
 export default NewArrival;

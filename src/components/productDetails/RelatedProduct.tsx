@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import Productskeleton from "../common/productskeleton";
 import ProductCard from "../common/productcard/productcard";
 import { Product } from "@/types/types";
-function RelatedProduct() {
+const RelatedProduct = memo(() => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   async function fetchData() {
@@ -75,6 +75,6 @@ function RelatedProduct() {
       </div>
     </div>
   );
-}
+});
 
 export default RelatedProduct;

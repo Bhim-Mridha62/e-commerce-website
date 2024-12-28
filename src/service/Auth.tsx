@@ -91,8 +91,8 @@ const getcarousel = () => {
 const postorder = (data: any) => {
   return Apimethod(`/api/order`, "POST", data, false);
 };
-const getorder = () => {
-  return Apimethod(`/api/order`, "get", {}, false);
+const getorder = (id: string = "") => {
+  return Apimethod(`/api/order?order_id=${id}`, "get", {}, false);
 };
 const putorder = (data: any) => {
   return Apimethod(`/api/order`, "put", data, false);

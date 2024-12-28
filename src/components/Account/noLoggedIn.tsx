@@ -1,6 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
-export default function Component() {
+import React from "react";
+const Component = React.memo(() => {
   return (
     <section className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-md">
@@ -38,4 +39,5 @@ export default function Component() {
       </div>
     </section>
   );
-}
+});
+export default Component;

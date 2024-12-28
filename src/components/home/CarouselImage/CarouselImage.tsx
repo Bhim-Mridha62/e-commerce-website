@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { message } from "antd";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import Image from "next/image";
 
-const Homecarousel = () => {
+const Homecarousel = memo(() => {
   const [images, setImages] = useState<ICarousel[]>([]);
   const { getcarousel } = useAuthData();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -219,6 +219,6 @@ const Homecarousel = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Homecarousel;

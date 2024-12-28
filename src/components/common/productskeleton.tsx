@@ -1,7 +1,7 @@
 import { Skeleton } from "antd";
-import React from "react";
+import React, { memo } from "react";
 import stylehome from "./productskeleton.module.css";
-function Productskeleton() {
+const Productskeleton = memo(() => {
   return (
     <div className={`p-0 ${stylehome.Productshow}`}>
       <Skeleton.Image className={stylehome.ProductshowImg} active={true} />
@@ -14,6 +14,6 @@ function Productskeleton() {
       </div>
     </div>
   );
-}
+});
 
 export default Productskeleton;

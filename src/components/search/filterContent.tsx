@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Collapse, Checkbox, Button } from "antd";
 import {
   CaretRightOutlined,
@@ -62,7 +62,7 @@ const filterOptions: FilterOptions = {
   occasion: ["Casual", "Formal", "Party", "Sports", "Ethnic"],
 };
 
-const FilterContent = () => {
+const FilterContent = memo(() => {
   const [selectedFilters, setSelectedFilters] = useState<FilterOptions>({
     size: [],
     fabric: [],
@@ -215,6 +215,6 @@ const FilterContent = () => {
       />
     </div>
   );
-};
+});
 
 export default FilterContent;

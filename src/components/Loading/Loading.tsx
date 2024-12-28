@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import styles from "./Loading.module.css";
 
-const Loading = ({ className }: { className?: string }) => {
+const Loading = memo(({ className }: { className?: string }) => {
   return (
     <div className={className}>
       <div className={styles.loadingSpinner}>
@@ -10,6 +10,6 @@ const Loading = ({ className }: { className?: string }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Loading;
