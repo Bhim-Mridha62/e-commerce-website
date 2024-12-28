@@ -1,17 +1,20 @@
 import { Badge } from "antd";
 import Image from "next/image";
 import React, { memo, useEffect, useState } from "react";
+import PromoCode from "./promoCode";
 const PriceDetails = memo(
   ({
     priceDetails,
     isSticky = false,
     totalAmount,
     showSummaryText = false,
+    IsPromoCode = false,
   }: {
     priceDetails: any;
     isSticky?: boolean;
     totalAmount: number;
     showSummaryText?: boolean;
+    IsPromoCode?: boolean;
   }) => {
     const [navbarHeight, setNavbarHeight] = useState<number>(112);
     console.log(priceDetails, "Price Price Details");
@@ -30,7 +33,12 @@ const PriceDetails = memo(
       >
         {showSummaryText && (
           <div className="mb-4">
-            <h2 className="text-lg font-semibold">Order Summary</h2>
+            <h2 className="text-lg font-semibold">Summary</h2>
+          </div>
+        )}
+        {IsPromoCode && (
+          <div className="mb-4">
+            <PromoCode />
           </div>
         )}
         {priceDetails?.map((item: any) => (

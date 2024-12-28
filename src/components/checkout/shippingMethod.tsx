@@ -164,6 +164,7 @@ const ShippingMethod = memo(
             priceDetails={priceDetails}
             totalAmount={totalAmount}
             showSummaryText={true}
+            IsPromoCode
           />
         )}
         <button

@@ -132,6 +132,8 @@ const index = () => {
               priceDetails={priceDetails}
               isSticky={true}
               totalAmount={totalAmount}
+              showSummaryText
+              IsPromoCode
             />
           </div>
         )}
