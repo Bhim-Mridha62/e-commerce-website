@@ -7,6 +7,7 @@ import { useUser } from "@/context/authContext";
 import EmptyOrder from "./emptyOrder";
 // import orderNotFound from "/order_not_found.png";
 import Image from "next/image";
+import NeedHelp from "./needHelp";
 const MyOrderContent = memo(() => {
   const [order, setOrder] = useState<IOrder[]>([]);
   const [order_filter, setOrder_filter] = useState<IOrder[]>([]);
@@ -116,6 +117,7 @@ const MyOrderContent = memo(() => {
             <p className="text-center font-semibold">Orders not found</p>
           </div>
         )}
+        <NeedHelp className="mt-4" />
       </div>
     ) : (
       <EmptyOrder IsLogin={true} />

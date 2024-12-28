@@ -9,6 +9,7 @@ import { HiOutlineTruck } from "react-icons/hi";
 import { IoLocationOutline } from "react-icons/io5";
 import { LuClock4 } from "react-icons/lu";
 import { RiShoppingBag3Line } from "react-icons/ri";
+import NeedHelp from "./needHelp";
 const OrderDetails = ({ order_id }: { order_id?: string }) => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(true);
   const [orderData, setOrderData] = useState<IOrder | any>(null); // Replace `any` with proper types if desired
@@ -254,6 +255,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
           </div>
         </div>
       </div>
+      <NeedHelp />
     </section>
   );
 };
