@@ -1,18 +1,36 @@
 import mongoose from "mongoose";
 
 // Define the schema for product reviews
-const reviewSchema = new mongoose.Schema({
-  username: { type: String, default: "" }, // The name of the user who wrote the review
-  userId: { type: String, default: "" }, // The ID of the user who wrote the review
-  userImage: { type: String, default: "" }, // The profile image of the user
-  rating: { type: Number, default: 0 }, // The rating given by the user
-  like: { type: Number, default: 0 }, // The number of likes the review received
-  dislike: { type: Number, default: 0 }, // The number of dislikes the review received
-  comment: { type: String, default: "" }, // The comment text of the review
-  images: { type: [String], default: [] }, // Any images attached to the review
+export const Review_Schema = new mongoose.Schema({
+  username: {
+    type: String,
+    default: "",
+    required: [true, "Username is required"],
+  },
+  userId: {
+    type: String,
+    default: "",
+    required: [true, "User ID is required"],
+  },
+  userImage: { type: String, default: "" },
+  rating: {
+    type: Number,
+    default: 0,
+    required: [true, "Rating is required"],
+    min: [1, "Rating must be at least 1"],
+    max: [5, "Rating cannot exceed 5"],
+  },
+  like: { type: Number, default: 0 },
+  dislike: { type: Number, default: 0 },
+  comment: {
+    type: String,
+    default: "",
+    required: [true, "Comment is required"],
+  },
+  images: { type: [String], default: [] },
   postdAt: { type: Date, default: Date.now },
 });
-
+// mongoose.model("Review", Review_Schema);
 const productSchema = new mongoose.Schema({
   title: { type: String, default: "" },
   description: { type: String, default: "" },
@@ -25,7 +43,7 @@ const productSchema = new mongoose.Schema({
   category: { type: String, default: "" },
   thumbnail: { type: String, default: "" },
   images: { type: [String], default: [] },
-  reviews: { type: [reviewSchema], default: [] },
+  reviews: { type: [Review_Schema], default: [] },
   gender: { type: String, default: "" },
   color: { type: String, default: "" },
   fabric: { type: String, default: "" },
