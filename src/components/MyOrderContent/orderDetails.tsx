@@ -1,3 +1,4 @@
+import { useAuthData } from "@/service/Auth";
 import { formatDate } from "@/utils/client/formatDate";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -7,70 +8,22 @@ import { HiOutlineTruck } from "react-icons/hi";
 import { IoLocationOutline } from "react-icons/io5";
 import { LuClock4 } from "react-icons/lu";
 import { RiShoppingBag3Line } from "react-icons/ri";
-const OrderDetails = () => {
+const OrderDetails = ({ order_id }: { order_id?: string }) => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(true);
   const [orderData, setOrderData] = useState<any>(null); // Replace `any` with proper types if desired
   const [activeStep, setActiveStep] = useState(0);
+  const { getorder } = useAuthData();
 
   useEffect(() => {
-    // Simulate fetching data from API
-    fetchOrderDetails();
-  }, []);
+    if (order_id) {
+      fetchOrderDetails();
+    }
+  }, [order_id]);
 
   const fetchOrderDetails = async () => {
-    const response = {
-      success: true,
-      data: [
-        {
-          address: {
-            village: "M.v.48",
-            alternatePhone: "",
-            buildingAddress: "India",
-            district: "Malkangiri",
-            name: "Debasish Biswas",
-            phone: "7683836438",
-            pincode: "764047",
-            state: "Odisha",
-          },
-          cancelReason: "",
-          _id: "67589b05415d431b540826c9",
-          productID: "6744d509fea2f23c11086a6d",
-          quantity: 1,
-          title: "Zara Basic Heavy Weight T-Shirt",
-          size: "M",
-          image:
-            "https://drive.google.com/thumbnail?id=1bjNFTWYatCWYIJJtdAwekLQKqSikbpYL&sz=w1920",
-          price: 1850,
-          StatusOrder: {
-            Order_Received: {
-              status: "Done",
-              time: "2024-12-11T01:18:21.273Z",
-            },
-            Order_Shipped: {
-              status: "Done",
-              time: "2024-12-11T01:20:24.169Z",
-            },
-            Order_Picked: {
-              status: "Done",
-              time: "2024-12-11T01:22:24.169Z",
-            },
-            Out_for_delivery: {
-              status: "InHere",
-              time: "2024-12-11T01:25:24.169Z",
-            },
-            Order_Delivered: {
-              status: "pending",
-              time: "2024-12-12T01:30:24.169Z",
-            },
-          },
-          OrderStatus: "pending",
-          DeliveryDate: "2024-12-12T01:30:24.169Z",
-          OrderDate: "2024-12-10T19:48:21.343Z",
-        },
-      ],
-    };
-    if (response.success) {
-      const data = response.data[0];
+    const response = await getorder(order_id);
+    if (response?.data?.success) {
+      const data = response?.data.data;
       setOrderData(data);
 
       // Set active step based on order progress

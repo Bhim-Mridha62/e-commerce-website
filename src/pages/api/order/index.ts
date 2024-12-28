@@ -155,7 +155,12 @@ async function updateOrderStatus(req: NextApiRequest, res: NextApiResponse) {
 async function getOrdersByUser(req: any, res: NextApiResponse) {
   try {
     const { userId } = req;
-
+    const { order_id } = req.query;
+    // If an order_id is provided, fetch the specific order details
+    if (order_id) {
+      const order_details = await Order.findById(order_id).select("-__V");
+      return res.status(200).json({ success: true, data: order_details });
+    }
     if (!userId) {
       return res
         .status(400)
