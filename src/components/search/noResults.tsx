@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button, Result } from "antd";
-const NoResults = () => {
+const NoResults = memo(() => {
   return (
     <div className="">
       <Result
@@ -12,6 +12,6 @@ const NoResults = () => {
       />
     </div>
   );
-};
+});
 
 export default NoResults;

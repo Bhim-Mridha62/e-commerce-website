@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { memo } from "react";
 import { FaCartPlus } from "react-icons/fa";
 
 interface EmptyCartProps {
   IsLogin: boolean;
 }
 
-const EmptyCart: React.FC<EmptyCartProps> = ({ IsLogin }) => {
+const EmptyCart: React.FC<EmptyCartProps> = memo(({ IsLogin }) => {
   const router = useRouter();
 
   const handleButtonClick = () => {
@@ -42,6 +42,6 @@ const EmptyCart: React.FC<EmptyCartProps> = ({ IsLogin }) => {
       </button>
     </div>
   );
-};
+});
 
 export default EmptyCart;

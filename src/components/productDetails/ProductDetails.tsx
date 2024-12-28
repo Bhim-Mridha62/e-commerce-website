@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useRouter } from "next/router";
 import { Spin, message, notification } from "antd";
@@ -16,8 +16,10 @@ import QuantityButton from "./quantityButton";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
+import PolicySection from "../common/policySection";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-const ProductDetail = () => {
+
+const ProductDetail = memo(() => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [Product, setProduct] = useState<any>([]);
   const [quantity, setQuantity] = useState<any>(1);
@@ -198,7 +200,7 @@ const ProductDetail = () => {
               <p className="text-lg text-gray-700 mb-2">
                 {Product?.description}
               </p>
-              <div className="flex gap-2 my-2">
+              <div className="flex gap-2 my-2 whitespace-nowrap">
                 Size :{" "}
                 <SizeSelector
                   selectedSize={selectedSize}
@@ -262,11 +264,13 @@ const ProductDetail = () => {
               </div>
             </div>
             <ReviewSection id={Product?._id} />
+            <hr className="my-2" />
+            <PolicySection />
           </div>
         </div>
       </Spin>
     </>
   );
-};
+});
 
 export default ProductDetail;

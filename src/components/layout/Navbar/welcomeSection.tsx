@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import { BiSolidOffer } from "react-icons/bi";
 import { FaTruck } from "react-icons/fa";
 
-const WelcomeSection = () => {
+const WelcomeSection = memo(() => {
   return (
     <div className="bg-theme-black py-2 text-theme-white text-xs lsm:text-sm">
       <div className="flex justify-between items-center py-1 px-1 lsm:px-4">
@@ -32,6 +32,6 @@ const WelcomeSection = () => {
       </div>
     </div>
   );
-};
+});
 
 export default WelcomeSection;

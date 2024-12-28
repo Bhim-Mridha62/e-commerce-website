@@ -1,7 +1,7 @@
 import React from "react";
 import Loading from "@/components/Loading/Loading";
-import Head from "next/head";
 import dynamic from "next/dynamic";
+import SEO from "@/components/common/seo";
 
 // Lazy import of the MyOrderContent component
 const MyOrderContent = dynamic(
@@ -15,9 +15,11 @@ const MyOrderContent = dynamic(
 const MyOrder: React.FC = () => {
   return (
     <>
-      <Head>
-        <title>My-Order</title>
-      </Head>
+      <SEO
+        title="Orders"
+        description="View your order history at SD FASHION SHOP."
+        url="order"
+      />
       <MyOrderContent />
     </>
   );

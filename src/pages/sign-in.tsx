@@ -1,13 +1,15 @@
+import SEO from "@/components/common/seo";
 import SignInForm from "@/components/SignInUpForm/SignIn";
-import Head from "next/head";
 import React from "react";
 
 function index() {
   return (
     <>
-      <Head>
-        <title>Sign-in | </title>
-      </Head>
+      <SEO
+        title="Sign In"
+        description="Sign in to your SD FASHION SHOP account to access exclusive features."
+        url="sign-in"
+      />
       <div>
         <SignInForm />
       </div>

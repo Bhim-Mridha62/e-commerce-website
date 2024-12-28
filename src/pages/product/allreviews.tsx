@@ -1,3 +1,4 @@
+import SEO from "@/components/common/seo";
 import ReviewSection from "@/components/productDetails/ReviewSection";
 // import { useRouter } from "next/router";
 import React from "react";
@@ -18,9 +19,16 @@ function allreview() {
   //       .catch((err) => console.log(err));
   //   };
   return (
-    <div>
-      <ReviewSection id="" />
-    </div>
+    <>
+      <SEO
+        title="All Reviews"
+        description="Read reviews from our customers at SD FASHION SHOP."
+        url="allreviews"
+      />
+      <div>
+        <ReviewSection id="" />
+      </div>
+    </>
   );
 }
 

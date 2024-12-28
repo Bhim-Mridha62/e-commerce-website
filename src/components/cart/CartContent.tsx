@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import { useAuthData } from "@/service/Auth";
 import EmptyCart from "./EmptyCart";
@@ -7,7 +7,7 @@ import { useUser } from "@/context/authContext";
 import { ProductData } from "@/types/types";
 import CartProductPricingDetails from "./cartProductPricingDetails";
 
-const CartContent = () => {
+const CartContent = memo(() => {
   const [priceDetails, setPriceDetails] = useState<ProductData>([]);
   const { AllCartData, RemoveCartData } = useAuthData();
   const [loading, setLoading] = useState(true);
@@ -85,6 +85,6 @@ const CartContent = () => {
       )}
     </div>
   );
-};
+});
 
 export default CartContent;

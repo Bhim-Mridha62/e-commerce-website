@@ -6,6 +6,7 @@ import React, {
   startTransition,
 } from "react";
 import Loading from "@/components/Loading/Loading";
+import SEO from "@/components/common/seo";
 
 const CartContent = lazy(() => import("@/components/cart/CartContent"));
 
@@ -19,15 +20,22 @@ function Index() {
   }, []);
 
   return (
-    <div>
-      {isHydrated ? (
-        <Suspense fallback={<Loading className="mt-40" />}>
-          <CartContent />
-        </Suspense>
-      ) : (
-        <Loading className="mt-40" />
-      )}
-    </div>
+    <>
+      <SEO
+        title="Cart"
+        description="View and manage the items in your cart at SD FASHION SHOP."
+        url="cart"
+      />
+      <div>
+        {isHydrated ? (
+          <Suspense fallback={<Loading className="mt-40" />}>
+            <CartContent />
+          </Suspense>
+        ) : (
+          <Loading className="mt-40" />
+        )}
+      </div>
+    </>
   );
 }
 

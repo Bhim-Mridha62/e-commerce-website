@@ -16,6 +16,8 @@
   --theme-golden: #ffa41c;
   --theme-text-grey: #6b7280;
   --theme-bg-green: #e7f8ec;
+  --theme-bg-red: #fde8e8;
+  --theme-border-red: #fa9090;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,7 +30,6 @@
 
 body {
   color: var(--theme-black);
-  font-family: emoji;
 }
 
 @layer utilities {
@@ -206,6 +207,38 @@ textarea .form-item :focus + label,
 .checkout-page-collapse .ant-collapse-header {
   border-bottom: 1px solid var(--theme-border);
 }
+
+/* Default button styles */
+.order-filter-button {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 9999px; /* Fully rounded corners */
+  background-color: var(--theme-grey);
+  color: var(--theme-text-grey);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+/* Styles when the button is active */
+.order-filter-button.active {
+  background-color: var(--theme-bg-red);
+  color: var(--theme-red);
+  border-color: var(--theme-border-red);
+}
+
+/* Hover styles for inactive buttons */
+.order-filter-button:hover {
+  background-color: var(--theme-bg-red);
+  color: var(--theme-red);
+  border-color: var(--theme-border-red);
+}
+.one-line-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @media (max-width: 768px) {
   .custom-slide-categories {
     width: 110px !important;
@@ -218,5 +251,15 @@ textarea .form-item :focus + label,
   .shop-now-buttom-banner {
     margin-top: inherit;
     margin-bottom: auto;
+  }
+  .order-filter-button {
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--theme-border);
+    border-radius: 9999px; /* Fully rounded corners */
+    background-color: var(--theme-grey);
+    color: var(--theme-text-grey);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    cursor: pointer;
+    font-size: 12px;
   }
 }

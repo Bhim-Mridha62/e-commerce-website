@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { memo } from "react";
 import { FiLogIn, FiShoppingBag } from "react-icons/fi";
 
-const EmptyOrder = ({ IsLogin }: { IsLogin: boolean }) => {
+const EmptyOrder = memo(({ IsLogin }: { IsLogin: boolean }) => {
   const router = useRouter();
 
   const handleLogin = () => {
@@ -35,6 +35,6 @@ const EmptyOrder = ({ IsLogin }: { IsLogin: boolean }) => {
       </button>
     </div>
   );
-};
+});
 
 export default EmptyOrder;

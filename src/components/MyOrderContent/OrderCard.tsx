@@ -1,62 +1,88 @@
 import { IOrder } from "@/types/types";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
-const OrderCard = ({ product }: { product: IOrder }) => {
-  const orderStatusColour = GetOrderStatusColour(product?.OrderStatus);
-  const router = useRouter();
-  const handelGiveRate = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    router.push(`/order/${product?.productID}`);
-  };
-  const handelProductDetails = (e: React.MouseEvent<HTMLImageElement>) => {
-    e.stopPropagation();
-    router.push(`/product/${product?.productID}`);
-  };
-  return (
-    <>
-      <div className="flex items-start justify-between p-1 md:px-52  md:border-gray-200 rounded-lg shadow-sm mb-4">
-        <div className=" md:flex-row flex-col flex">
-          <img
-            onClick={(e) => handelProductDetails(e)}
-            className="md:w-24 md:h-24 w-16 h-16 object-cover rounded"
-            src={product.image}
-            alt={product.title}
-          />
-          <div className="ml-4">
-            <h3 className="md:text-lg text:[15] font-[400] md:font-semibold text-gray-800">
-              {product.title}
-            </h3>
-            <p className="text-gray-800 font-semibold mt-1">₹{product.price}</p>
+import React, { memo } from "react";
+
+import ReactionButton from "./reactionButton";
+import { PiCaretCircleRight } from "react-icons/pi";
+const OrderCard = memo(
+  ({
+    product,
+    getUserOrder,
+  }: {
+    product: IOrder;
+    getUserOrder: () => void;
+  }) => {
+    const orderStatusColour = GetOrderStatusColour(product?.OrderStatus);
+    const router = useRouter();
+
+    // redirct to add review page
+    const handelProductDetails = (e: React.MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+      router.push(`/product/${product?.productID}`);
+    };
+    return (
+      <>
+        <div className="bg-theme-grey flex justify-between px-2 md:px-4 py-4 items-center rounded-t-md">
+          <div>
+            {" "}
+            <p className="text-xs md:text-base text-theme-text-grey">
+              Oeder # {product?._id?.slice(0, 12)}
+            </p>
+            <p
+              className="flex items-center text-sm md:text-base text-theme-text-grey rounded-full border w-fit px-2 mt-1"
+              style={{
+                color: orderStatusColour.colour,
+                backgroundColor: orderStatusColour.bgColour,
+                borderColor: orderStatusColour.colour,
+              }}
+            >
+              <span
+                className={`h-2 w-2  rounded-full mr-1`}
+                style={{
+                  backgroundColor: orderStatusColour?.colour,
+                }}
+              ></span>
+              {product?.OrderStatus} on{" "}
+              {formatDate(product?.DeliveryDate as string)}
+            </p>
+          </div>
+          <div className="text-xs md:text-base text-theme-text-grey">
+            Ship to {product?.address?.name}
           </div>
         </div>
-        <div className="">
-          <p
-            className={`flex items-center md:text-lg `}
-            style={{ color: orderStatusColour }}
+        <div className="flex flex-col gap-2 p-4">
+          <div
+            className="flex"
+            onClick={() => router.push(`/order/${product?._id}`)}
           >
-            <span
-              className={`h-3 w-3  rounded-full mr-2`}
-              style={{ backgroundColor: orderStatusColour }}
-            ></span>
-            {product?.OrderStatus} on{" "}
-            {formatDate(
-              product?.DeliveryDate ? product?.DeliveryDate : product?.OrderDate
-            )}
-          </p>
-          <p className="text-gray-500">
-            Your item has been {product?.OrderStatus}
-          </p>
-          <button
-            className="text-blue-600 mt-2"
-            onClick={(e) => handelGiveRate(e)}
-          >
-            ★ Give Rate & Review Product
-          </button>
+            <Image
+              className="md:w-48 md:h-48 w-20 h-20 object-cover rounded"
+              src={product?.image || ""}
+              alt={product?.title || ""}
+              width={1000}
+              height={1000}
+            />
+            <div className="ml-4 w-full">
+              <h3 className="md:text-lg text-base font-[400] md:font-semibold text-gray-800 one-line-truncate">
+                {product.title}
+              </h3>
+              <p className="text-theme-text-grey font-semibold mt-1 flex justify-between">
+                ₹{product.price}
+                <PiCaretCircleRight className="text-3xl" />
+              </p>
+            </div>
+          </div>
+          <ReactionButton
+            product={product}
+            getUserOrder={getUserOrder}
+            handelProductDetails={handelProductDetails}
+          />
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  }
+);
 export default OrderCard;

@@ -9,7 +9,7 @@ import {
 import { Button, Card, Tabs, Badge, Input, notification, Modal } from "antd";
 import ImageContent from "./imageUpload";
 import { useAuthData } from "@/service/Auth";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
@@ -26,7 +26,7 @@ import { letterOnlyRegex } from "@/utils/client/regEx";
 import { useFormik } from "formik";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
 import AddressFrom from "../checkout/addressFrom";
-export default function Account() {
+const Account = React.memo(() => {
   const { getProfile, putProfile } = useAuthData();
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [address, setAddress] = useState<IAddress>({});
@@ -267,7 +267,7 @@ export default function Account() {
                         </div>
                       </div>
                       <Badge
-                        color={GetOrderStatusColour(order?.OrderStatus)}
+                        color={GetOrderStatusColour(order?.OrderStatus).colour}
                         text={order?.OrderStatus}
                       />
                     </div>
@@ -390,4 +390,5 @@ export default function Account() {
       </Modal>
     </div>
   );
-}
+});
+export default Account;

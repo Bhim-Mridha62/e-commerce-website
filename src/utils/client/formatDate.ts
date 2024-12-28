@@ -1,4 +1,4 @@
-export function formatDate(dateString: string) {
+export function formatDate(dateString: string): string {
   const inputDate = new Date(dateString);
 
   // Get today's date and time
@@ -32,11 +32,12 @@ export function formatDate(dateString: string) {
     const year = inputDate.getFullYear();
     const month = inputDate.toLocaleString("default", { month: "short" });
     const day = inputDate.getDate();
+    const weekday = inputDate.toLocaleString("default", { weekday: "short" });
 
     if (year === today.getFullYear()) {
-      return `${month} ${day}`;
+      return `${weekday}, ${month} ${day}`;
     } else {
-      return `${month} ${day}, ${year}`;
+      return `${weekday}, ${month} ${day}, ${year}`;
     }
   }
 }

@@ -83,11 +83,11 @@ export interface IProduct {
 export interface IOrder {
   _id?: string;
   productID?: string;
-  quantity?: number;
+  quantity: number;
   title?: string;
   size?: string;
   image?: string;
-  price?: number;
+  price: number;
   address?: IAddress;
   StatusOrder?: {
     Order_Received: {

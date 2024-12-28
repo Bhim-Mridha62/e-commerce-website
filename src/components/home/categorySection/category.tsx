@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 // Import Swiper styles
@@ -11,7 +11,7 @@ import { Icategory } from "@/types/types";
 import HomePageSectionHeading from "../homePageSectionHeading";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 import Link from "next/link";
-function Categories() {
+const Categories = memo(() => {
   const [categories, setCategories] = useState<Icategory[]>([]);
   const { getCategories } = useAuthData();
   useEffect(() => {
@@ -79,6 +79,6 @@ function Categories() {
       </div>
     </div>
   );
-}
+});
 
 export default Categories;

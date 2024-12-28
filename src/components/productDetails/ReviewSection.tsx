@@ -2,11 +2,13 @@
 import { useUser } from "@/context/authContext";
 import { useAuthData } from "@/service/Auth";
 import { List, message } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import ReviewItem from "./ReviewItem"; // Import the new component
 import { IReview } from "@/types/types";
+// import { GoChevronRight } from "react-icons/go";
+import { IoIosArrowDroprightCircle } from "react-icons/io";
 
-function ReviewSection({ id }: { id: string }) {
+const ReviewSection = memo(({ id }: { id: string }) => {
   const [review, setReview] = useState([]);
   const { getreviews, putreviews, Deletereviews } = useAuthData();
   const { user } = useUser();
@@ -93,9 +95,10 @@ function ReviewSection({ id }: { id: string }) {
           footer={
             <p
               onClick={HandelAllReview}
-              className=" cursor-pointer text-base hover:text-blue-700"
+              className=" cursor-pointer text-xs md:text-base text-theme-red flex items-center gap-2 font-semibold"
             >
-              See All review
+              VIEW ALL REVIEWS{" "}
+              <IoIosArrowDroprightCircle className="text-theme-red size-6 md:size-7" />
             </p>
           }
           renderItem={(data) => (
@@ -110,6 +113,6 @@ function ReviewSection({ id }: { id: string }) {
       </div>
     </div>
   );
-}
+});
 
 export default ReviewSection;

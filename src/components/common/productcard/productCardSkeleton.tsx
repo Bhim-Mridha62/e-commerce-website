@@ -1,7 +1,8 @@
 import { Skeleton } from "antd";
 import "antd/dist/reset.css"; // Import Ant Design styles
+import { memo } from "react";
 
-const ProductCardSkeleton = () => {
+const ProductCardSkeleton = memo(() => {
   return (
     <div className="w-[140px] md:w-[200px] h-[250px] md:h-[300px]">
       {/* Product Image Skeleton */}
@@ -48,6 +49,6 @@ const ProductCardSkeleton = () => {
       />
     </div>
   );
-};
+});
 
 export default ProductCardSkeleton;

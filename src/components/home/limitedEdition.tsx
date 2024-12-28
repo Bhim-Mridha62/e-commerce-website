@@ -1,8 +1,8 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import Button from "../common/button";
 
-const LimitedEdition = () => {
+const LimitedEdition = memo(() => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -107,6 +107,6 @@ const LimitedEdition = () => {
       </div>
     </div>
   );
-};
+});
 
 export default LimitedEdition;

@@ -1,7 +1,7 @@
 import { AutoComplete, Badge } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useAuthData } from "@/service/Auth";
@@ -18,7 +18,7 @@ const AccountSection = dynamic(() => import("./accountSection"), {
   ssr: false,
 });
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = memo(() => {
   const [inputValue, setInputValue] = useState<string>("");
   const [cartLength, setCartLength] = useState<number>(0);
   const router = useRouter();
@@ -146,16 +146,18 @@ const Navbar: React.FC = () => {
               <span className="h-[2px] md:h-1 w-2 lg:w-6 bg-gradient-to-b from-red-500 to-yellow-500 rounded"></span>
             </p>
           </div>
-          <div className="flex gap-3 lg:gap-10 text-sm lg:text-base">
-            <Link
-              href="/"
-              className={`hover:text-theme-red ${
-                router.pathname === "/" ? "text-theme-red" : ""
-              }`}
-            >
-              Home
-            </Link>
-          </div>
+          {!isMobile && (
+            <div className="flex gap-3 lg:gap-10 text-sm lg:text-base">
+              <Link
+                href="/"
+                className={`hover:text-theme-red ${
+                  router.pathname === "/" ? "text-theme-red" : ""
+                }`}
+              >
+                Home
+              </Link>
+            </div>
+          )}
           <AutoComplete
             // open={false}
             options={autoCompleteOptions.map((item) => ({
@@ -195,6 +197,6 @@ const Navbar: React.FC = () => {
       </div>
     </>
   );
-};
+});
 
 export default Navbar;

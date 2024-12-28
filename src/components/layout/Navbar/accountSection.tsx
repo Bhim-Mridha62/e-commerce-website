@@ -2,7 +2,7 @@ import { useUser } from "@/context/authContext";
 import { Dropdown, MenuProps } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { memo } from "react";
 import { CiLogout } from "react-icons/ci";
 import { FaUserShield } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
@@ -11,7 +11,7 @@ import { IoCartOutline, IoCreateOutline, IoHomeOutline } from "react-icons/io5";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { SlEarphonesAlt } from "react-icons/sl";
 
-const AccountSection = () => {
+const AccountSection = memo(() => {
   const { user, HandelLogout } = useUser();
   const { pathname } = useRouter();
   const menuData = [
@@ -108,6 +108,6 @@ const AccountSection = () => {
       />
     </Dropdown>
   );
-};
+});
 
 export default AccountSection;
