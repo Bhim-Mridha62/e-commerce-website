@@ -78,7 +78,7 @@ const ReactionButton = memo(
     };
     const handelGiveRate = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      router.push(`/order/${product?.productID}`);
+      router.push(`/product/review?productId=${product?.productID}`);
     };
     const showModal = (type: string) => {
       setModalType(type);
