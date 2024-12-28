@@ -2,7 +2,7 @@ import { useAuthData } from "@/service/Auth";
 import { IOrder } from "@/types/types";
 import { formatDate } from "@/utils/client/formatDate";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiBox, FiCalendar } from "react-icons/fi";
 import { HiOutlineTruck } from "react-icons/hi";
@@ -10,8 +10,10 @@ import { IoLocationOutline } from "react-icons/io5";
 import { LuClock4 } from "react-icons/lu";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import NeedHelp from "./needHelp";
-const OrderDetails = ({ order_id }: { order_id?: string }) => {
+import Loading from "../Loading/Loading";
+const OrderDetails = memo(({ order_id }: { order_id?: string }) => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [orderData, setOrderData] = useState<IOrder | any>(null); // Replace `any` with proper types if desired
   const [activeStep, setActiveStep] = useState(0);
   const { getorder } = useAuthData();
@@ -24,6 +26,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
 
   const fetchOrderDetails = async () => {
     const response = await getorder(order_id);
+    setLoading(false);
     if (response?.data?.success) {
       const data = response?.data.data;
       setOrderData(data);
@@ -42,7 +45,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
     }
   };
 
-  if (!orderData) return <p>Loading...</p>;
+  if (loading) return <Loading />;
 
   const orderSteps = [
     {
@@ -258,6 +261,6 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
       <NeedHelp />
     </section>
   );
-};
+});
 
 export default OrderDetails;
