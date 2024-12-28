@@ -39,9 +39,10 @@ const ShippingMethod = memo(
             title: product?.title,
             image: product?.thumbnail,
             price: product?.price,
-            size: Array.isArray(priceDetails)
-              ? product?.Size
-              : product?.selectedSize,
+            size:
+              priceDetails?.length === 1
+                ? product?.selectedSize
+                : product?.Size,
             address: formik?.values,
           };
           const res = await postorder(orderData);
