@@ -167,7 +167,19 @@ async function getOrdersByUser(req: any, res: NextApiResponse) {
         .json({ success: false, message: "Missing userId" });
     }
 
-    const orders = await Order.find({ userId }).select("-userId -__v");
+    const orders = await Order.find({ userId }).select({
+      cancelReason: 1,
+      productID: 1,
+      quantity: 1,
+      title: 1,
+      size: 1,
+      image: 1,
+      price: 1,
+      OrderStatus: 1,
+      DeliveryDate: 1,
+      OrderDate: 1,
+      "address.name": 1,
+    });
 
     return res.status(200).json({ success: true, data: orders });
   } catch (error: any) {

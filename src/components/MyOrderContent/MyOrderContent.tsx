@@ -3,12 +3,13 @@ import { useAuthData } from "@/service/Auth";
 import OrderCard from "./OrderCard";
 import { IOrder } from "@/types/types";
 import { SearchIcon } from "@/utils/client/svg-icon";
-import useIsMobile from "@/utils/client/isMobile";
 import { useUser } from "@/context/authContext";
 import EmptyOrder from "./emptyOrder";
+// import orderNotFound from "/order_not_found.png";
+import Image from "next/image";
 const MyOrderContent = memo(() => {
-  const [items, setItems] = useState<IOrder[]>([]);
-  const isMobile = useIsMobile();
+  const [order, setOrder] = useState<IOrder[]>([]);
+  const [order_filter, setOrder_filter] = useState<IOrder[]>([]);
   const [filterValue, setFilterValue] = useState<string>("All");
   const filterValueS = [
     "All",
@@ -20,7 +21,6 @@ const MyOrderContent = memo(() => {
     "Exchange",
     "Others",
   ];
-  // const [items, setItems] = useState<IOrder[]>([]);
   const { getorder } = useAuthData();
   const { user } = useUser();
 
@@ -33,16 +33,39 @@ const MyOrderContent = memo(() => {
     try {
       let res = await getorder();
       if (res?.status === 200) {
-        setItems(res?.data?.data);
+        setOrder(res?.data?.data);
+        setOrder_filter(res?.data?.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(isMobile, "filterValue");
+  const handelFilterClick = (value: string) => {
+    setFilterValue(value);
+
+    if (value === "All" || value === "Ordered") {
+      setOrder_filter(order); // Show all orders
+    } else {
+      const statusMap: Record<string, string> = {
+        Cancelled: "cancelled",
+        Delivered: "done",
+        Returned: "returned",
+        Shipped: "pending",
+      };
+
+      if (statusMap[value]) {
+        const filteredOrders = order.filter(
+          (o) => o.OrderStatus.toLowerCase() === statusMap[value]
+        );
+        setOrder_filter(filteredOrders);
+      } else {
+        setOrder_filter([]); // Clear the filter if no match is found
+      }
+    }
+  };
 
   return user ? (
-    items?.length ? (
+    order?.length ? (
       <div className="mx-2 md:mx-10 mdb:mx-48 mb-8">
         <div className="">
           <h1 className="text-xl font-semibold text-center my-4">My Orders</h1>
@@ -63,7 +86,7 @@ const MyOrderContent = memo(() => {
                 className={`order-filter-button ${
                   filterValue === item ? "active" : ""
                 }`}
-                onClick={() => setFilterValue(item)}
+                onClick={() => handelFilterClick(item)}
               >
                 {item}
               </button>
@@ -71,15 +94,28 @@ const MyOrderContent = memo(() => {
           </div>
           <hr className="my-4" />
         </div>
-        {items?.map((data: IOrder) => (
-          <div className="border border-theme-border rounded-md mt-5">
-            <OrderCard
-              key={data?._id}
-              product={data}
-              getUserOrder={getUserOrder}
+        {order_filter.length ? (
+          order_filter?.map((data: IOrder) => (
+            <div className="border border-theme-border rounded-md mt-5">
+              <OrderCard
+                key={data?._id}
+                product={data}
+                getUserOrder={getUserOrder}
+              />
+            </div>
+          ))
+        ) : (
+          <div>
+            <Image
+              src="/order_not_found.png"
+              width={1000}
+              height={1000}
+              alt="Order Not Found"
+              className="w-40 mx-auto"
             />
+            <p className="text-center font-semibold">Orders not found</p>
           </div>
-        ))}
+        )}
       </div>
     ) : (
       <EmptyOrder IsLogin={true} />
