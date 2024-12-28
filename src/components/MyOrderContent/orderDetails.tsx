@@ -1,4 +1,5 @@
 import { useAuthData } from "@/service/Auth";
+import { IOrder } from "@/types/types";
 import { formatDate } from "@/utils/client/formatDate";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -10,7 +11,7 @@ import { LuClock4 } from "react-icons/lu";
 import { RiShoppingBag3Line } from "react-icons/ri";
 const OrderDetails = ({ order_id }: { order_id?: string }) => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(true);
-  const [orderData, setOrderData] = useState<any>(null); // Replace `any` with proper types if desired
+  const [orderData, setOrderData] = useState<IOrder | any>(null); // Replace `any` with proper types if desired
   const [activeStep, setActiveStep] = useState(0);
   const { getorder } = useAuthData();
 
@@ -25,15 +26,18 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
     if (response?.data?.success) {
       const data = response?.data.data;
       setOrderData(data);
-
       // Set active step based on order progress
-      const steps = Object.keys(data.StatusOrder);
-      steps.forEach((step, index) => {
-        //@ts-ignore
-        if (data?.StatusOrder[step]?.status == "InHere") {
-          setActiveStep(index + 1);
-        }
-      });
+      if (["Done", "returned"].includes(data?.OrderStatus)) {
+        setActiveStep(5);
+      } else {
+        const steps = Object.keys(data.StatusOrder);
+        steps.forEach((step, index) => {
+          //@ts-ignore
+          if (data?.StatusOrder[step]?.status == "InHere") {
+            setActiveStep(index + 1);
+          }
+        });
+      }
     }
   };
 
@@ -82,22 +86,22 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
           <div className="flex justify-between items-start">
             <div>
               <span className="text-sm font-semibold text-theme-black mb-2">
-                Purchase Item #{orderData.quantity}
+                Purchase Item #{orderData?.quantity}
               </span>
               <h2 className="md:text-2xl font-bold">
-                #{orderData._id.slice(0, 10)}
+                #{orderData?._id.slice(0, 10)}
               </h2>
               <p className="text-sm text-theme-text-grey">
-                Ordered on {formatDate(orderData.OrderDate)}
+                Ordered on {formatDate(orderData?.OrderDate)}
               </p>
             </div>
             <div className="text-right">
               <span className="inline-block px-3 py-[2px] text-[12px] font-semibold bg-theme-black text-white rounded-full">
                 <FiBox className="inline-flex mb-1" />{" "}
-                {orderSteps[activeStep].title}
+                {orderSteps[activeStep - 1]?.title}
               </span>
               <p className="text-sm text-theme-text-grey mt-1">
-                Est. {formatDate(orderData.DeliveryDate)}
+                Est. {formatDate(orderData?.DeliveryDate)}
               </p>
             </div>
           </div>
@@ -106,14 +110,14 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
         <div className="p-3 md:p-6 space-y-8">
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-theme-text-grey">
-              <span>Order Placed</span>
-              <span>Out for Delivery</span>
+              <span>Order Received</span>
+              <span>Order Delivered</span>
             </div>
             <div className="relative h-2 w-full bg-gray-200 rounded">
               <div
                 className="absolute top-0 left-0 h-full bg-theme-black rounded"
                 style={{
-                  width: `${(activeStep / orderSteps.length) * 100}%`,
+                  width: `${(activeStep / orderSteps?.length) * 100}%`,
                 }}
               ></div>
             </div>
@@ -125,10 +129,12 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
               Address
             </h3>
             <div className="text-theme-text-grey">
-              <p className="text-sm text-gray-600">{orderData.address.name}</p>
+              <p className="text-sm text-gray-600">
+                {orderData?.address?.name}
+              </p>
               {orderData?.address?.buildingAddress},{" "}
-              {orderData?.address?.district}, {orderData.address.village} {""},
-              {orderData?.address?.pincode}
+              {orderData?.address?.district}, {orderData?.address?.village} {""}
+              ,{orderData?.address?.pincode}
             </div>
             <p className="text-sm text-gray-600 !mt-1">
               {orderData?.address?.phone}
@@ -145,11 +151,11 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
               />
             </div>
             <div>
-              <h3 className="font-semibold">{orderData.title}</h3>
-              <p className="text-gray-600">₹{orderData.price}</p>
-              <p className="text-sm text-gray-600">Size: {orderData.size}</p>
+              <h3 className="font-semibold">{orderData?.title}</h3>
+              <p className="text-gray-600">₹{orderData?.price}</p>
+              <p className="text-sm text-gray-600">Size: {orderData?.size}</p>
               <p className="text-sm text-gray-600">
-                Quantity: {orderData.quantity}
+                Quantity: {orderData?.quantity}
               </p>
             </div>
           </div>
@@ -172,14 +178,12 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                       className={`w-full bg-black`}
                       style={{
                         height:
-                          activeStep === 1
+                          activeStep === 2
                             ? "20%"
-                            : activeStep === 2
-                            ? "45%"
                             : activeStep === 3
-                            ? "70%"
+                            ? "45%"
                             : activeStep === 4
-                            ? "75%"
+                            ? "70%"
                             : "100%",
                       }}
                     />
@@ -191,7 +195,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                     >
                       <div
                         className={`flex items-center justify-center w-8 h-8 md:h-10 md:w-10 rounded-full ${
-                          index + 1 < activeStep
+                          index + 1 < activeStep || activeStep === 5
                             ? "bg-theme-black"
                             : index + 1 === activeStep
                             ? "bg-[#c7c7c7] border-2 border-theme-black"
@@ -202,7 +206,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                           className="text-xl"
                           style={{
                             color:
-                              index + 1 < activeStep
+                              index + 1 < activeStep || activeStep === 5
                                 ? "var(--theme-white)"
                                 : index + 1 === activeStep
                                 ? "var(--theme-black)"
@@ -213,11 +217,11 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                         </span>
                       </div>
                       <div>
-                        <h4 className="font-semibold">{step.title}</h4>
+                        <h4 className="font-semibold">{step?.title}</h4>
                         <p className="text-sm text-theme-text-grey">
                           {formatDate(
-                            orderData.StatusOrder[
-                              Object.keys(orderData.StatusOrder)[index]
+                            orderData?.StatusOrder[
+                              Object.keys(orderData?.StatusOrder)[index]
                             ].time
                           )}
                         </p>
@@ -234,7 +238,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                     <div>
                       <p>Estimated Delivery</p>
                       <p className="text-theme-text-grey">
-                        {formatDate(orderData.DeliveryDate)}
+                        {formatDate(orderData?.DeliveryDate)}
                       </p>
                     </div>
                   </div>
