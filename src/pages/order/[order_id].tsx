@@ -1,17 +1,7 @@
 import React from "react";
-import dynamic from "next/dynamic";
-import Loading from "@/components/Loading/Loading"; // Assuming you have a Loading component
 import { useRouter } from "next/router";
 import SEO from "@/components/common/seo";
-
-// Dynamically import AddReviewPage with a fallback
-const AddReviewPage = dynamic(
-  () => import("@/components/Review/AddReviewPage"),
-  {
-    ssr: false, // Render only on the client
-    loading: () => <Loading />, // Loading fallback
-  }
-);
+import OrderDetails from "@/components/MyOrderContent/orderDetails";
 
 const Index: React.FC = () => {
   const router = useRouter();
@@ -24,7 +14,7 @@ const Index: React.FC = () => {
         url={`/order/=${productId}`}
       />
       <div>
-        <AddReviewPage ReviewProductId={productId as string} />
+        <OrderDetails />
       </div>
     </>
   );
