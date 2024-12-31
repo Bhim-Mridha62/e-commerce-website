@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // Define the schema for product reviews
 const reviewSchema = new mongoose.Schema({
   username: { type: String, default: "" }, // The name of the user who wrote the review
-  userId: { type: String, default: "" }, // The ID of the user who wrote the review
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: "" }, // The ID of the user who wrote the review
   userImage: { type: String, default: "" }, // The profile image of the user
   rating: { type: Number, default: 0 }, // The rating given by the user
   like: { type: Number, default: 0 }, // The number of likes the review received

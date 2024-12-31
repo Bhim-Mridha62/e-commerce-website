@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 const CartItemSchema = new mongoose.Schema({
   productID: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
     require: false,
   },
   Size: {
@@ -65,7 +66,8 @@ const UserSchema = new mongoose.Schema(
     wishlist: [
       {
         productID: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
           require: false,
         },
       },
