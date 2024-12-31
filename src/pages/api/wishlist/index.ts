@@ -28,12 +28,6 @@ const getWishlist = async (req: any, res: NextApiResponse) => {
   const { userId } = req;
 
   try {
-    const user = await User.findById(userId).select("wishlist");
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
     const wishlist = await User.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(userId as string) },
