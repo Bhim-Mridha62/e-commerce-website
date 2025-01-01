@@ -27,10 +27,12 @@ import { useFormik } from "formik";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
 import AddressFrom from "../checkout/addressFrom";
 import Image from "next/image";
+import { scrollToElement } from "@/utils/client/scrollDown";
 const Account = React.memo(() => {
   const { getProfile, putProfile } = useAuthData();
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [address, setAddress] = useState<IAddress>({});
+  const [activeTab, setActiveTab] = useState("orders");
   const [name_pic_id, setName_pic_id] = useState({
     name: "",
     profile_pic: "",
@@ -120,7 +122,10 @@ const Account = React.memo(() => {
   const handleFormClose = () => {
     setIsFormOpen(!isFormOpen);
   };
-
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+    scrollToElement("tabs-container");
+  };
   // name update
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -132,7 +137,7 @@ const Account = React.memo(() => {
     }
   };
   return (
-    <div className="container mx-auto px-2 md:px-4 py-8">
+    <div className="mx-auto px-2 md:px-20 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
         <Card className="lg:col-span-1 text-center">
           <div className="">
@@ -152,20 +157,36 @@ const Account = React.memo(() => {
             />
           </div>
           <div className="space-y-2 mt-4">
-            <Button block icon={<ShoppingOutlined />} className="justify-start">
+            <Button
+              onClick={() => handleTabChange("orders")}
+              block
+              icon={<ShoppingOutlined />}
+              className="justify-start"
+            >
               Orders
             </Button>
-            <Button block icon={<HeartOutlined />} className="justify-start">
+            <Button
+              onClick={() => handleTabChange("wishlist")}
+              block
+              icon={<HeartOutlined />}
+              className="justify-start"
+            >
               Wishlist
             </Button>
             <Button
+              onClick={() => handleTabChange("cart")}
               block
               icon={<CreditCardOutlined />}
               className="justify-start"
             >
               Cart
             </Button>
-            <Button block icon={<HomeOutlined />} className="justify-start">
+            <Button
+              onClick={() => handleTabChange("addresses")}
+              block
+              icon={<HomeOutlined />}
+              className="justify-start"
+            >
               Addresses
             </Button>
             <Button block icon={<SettingOutlined />} className="justify-start">
@@ -235,7 +256,11 @@ const Account = React.memo(() => {
               Save Changes
             </button>
           </Card>
-          <Tabs defaultActiveKey="orders">
+          <Tabs
+            activeKey={activeTab}
+            id="tabs-container"
+            onChange={(key) => setActiveTab(key)}
+          >
             <Tabs.TabPane
               tab={
                 <Badge
@@ -342,7 +367,7 @@ const Account = React.memo(() => {
                   <p>Cart</p>
                 </Badge>
               }
-              key="Cart"
+              key="cart"
             >
               <Card title="Carts" type="inner">
                 <div className="space-y-4">
