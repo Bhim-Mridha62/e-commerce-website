@@ -17,15 +17,16 @@ import DeliverDetails from "../common/DeliverDetails";
 import {
   IAddress,
   IOrder,
+  Iprofile,
   IProfileCartWishlist,
   NamePicId,
 } from "@/types/types";
 import { useUser } from "@/context/authContext";
-import { RiShoppingCart2Fill } from "react-icons/ri";
 import { letterOnlyRegex } from "@/utils/client/regEx";
 import { useFormik } from "formik";
 import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
 import AddressFrom from "../checkout/addressFrom";
+import Image from "next/image";
 const Account = React.memo(() => {
   const { getProfile, putProfile } = useAuthData();
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const Account = React.memo(() => {
     profile_pic: "",
     _id: "",
   });
-  const [profile, setProfile] = useState<any>({});
+  const [profile, setProfile] = useState<Iprofile>({});
   const { user } = useUser();
   useEffect(() => {
     if (user) {
@@ -68,14 +69,14 @@ const Account = React.memo(() => {
     try {
       const res = await getProfile();
       if (res?.status === 200) {
-        console.log(res);
-        setAddress(res?.data?.user?.address);
+        console.log(res, "profile");
+        setAddress(res?.data?.data?.address);
         setName_pic_id({
-          name: res.data?.user.name,
-          profile_pic: res.data?.user.profile_pic,
-          _id: res.data?.user?._id,
+          name: res.data?.data?.name,
+          profile_pic: res.data?.data.profile_pic,
+          _id: res.data?.data?._id,
         });
-        setProfile(res?.data);
+        setProfile(res?.data?.data);
       }
     } catch (error) {
       console.log(error);
@@ -131,7 +132,7 @@ const Account = React.memo(() => {
     }
   };
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-2 md:px-4 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
         <Card className="lg:col-span-1 text-center">
           <div className="">
@@ -183,7 +184,7 @@ const Account = React.memo(() => {
         </Card>
 
         <div className="lg:col-span-3 space-y-6">
-          <Card title="Account Settings">
+          <Card title="Account Settings" type="inner">
             <div className="space-y-4">
               <div>
                 <label
@@ -213,7 +214,7 @@ const Account = React.memo(() => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder={profile?.user?.emailOrPhone}
+                  placeholder={profile?.emailOrPhone}
                   disabled
                 />
               </div>
@@ -227,20 +228,19 @@ const Account = React.memo(() => {
                 <Input id="password" type="password" placeholder="••••••••" />
               </div>
             </div>
-            <Button
+            <button
               onClick={() => updateProfile({}, true, name_pic_id)}
-              block
-              className="mt-4"
+              className="mt-4 button_black w-full"
             >
               Save Changes
-            </Button>
+            </button>
           </Card>
           <Tabs defaultActiveKey="orders">
             <Tabs.TabPane
               tab={
                 <Badge
                   color="#334155"
-                  count={profile?.orderLength || 0}
+                  count={profile?.order_length || 0}
                   offset={[0, -6]}
                 >
                   <p>Orders</p>
@@ -248,16 +248,21 @@ const Account = React.memo(() => {
               }
               key="orders"
             >
-              <Card title="Recent Orders">
+              <Card title="Orders" type="inner">
                 <div className="space-y-4">
-                  {profile?.order?.map((order: IOrder) => (
+                  {profile?.orders?.map((order: IOrder) => (
                     <div
                       key={order?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <ShoppingOutlined className="text-gray-500 text-2xl" />
+                          <Image
+                            src={order?.image || ""}
+                            alt="Order"
+                            width={1000}
+                            height={1000}
+                          />
                         </div>
                         <div>
                           <p className="font-medium">{order?.title}</p>
@@ -273,9 +278,9 @@ const Account = React.memo(() => {
                     </div>
                   ))}
                 </div>
-                <Button block className="mt-4">
+                <button className="button_black mt-4 w-full">
                   View All Orders
-                </Button>
+                </button>
               </Card>
             </Tabs.TabPane>
 
@@ -283,7 +288,7 @@ const Account = React.memo(() => {
               tab={
                 <Badge
                   color="#334155"
-                  count={profile?.user?.wishlistLength || 0}
+                  count={profile?.wishlist_length || 0}
                   offset={[0, -6]}
                 >
                   <p>Wishlist</p>
@@ -291,16 +296,21 @@ const Account = React.memo(() => {
               }
               key="wishlist"
             >
-              <Card title="Wishlist">
+              <Card title="Wishlists" type="inner">
                 <div className="space-y-4">
-                  {profile?.user?.wishlist.map((item: IProfileCartWishlist) => (
+                  {profile?.wishlists?.map((item: IProfileCartWishlist) => (
                     <div
                       key={item?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <HeartOutlined className="text-gray-500 text-2xl" />
+                          <Image
+                            src={item?.thumbnail}
+                            alt="Wishlist"
+                            width={1000}
+                            height={1000}
+                          />
                         </div>
                         <div>
                           <p className="font-medium">{item?.title}</p>
@@ -310,13 +320,15 @@ const Account = React.memo(() => {
                           </p>
                         </div>
                       </div>
-                      <Button size="small">Add to Cart</Button>
+                      <button className="py-2 px-3 button_black_border text-sm">
+                        Add to Cart
+                      </button>
                     </div>
                   ))}
                 </div>
-                <Button block className="mt-4">
-                  View All Wishlist Items
-                </Button>
+                <button className="button_black mt-4 w-full">
+                  View All Wishlists
+                </button>
               </Card>
             </Tabs.TabPane>
 
@@ -324,7 +336,7 @@ const Account = React.memo(() => {
               tab={
                 <Badge
                   color="#334155"
-                  count={profile?.user?.cartLength || 0}
+                  count={profile?.cart_length || 0}
                   offset={[0, -6]}
                 >
                   <p>Cart</p>
@@ -332,16 +344,21 @@ const Account = React.memo(() => {
               }
               key="Cart"
             >
-              <Card title="Cart">
+              <Card title="Carts" type="inner">
                 <div className="space-y-4">
-                  {profile?.user?.cart.map((item: IProfileCartWishlist) => (
+                  {profile?.carts?.map((item: IProfileCartWishlist) => (
                     <div
                       key={item?._id}
-                      className="flex items-center justify-start border-b pb-4 last:border-0 last:pb-0"
+                      className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <RiShoppingCart2Fill className="text-gray-500 text-2xl" />
+                          <Image
+                            src={item?.thumbnail}
+                            alt="Cart"
+                            width={1000}
+                            height={1000}
+                          />
                         </div>
                         <div>
                           <p className="font-medium">Product {item?.title}</p>
@@ -351,13 +368,15 @@ const Account = React.memo(() => {
                           </p>
                         </div>
                       </div>
-                      <Button size="small">Add to Cart</Button>
+                      <button className="py-2 px-3 button_black_border text-sm">
+                        Add to Cart
+                      </button>
                     </div>
                   ))}
                 </div>
-                <Button block className="mt-4">
-                  View All Cart Items
-                </Button>
+                <button className="button_black mt-4 w-full">
+                  View All Carts
+                </button>
               </Card>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Addresses" key="addresses">
@@ -365,9 +384,12 @@ const Account = React.memo(() => {
                 <div className="space-y-4">
                   <div className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0">
                     <DeliverDetails addressDetails={address} isAccount={true} />
-                    <Button onClick={handleFormClose} size="small">
-                      {address.name === "" ? "Add Address" : "Update Address"}
-                    </Button>
+                    <button
+                      onClick={handleFormClose}
+                      className="py-2 px-3 button_black_border text-sm"
+                    >
+                      {address?.name === "" ? "Add Address" : "Update Address"}
+                    </button>
                   </div>
                 </div>
               </Card>
