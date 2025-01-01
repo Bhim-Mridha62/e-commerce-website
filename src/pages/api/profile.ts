@@ -29,6 +29,98 @@ async function getProfile(req: any, res: NextApiResponse) {
   const { isAddress } = req.query;
   try {
     // isAddress if 1 return only address for Address auto field in order page
+    if (true) {
+      const profile_data = await User.aggregate([
+        // Match the user document by userId
+        { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+
+        // Lookup for orders based on userId
+        {
+          $lookup: {
+            from: "orders",
+            let: { userId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$userId", "$$userId"] } } },
+              { $sort: { OrderDate: -1 } }, // Sort by OrderDate in descending order
+              {
+                $project: {
+                  _id: 1,
+                  title: 1,
+                  image: 1,
+                  price: 1,
+                  OrderStatus: 1,
+                  OrderDate: 1,
+                },
+              },
+            ],
+            as: "orders",
+          },
+        },
+
+        // Lookup for wishlist products
+        {
+          $lookup: {
+            from: "products",
+            let: { wishlistProductIds: "$wishlist.productID" },
+            pipeline: [
+              { $match: { $expr: { $in: ["$_id", "$$wishlistProductIds"] } } },
+              { $sort: { createdAt: -1 } },
+              {
+                $project: {
+                  _id: 1,
+                  title: 1,
+                  price: 1,
+                  thumbnail: 1,
+                },
+              },
+            ],
+            as: "wishlist",
+          },
+        },
+
+        // Lookup for cart products with limit to 3 products
+        {
+          $lookup: {
+            from: "products",
+            let: { cartProductIds: "$cart.productID" },
+            pipeline: [
+              { $match: { $expr: { $in: ["$_id", "$$cartProductIds"] } } },
+              { $sort: { createdAt: -1 } },
+              {
+                $project: {
+                  _id: 1,
+                  title: 1,
+                  price: 1,
+                  thumbnail: 1,
+                  Size: 1,
+                  quantity: 1,
+                },
+              },
+            ],
+            as: "cart",
+          },
+        },
+
+        // Project the final output
+        {
+          $project: {
+            address: 1,
+            name: 1,
+            emailOrPhone: 1,
+            profile_pic: 1,
+            cart_length: { $size: "$cart" },
+            wishlist_length: { $size: "$wishlist" },
+            order_length: { $size: "$orders" }, // Count of orders
+            orders: { $slice: ["$orders", 0, 3] }, // Get the first 3 orders
+            wishlists: { $slice: ["$wishlist", 0, 3] }, // Get the first 3 wishlist products
+            carts: { $slice: ["$cart", 0, 3] }, // Include the cart data
+          },
+        },
+      ]);
+
+      // Return the data in response
+      return res.status(200).json({ success: true, data: profile_data[0] });
+    }
     if (Number(isAddress)) {
       const Address = await User.findById(userId).select("address");
       return res.status(200).send(Address);
