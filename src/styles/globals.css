@@ -238,8 +238,46 @@ textarea .form-item :focus + label,
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
+.button_black_border {
+  background-color: var(--theme-white);
+  color: var(--theme-black);
+  border: 2px solid var(--theme-black);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+.button_black_border:hover {
+  background-color: var(--theme-black);
+  color: var(--theme-white);
+}
+.button_black {
+  background-color: var(--theme-black);
+  color: var(--theme-white);
+  border: 2px solid var(--theme-black);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+.button_black:hover {
+  background-color: var(--theme-white);
+  color: var(--theme-black);
+}
 @media (max-width: 768px) {
+  .ant-card-body {
+    padding: 7px 10px !important;
+  }
+
+  .ant-card-head {
+    padding: 0px 10px !important;
+  }
   .custom-slide-categories {
     width: 110px !important;
     height: 300px;

@@ -174,3 +174,16 @@ export interface IHomePageSectionHeading {
   bottomHeading: string;
   topHeading: string;
 }
+export interface Iprofile {
+  name?: string;
+  emailOrPhone?: string;
+  profile_pic?: string;
+  address?: IAddress;
+  cart_length?: number;
+  wishlist_length?: number;
+  order_length?: number;
+  carts?: IProfileCartWishlist[];
+  wishlists?: IProfileCartWishlist[];
+  orders?: IOrder[];
+  _id?: string;
+}
