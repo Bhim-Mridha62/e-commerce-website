@@ -1,7 +1,7 @@
 import { encodeData } from "@/utils/client/encoding";
 import { useRouter } from "next/router";
 import React, { memo } from "react";
-import PromoCode from "../common/promoCode";
+import CouponCodeSection from "../common/couponCode";
 const CartProductPricingDetails = memo(
   ({ priceDetails }: { priceDetails: any }) => {
     const totalAmount = priceDetails?.reduce(
@@ -17,7 +17,7 @@ const CartProductPricingDetails = memo(
     return (
       <div className="p-4 mt-8">
         <h2 className="text-lg font-semibold">Summary</h2>
-        <PromoCode />
+        <CouponCodeSection />
         {priceDetails?.map((item: any) => (
           <div key={item?._id} className="flex flex-col gap-2">
             <div className="flex justify-between gap-2">

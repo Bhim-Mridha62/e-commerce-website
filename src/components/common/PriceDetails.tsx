@@ -1,7 +1,7 @@
 import { Badge } from "antd";
 import Image from "next/image";
 import React, { memo } from "react";
-import PromoCode from "./promoCode";
+import CouponCodeSection from "./couponCode";
 import { getNavbarHeight } from "@/utils/client/scrollDown";
 const PriceDetails = memo(
   ({
@@ -32,7 +32,7 @@ const PriceDetails = memo(
         )}
         {IsPromoCode && (
           <div className="mb-4">
-            <PromoCode />
+            <CouponCodeSection />
           </div>
         )}
         {priceDetails?.map((item: any) => (
