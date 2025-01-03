@@ -98,7 +98,7 @@ const putorder = (data: any) => {
   return Apimethod(`/api/order`, "put", data, false);
 };
 const getreviews = (data: any) => {
-  return Apimethod(`/api/product/review?id=${data}`, "get", {}, true);
+  return Apimethod(`/api/product/review?product_id=${data}`, "get", {}, true);
 };
 const postreviews = (data: any) => {
   return Apimethod(`/api/product/review`, "POST", data, false);

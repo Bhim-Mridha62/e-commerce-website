@@ -3,7 +3,7 @@ import React, { memo, useState } from "react";
 import { Button, Input, Upload, message, Image, notification } from "antd";
 import { CloseCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import "tailwindcss/tailwind.css";
-import { getRatingSpan } from "@/utils/client/colourCode";
+import { getRatingColourText } from "@/utils/client/colourCode";
 import { useFormik } from "formik";
 import { GiveRatingSchema } from "@/Schemas/client/FormSchema";
 import { useUser } from "@/context/authContext";
@@ -120,8 +120,17 @@ const AddReviewPage = memo(
                 value={formik?.values?.rating}
                 onChange={(_, rating) => handleRatingChange(rating?.value)}
               />
-              {formik?.values?.rating !== 0 &&
-                getRatingSpan(formik?.values?.rating)}
+              {formik?.values?.rating !== 0 && (
+                <span
+                  style={{
+                    color: getRatingColourText(formik?.values?.rating)
+                      .colorCode,
+                  }}
+                  className="font-semibold ml-2"
+                >
+                  {getRatingColourText(formik?.values?.rating).text}
+                </span>
+              )}
               {formik?.touched?.rating && formik?.errors?.rating ? (
                 <div className="text-red-500">{formik?.errors?.rating}</div>
               ) : null}

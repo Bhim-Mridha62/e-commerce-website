@@ -51,18 +51,6 @@ export interface IClassName {
 export interface Ichildren {
   children: React.ReactNode;
 }
-export interface IReview {
-  comment?: string;
-  dislike?: boolean;
-  images?: string[];
-  like?: number;
-  postdAt?: string;
-  rating?: number;
-  userId?: string;
-  userImage?: string;
-  username?: string;
-  _id?: string;
-}
 export interface IProduct {
   gender?: string;
   color?: string;
@@ -186,4 +174,26 @@ export interface Iprofile {
   wishlists?: IProfileCartWishlist[];
   orders?: IOrder[];
   _id?: string;
+}
+export interface IProductReview {
+  _id: string;
+  user_id: string;
+  product_id: string;
+  rating: number;
+  like: number;
+  comment: string;
+  images: string[];
+  createdAt: string;
+  username?: string; // Optional since it might not always be present
+  userImage?: string; // Optional since the user might not have an image
+  dislike?: boolean; // Optional for handling like/dislike actions
+}
+export interface IReviewStars {
+  averageRating: number;
+  totalRatings: number;
+  "1_star": number;
+  "2_star": number;
+  "3_star": number;
+  "4_star": number;
+  "5_star": number;
 }
