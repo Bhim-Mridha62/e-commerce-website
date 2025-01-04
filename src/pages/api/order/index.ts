@@ -35,7 +35,7 @@ async function CreateOrder(req: any, res: NextApiResponse) {
     const { productID, quantity, title, size, image, price, address } =
       req.body;
 
-    if (!userId || !productID || !address) {
+    if (!productID || !address) {
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });

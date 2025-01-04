@@ -1,20 +1,35 @@
 import mongoose from "mongoose";
-const CartItemSchema = new mongoose.Schema({
-  productID: {
-    type: String,
-    require: false,
+const CartItemSchema = new mongoose.Schema(
+  {
+    productID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      require: false,
+    },
+    Size: {
+      type: String,
+      require: false,
+      default: "",
+    },
+    quantity: {
+      type: Number,
+      default: 1,
+      require: false,
+    },
   },
-  Size: {
-    type: String,
-    require: false,
-    default: "",
+  { timestamps: true }
+);
+
+const wishlistSchema = new mongoose.Schema(
+  {
+    productID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: false,
+    },
   },
-  quantity: {
-    type: Number,
-    default: 1,
-    require: false,
-  },
-});
+  { timestamps: true }
+);
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -62,14 +77,7 @@ const UserSchema = new mongoose.Schema(
       required: false,
     },
     cart: [CartItemSchema],
-    wishlist: [
-      {
-        productID: {
-          type: String,
-          require: false,
-        },
-      },
-    ],
+    wishlist: [wishlistSchema],
   },
   {
     timestamps: true,

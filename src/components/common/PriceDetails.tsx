@@ -1,7 +1,8 @@
 import { Badge } from "antd";
 import Image from "next/image";
-import React, { memo, useEffect, useState } from "react";
-import PromoCode from "./promoCode";
+import React, { memo } from "react";
+import CouponCodeSection from "./couponCode";
+import { getNavbarHeight } from "@/utils/client/scrollDown";
 const PriceDetails = memo(
   ({
     priceDetails,
@@ -16,14 +17,7 @@ const PriceDetails = memo(
     showSummaryText?: boolean;
     IsPromoCode?: boolean;
   }) => {
-    const [navbarHeight, setNavbarHeight] = useState<number>(112);
-    console.log(priceDetails, "Price Price Details");
-    useEffect(() => {
-      const navbar = document?.querySelector("#navbar-header") as HTMLElement;
-      if (navbar && isSticky) {
-        setNavbarHeight(navbar?.offsetHeight);
-      }
-    }, []);
+    const navbarHeight = getNavbarHeight();
     return (
       <div
         className={`${isSticky ? "sticky" : ""} ${
@@ -38,7 +32,7 @@ const PriceDetails = memo(
         )}
         {IsPromoCode && (
           <div className="mb-4">
-            <PromoCode />
+            <CouponCodeSection />
           </div>
         )}
         {priceDetails?.map((item: any) => (

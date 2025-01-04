@@ -9,7 +9,7 @@ export default async function handler(
   await connectDB();
 
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "method not allow" });
+    return res.status(405).json({ message: "method is not allowed" });
   }
   const { emailOrPhone, otp } = req.body;
   try {
