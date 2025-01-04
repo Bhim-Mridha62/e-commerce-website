@@ -184,8 +184,8 @@ export interface IProductReview {
   comment: string;
   images: string[];
   createdAt: string;
-  username?: string; // Optional since it might not always be present
-  userImage?: string; // Optional since the user might not have an image
+  name?: string; // Optional since it might not always be present
+  profile_pic?: string; // Optional since the user might not have an image
   dislike?: boolean; // Optional for handling like/dislike actions
 }
 export interface IReviewStars {

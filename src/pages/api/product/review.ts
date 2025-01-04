@@ -26,21 +26,34 @@ export default async function handler(
 }
 const getReview = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { product_id, limit = 3, skip = 0 } = req.query;
+    const { product_id, limit = 2, skip = 0 } = req.query;
     var stars = [];
 
     // Fetch reviews
 
-    const review = await ProductReview.find({
+    const AllReviews = await ProductReview.find({
       product_id: product_id,
     })
       .sort({ createdAt: -1 })
       .skip(parseInt(skip as string))
-      .limit(parseInt(limit as string));
+      .limit(parseInt(limit as string))
+      .populate({ path: "user_id", select: "name profile_pic" })
+      .lean();
 
-    // for opne new components fro reviews
+    const review = AllReviews.map((item) => ({
+      _id: item?._id,
+      user_id: item?.user_id?._id,
+      name: item?.user_id?.name,
+      profile_pic: item?.user_id?.profile_pic,
+      product_id: item?.product_id,
+      rating: item?.rating,
+      like: item?.like,
+      comment: item?.comment,
+      createdAt: item?.createdAt,
+      images: item?.images,
+    }));
 
-    if (limit == 3) {
+    if (limit == 2) {
       stars = await ProductReview.aggregate([
         {
           $match: {

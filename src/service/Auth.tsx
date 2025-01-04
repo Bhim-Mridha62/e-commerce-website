@@ -28,9 +28,6 @@ const Apimethod = async (
         method: method ? method : "post",
         data: body ? body : "",
       }).catch(({ response }) => {
-        if (response?.status == 401) {
-          window.localStorage.clear();
-        }
         Errors(response);
       })
     : await Axios.request({
@@ -39,9 +36,6 @@ const Apimethod = async (
         data: body ? body : "",
         headers: Cookie(),
       }).catch(({ response }) => {
-        if (response?.status == 401) {
-          window.localStorage.clear();
-        }
         Errors(response);
       });
   return data;

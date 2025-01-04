@@ -27,6 +27,13 @@ const ProductDetail = memo(() => {
   const [islike, setLslike] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { user, cartCountRef } = useUser();
+  const [rateing, setRateing] = useState<{
+    avg_rating: number;
+    total_Rating: number;
+  }>({
+    avg_rating: 0,
+    total_Rating: 0,
+  });
 
   const router = useRouter();
   const { AddToCart, FetchProductDetail, Postwishlist } = useAuthData();
@@ -211,22 +218,25 @@ const ProductDetail = memo(() => {
               <h2 className="text-2xl font-bold mb-2">{Product?.title}</h2>
               <h2 className=" font-bold mb-2">Brand: {Product?.brand}</h2>
               <h3 className=" mb-2">Category: {Product?.category}</h3>
-              <div className="mb-2 flex gap-2 items-center">
-                <Rating
-                  size="large"
-                  step={0.5}
-                  className="text-theme-golden pointer-events-none cursor-default"
-                  value={Number(Product?.rating)}
-                />{" "}
-                {44 > 0 && (
+              {rateing.total_Rating ? (
+                <div className="mb-2 flex gap-2 items-center">
+                  <Rating
+                    size="large"
+                    step={0.5}
+                    className="text-theme-golden pointer-events-none cursor-default"
+                    value={rateing?.avg_rating}
+                  />{" "}
                   <span className="mx-2 text-sm text-theme-blue">
-                    {`Rated by ${44} people`}
+                    {`Rated by ${rateing?.total_Rating} people`}
                   </span>
-                )}
-                <span className="bg-theme-green px-2 text-sm rounded-md h-fit text-theme-white">
-                  {Product?.rating}★
-                </span>
-              </div>
+                  <span className="bg-theme-green px-2 text-sm rounded-md h-fit text-theme-white">
+                    {rateing?.avg_rating}★
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+
               <div className="text-lg mb-2 text-[#26a541]">
                 Number of Stock:{" "}
                 <span className="text-black">{Product?.stock}</span>
@@ -263,7 +273,7 @@ const ProductDetail = memo(() => {
                 />
               </div>
             </div>
-            <ReviewSection id={Product?._id} />
+            <ReviewSection id={Product?._id} setRateing={setRateing} />
             <hr className="my-2" />
             <PolicySection />
           </div>

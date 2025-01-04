@@ -6,7 +6,6 @@ import "tailwindcss/tailwind.css";
 import { getRatingColourText } from "@/utils/client/colourCode";
 import { useFormik } from "formik";
 import { GiveRatingSchema } from "@/Schemas/client/FormSchema";
-import { useUser } from "@/context/authContext";
 import { useRouter } from "next/router";
 import { useAuthData } from "@/service/Auth";
 import { Rating } from "@fluentui/react-rating";
@@ -14,7 +13,6 @@ import { Rating } from "@fluentui/react-rating";
 
 const AddReviewPage = memo(
   ({ ReviewProductId }: { ReviewProductId: string }) => {
-    const { user } = useUser();
     const [loading, setLoading] = useState<boolean>(false);
     const [imageloading, setImageLoading] = useState<boolean>(false);
     const [imageList, setImageList] = useState<string[]>([]);
@@ -31,17 +29,14 @@ const AddReviewPage = memo(
         try {
           setLoading(true);
           let data = {
-            productID: ReviewProductId,
-            username: user?.name,
-            userId: user?._id,
+            product_id: ReviewProductId,
             rating: values?.rating,
             images: values?.image,
             comment: values?.description,
-            userImage: "",
           };
           const res = await postreviews(data);
+          setLoading(false);
           if (res?.status === 201) {
-            setLoading(false);
             message.success(res?.data?.message);
             router.push(`/product/${ReviewProductId}`);
           } else {
@@ -59,7 +54,6 @@ const AddReviewPage = memo(
       formik.setFieldValue("rating", value);
     };
     const handleImageUpload = async ({ file }: any) => {
-      console.log(file, "file");
       if (file?.size >= 3145728) {
         return notification.warning({
           message: "",

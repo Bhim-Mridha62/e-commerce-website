@@ -16,7 +16,7 @@ const ReviewStarComponents = memo(({ stars }: { stars: IReviewStars }) => {
         </div>
       </div>
       <div className="flex-1 space-y-2">
-        {Object.entries(stars)
+        {Object?.entries(stars)
           .filter(([key]) => key.includes("_star"))
           .reverse()
           .map(([key, value], index) => (

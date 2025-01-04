@@ -34,8 +34,8 @@ const ProductReviewSchema = new Schema<IProductReview>(
       type: String,
       default: "",
       trim: true,
-      minlength: [3, "Comment must be at least 3 characters long."],
-      maxlength: [300, "Comment cannot exceed 300 characters."],
+      minlength: [5, "Comment must be at least 5 characters long."],
+      maxlength: [500, "Comment cannot exceed 500 characters."],
     },
     images: {
       type: [String],
