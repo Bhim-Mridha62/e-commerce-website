@@ -28,9 +28,6 @@ const Apimethod = async (
         method: method ? method : "post",
         data: body ? body : "",
       }).catch(({ response }) => {
-        if (response?.status == 401) {
-          window.localStorage.clear();
-        }
         Errors(response);
       })
     : await Axios.request({
@@ -39,9 +36,6 @@ const Apimethod = async (
         data: body ? body : "",
         headers: Cookie(),
       }).catch(({ response }) => {
-        if (response?.status == 401) {
-          window.localStorage.clear();
-        }
         Errors(response);
       });
   return data;
@@ -98,7 +92,7 @@ const putorder = (data: any) => {
   return Apimethod(`/api/order`, "put", data, false);
 };
 const getreviews = (data: any) => {
-  return Apimethod(`/api/product/review?id=${data}`, "get", {}, true);
+  return Apimethod(`/api/product/review?product_id=${data}`, "get", {}, true);
 };
 const postreviews = (data: any) => {
   return Apimethod(`/api/product/review`, "POST", data, false);

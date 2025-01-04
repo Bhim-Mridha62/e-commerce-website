@@ -2,7 +2,7 @@ import { useAuthData } from "@/service/Auth";
 import { IOrder } from "@/types/types";
 import { formatDate } from "@/utils/client/formatDate";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FiBox, FiCalendar } from "react-icons/fi";
 import { HiOutlineTruck } from "react-icons/hi";
@@ -10,22 +10,26 @@ import { IoLocationOutline } from "react-icons/io5";
 import { LuClock4 } from "react-icons/lu";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import NeedHelp from "./needHelp";
-const OrderDetails = ({ order_id }: { order_id?: string }) => {
+import Loading from "../Loading/Loading";
+import { GetOrderStatusColour } from "@/utils/client/colourCode";
+const OrderDetails = memo(({ order_id }: { order_id?: string }) => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [orderData, setOrderData] = useState<IOrder | any>(null); // Replace `any` with proper types if desired
   const [activeStep, setActiveStep] = useState(0);
+  const [order_colour, setorder_colour] = useState("#000000");
   const { getorder } = useAuthData();
-
   useEffect(() => {
     if (order_id) {
       fetchOrderDetails();
     }
   }, [order_id]);
-
   const fetchOrderDetails = async () => {
     const response = await getorder(order_id);
+    setLoading(false);
     if (response?.data?.success) {
       const data = response?.data.data;
+      setorder_colour(GetOrderStatusColour(data?.OrderStatus).colour);
       setOrderData(data);
       // Set active step based on order progress
       if (["Done", "returned"].includes(data?.OrderStatus)) {
@@ -42,7 +46,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
     }
   };
 
-  if (!orderData) return <p>Loading...</p>;
+  if (loading) return <Loading />;
 
   const orderSteps = [
     {
@@ -97,7 +101,10 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
               </p>
             </div>
             <div className="text-right">
-              <span className="inline-block px-3 py-[2px] text-[12px] font-semibold bg-theme-black text-white rounded-full">
+              <span
+                className="inline-block px-3 py-[2px] text-[12px] font-semibold text-white rounded-full"
+                style={{ background: order_colour }}
+              >
                 <FiBox className="inline-flex mb-1" />{" "}
                 {orderSteps[activeStep - 1]?.title}
               </span>
@@ -116,9 +123,10 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
             </div>
             <div className="relative h-2 w-full bg-gray-200 rounded">
               <div
-                className="absolute top-0 left-0 h-full bg-theme-black rounded"
+                className="absolute top-0 left-0 h-full rounded"
                 style={{
                   width: `${(activeStep / orderSteps?.length) * 100}%`,
+                  background: order_colour,
                 }}
               ></div>
             </div>
@@ -176,7 +184,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                 <div className="space-y-4 relative">
                   <div className="absolute left-[0.8rem] md:left-[1.1rem] top-4 bottom-9 md:bottom-7 w-1 bg-gray-200">
                     <p
-                      className={`w-full bg-black`}
+                      className={`w-ful`}
                       style={{
                         height:
                           activeStep === 2
@@ -186,6 +194,7 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                             : activeStep === 4
                             ? "70%"
                             : "100%",
+                        background: order_colour,
                       }}
                     />
                   </div>
@@ -202,6 +211,14 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
                             ? "bg-[#c7c7c7] border-2 border-theme-black"
                             : "bg-theme-grey"
                         }`}
+                        style={{
+                          background:
+                            index + 1 < activeStep || activeStep === 5
+                              ? order_colour
+                              : "",
+                          borderColor:
+                            index + 1 === activeStep ? order_colour : "",
+                        }}
                       >
                         <span
                           className="text-xl"
@@ -258,6 +275,6 @@ const OrderDetails = ({ order_id }: { order_id?: string }) => {
       <NeedHelp />
     </section>
   );
-};
+});
 
 export default OrderDetails;

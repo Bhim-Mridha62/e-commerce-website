@@ -2,8 +2,6 @@ import connectDB from "@/database/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import verifyUser from "./middleware/verifyUser";
 import User from "@/Schemas/server/UserSchema";
-import Product from "@/Schemas/server/ProductSchema";
-import Order from "@/Schemas/server/OrderSchema";
 import mongoose from "mongoose";
 export default async function handler(
   req: NextApiRequest,
@@ -28,125 +26,101 @@ async function getProfile(req: any, res: NextApiResponse) {
   const { userId } = req;
   const { isAddress } = req.query;
   try {
-    if (!userId) {
-      return res.status(404).json({ message: "User Not Found" });
-    }
-
     // isAddress if 1 return only address for Address auto field in order page
     if (Number(isAddress)) {
       const Address = await User.findById(userId).select("address");
       return res.status(200).send(Address);
     }
+    const profile_data = await User.aggregate([
+      // Match the user document by userId
+      { $match: { _id: new mongoose.Types.ObjectId(userId) } },
 
-    // Get total count of orders
-
-    const totalCountResult = await Order.aggregate([
+      // Lookup for orders based on userId
       {
-        $match: { userId: mongoose.Types.ObjectId.createFromHexString(userId) },
-      },
-      {
-        $count: "orderLength",
-      },
-    ]);
-    const orderLength =
-      totalCountResult.length > 0 ? totalCountResult[0].orderLength : 0;
-
-    // Get limited orders
-    const orders = await Order.aggregate([
-      {
-        $match: { userId: mongoose.Types.ObjectId.createFromHexString(userId) },
-      },
-      {
-        $project: {
-          image: 1,
-          price: 1,
-          title: 1,
-          OrderStatus: 1,
-          productID: 1,
-          OrderDate: 1,
+        $lookup: {
+          from: "orders",
+          let: { userId: "$_id" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$userId", "$$userId"] } } },
+            { $sort: { OrderDate: -1 } }, // Sort by OrderDate in descending order
+            {
+              $project: {
+                _id: 1,
+                title: 1,
+                image: 1,
+                price: 1,
+                OrderStatus: 1,
+                OrderDate: 1,
+              },
+            },
+          ],
+          as: "orders",
         },
       },
-      {
-        $sort: { OrderDate: -1 },
-      },
-      {
-        $limit: 3,
-      },
-    ]);
 
-    // Get user profile data
-
-    const user = await User.aggregate([
+      // Lookup for wishlist products
       {
-        $match: { _id: mongoose.Types.ObjectId.createFromHexString(userId) },
+        $lookup: {
+          from: "products",
+          let: { wishlistProductIds: "$wishlist.productID" },
+          pipeline: [
+            { $match: { $expr: { $in: ["$_id", "$$wishlistProductIds"] } } },
+            { $sort: { createdAt: -1 } },
+            {
+              $project: {
+                _id: 1,
+                title: 1,
+                price: 1,
+                thumbnail: 1,
+              },
+            },
+          ],
+          as: "wishlist",
+        },
       },
+
+      // Lookup for cart products with limit to 3 products
+      {
+        $lookup: {
+          from: "products",
+          let: { cartProductIds: "$cart.productID" },
+          pipeline: [
+            { $match: { $expr: { $in: ["$_id", "$$cartProductIds"] } } },
+            { $sort: { createdAt: -1 } },
+            {
+              $project: {
+                _id: 1,
+                title: 1,
+                price: 1,
+                thumbnail: 1,
+                Size: 1,
+                quantity: 1,
+              },
+            },
+          ],
+          as: "cart",
+        },
+      },
+
+      // Project the final output
       {
         $project: {
+          address: 1,
           name: 1,
           emailOrPhone: 1,
-          address: 1,
-          wishlistLength: { $size: "$wishlist" },
-          cartLength: { $size: "$cart" },
           profile_pic: 1,
-          wishlist: { $slice: ["$wishlist", 3] },
-          cart: { $slice: ["$cart", 3] },
+          cart_length: { $size: "$cart" },
+          wishlist_length: { $size: "$wishlist" },
+          order_length: { $size: "$orders" }, // Count of orders
+          orders: { $slice: ["$orders", 0, 3] }, // Get the first 3 orders
+          wishlists: { $slice: ["$wishlist", 0, 3] }, // Get the first 3 wishlist products
+          carts: { $slice: ["$cart", 0, 3] }, // Include the cart data
         },
       },
     ]);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
 
-    // Get array of Product IDs from the wishlist
-
-    const wishlistProductId = user[0]?.wishlist.map(
-      (data: any) => data?.productID
-    );
-    if (wishlistProductId.length > 0) {
-      // Find all wishlist data
-      const wishlistProducts = await Product.find({
-        _id: { $in: wishlistProductId },
-      }).select("thumbnail title price");
-      user[0].wishlist = user[0].wishlist.map((data: any) => {
-        const product = wishlistProducts.find(
-          (p) => p._id.toString() === data.productID.toString()
-        );
-        return {
-          ...data,
-          thumbnail: product?.thumbnail || "",
-          price: product?.price,
-          title: product?.title,
-        };
-      });
-    }
-
-    // Get array of Product IDs from the cart
-
-    const cartProductId = user[0]?.cart.map((data: any) => data?.productID);
-    if (cartProductId.length > 0) {
-      // find all cart data
-      const cartProducts = await Product.find({
-        _id: { $in: cartProductId },
-      }).select("thumbnail title price");
-      user[0].cart = user[0].cart.map((data: any) => {
-        const product = cartProducts.find(
-          (p) => p._id.toString() === data.productID.toString()
-        );
-        return {
-          ...data,
-          thumbnail: product?.thumbnail || "",
-          price: product?.price,
-          title: product?.title,
-        };
-      });
-    }
-    res.status(200).json({
-      order: orders,
-      orderLength,
-      user: user[0],
-    });
+    // Return the data in response
+    return res.status(200).json({ success: true, data: profile_data[0] });
   } catch (error) {
     console.log(error, "error");
 
