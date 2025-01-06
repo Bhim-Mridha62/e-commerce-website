@@ -1,12 +1,16 @@
 import { useAuthData } from "@/service/Auth";
 import React, { memo, useEffect, useState } from "react";
-import { FaTrashAlt } from "react-icons/fa";
 import EmptyWishlist from "./EmptyWishlist";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Loading from "../Loading/Loading";
 import { useUser } from "@/context/authContext";
 import { IProduct } from "@/types/types";
 import { Rating } from "@fluentui/react-rating";
+import Image from "next/image";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { IoIosClose } from "react-icons/io";
+import { TbArrowNarrowDown } from "react-icons/tb";
+import { IoCartOutline } from "react-icons/io5";
 
 const WishlistContent = memo(() => {
   const [wishlist, setWishlist] = useState<IProduct[]>([]);
@@ -18,8 +22,6 @@ const WishlistContent = memo(() => {
   useEffect(() => {
     if (user) {
       fetchData();
-    } else {
-      setLoading(false); // End loading
     }
   }, [user]);
 
@@ -32,7 +34,7 @@ const WishlistContent = memo(() => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -51,75 +53,110 @@ const WishlistContent = memo(() => {
     router.push(`/product/${id}`);
   };
 
-  if (loading) {
+  if (loading && user) {
     return <Loading className="mt-4" />;
   }
+  if (!user) {
+    return <EmptyWishlist IsLogin={false} />;
+  }
+  if (!wishlist?.length) {
+    return <EmptyWishlist IsLogin={true} />;
+  }
 
-  return user ? (
-    wishlist.length ? (
-      <div className="text-black">
-        <div className="p-1 tsm:p-4">
-          <h1 className="text-xl font-bold mb-4">
-            My Wishlist ({wishlist.length})
-          </h1>
-          <div className="space-y-4">
-            {wishlist.map((item: IProduct) => (
-              <div
-                key={item?._id}
-                className="flex flex-row items-center justify-between p-1 tsm:p-4 border rounded-lg shadow space-y-4 sm:space-y-0"
-              >
-                <img
-                  onClick={() => Productdetails(item?._id)}
-                  src={item?.thumbnail}
-                  alt={item?.title}
-                  className="w-20 h-20 object-cover cursor-pointer"
-                />
-                <div className="flex-grow mx-4 text-left">
-                  <h2 className="text-lg font-semibold">{item?.title}</h2>
-                  <div className="flex flex-row items-center justify-start space-y-2 sm:space-y-0 sm:space-x-2">
-                    <span className="text-green-500 font-bold">
-                      ₹{item?.price}
-                    </span>
-                    <div className="flex items-center space-x-2">
-                      <span className="line-through text-gray-500">
-                        ₹{item?.price}
+  return (
+    <div className="mx-auto px-2 md:px-20 py-8">
+      <div className="flex flex-col items-center justify-center my-4">
+        <h2 className="text-2xl font-bold text-gray-800">
+          My Wishlist{" "}
+          <span className="text-green-600">({wishlist.length})</span>
+        </h2>
+        <p className="text-sm text-gray-500 mt-2">
+          Your saved items are waiting for you!
+        </p>
+      </div>
+
+      <div className="flex justify-center flex-wrap gap-4 ">
+        {wishlist.map((item: IProduct) => (
+          <div
+            key={item?._id}
+            className="w-[300px] md:w-[338px] h-auto overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 relative border rounded-md p-2 md:p-4"
+          >
+            <button
+              className="absolute top-3 right-3 bg-theme-grey h-10 w-10 rounded-full flex justify-center items-center"
+              onClick={() => handleRemove(item?._id)}
+            >
+              <IoIosClose className="inline-flex text-4xl m-auto" />
+            </button>
+            <div
+              className=" h-48 cursor-pointer"
+              onClick={() => Productdetails(item?._id)}
+            >
+              <Image
+                src={item?.thumbnail || ""}
+                alt={item?.title || ""}
+                width={1000}
+                height={1000}
+                className="transition-transform w-full h-full object-contain duration-300 hover:scale-105"
+              />
+            </div>
+            <div className="py-2 flex flex-col justify-between gap-2">
+              <h2 className="text-xl font-semibold text-gray-800 line-clamp-1">
+                {item?.title}
+              </h2>
+              {item?.price ? (
+                <div className="flex items-center gap-2">
+                  {item?.discountPercentage ? (
+                    <div className="flex items-center text-sm text-gray-700">
+                      <TbArrowNarrowDown className="inline-flex text-green-500 mr-1" />
+                      <span className="text-green-500 font-semibold mr-2">
+                        {item?.discountPercentage}%
                       </span>
-                      <span className="text-green-500">
-                        {item?.discountPercentage}% off
+                      <span className="line-through text-gray-500">
+                        ₹
+                        {Math.round(
+                          item?.price / (item?.discountPercentage / 100)
+                        )}
                       </span>
                     </div>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <Rating
-                      size="large"
-                      step={0.5}
-                      className="text-theme-golden pointer-events-none cursor-default"
-                      value={Number(item?.rating)}
-                    />
-                    {44 > 0 && (
-                      <span className="mx-2 text-sm text-theme-blue">
-                        {`Rated by ${44} people`}
-                      </span>
-                    )}
-                  </div>
+                  ) : (
+                    ""
+                  )}
+
+                  <span className="text-2xl font-bold text-green-600">
+                    ₹{item?.price}
+                  </span>
                 </div>
+              ) : (
+                ""
+              )}
+
+              <div className="flex items-center">
+                <Rating
+                  value={Number(item?.rating)}
+                  className="text-theme-golden pointer-events-none cursor-default"
+                />
+                <span className="ml-2 text-lg text-theme-text-grey">
+                  {item?.rating}★
+                </span>
+              </div>
+              <div className="flex justify-between items-center md:text-lg gap-1 md:gap-2">
+                <button className="border-2 border-theme-black bg-theme-white py-1 px-3 text-theme-black hover:bg-theme-black hover:text-theme-white rounded-md hover:border-theme-black transition-colors duration-300 ease-in-out">
+                  <IoCartOutline className="inline-flex mb-1 text-xl" /> Add to
+                  Cart
+                </button>
                 <button
-                  onClick={() => handleRemove(item?._id)}
-                  className="text-red-500 hover:text-red-700"
+                  className="border-2 border-theme-green bg-theme-bg-green py-1 px-3 text-theme-green hover:bg-theme-green rounded-md hover:text-theme-white transition-colors duration-300 ease-in-out"
+                  onClick={() => Productdetails(item?._id)}
                 >
-                  <FaTrashAlt />
+                  <MdKeyboardDoubleArrowRight className="inline-flex text-2xl mb-1" />{" "}
+                  Add to Cart
                 </button>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
-    ) : (
-      <EmptyWishlist IsLogin={true} />
-    )
-  ) : (
-    <EmptyWishlist IsLogin={false} />
+    </div>
   );
 });
-
 export default WishlistContent;

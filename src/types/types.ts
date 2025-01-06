@@ -197,3 +197,7 @@ export interface IReviewStars {
   "4_star": number;
   "5_star": number;
 }
+export interface IOrderConfirmButtonLoading {
+  isLoading: boolean;
+  status: "default" | "success" | "error";
+}
