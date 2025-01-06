@@ -53,7 +53,7 @@ const WishlistContent = memo(() => {
     router.push(`/product/${id}`);
   };
 
-  if (loading) {
+  if (loading && user) {
     return <Loading className="mt-4" />;
   }
   if (!user) {
