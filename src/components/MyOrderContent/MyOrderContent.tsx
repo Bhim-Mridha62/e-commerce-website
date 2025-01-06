@@ -84,8 +84,8 @@ const MyOrderContent = memo(() => {
         <div className="relative mb-4 my-4">
           <input
             type="text"
-            className="w-full md:w-1/2 border border-theme-text-grey text-theme-text-grey py-2 px-4 pl-10 rounded-md focus:outline-none"
-            placeholder="Search by customer, product, or order ID"
+            className="w-full border border-theme-text-grey text-theme-text-grey py-2 px-4 pl-10 rounded-md focus:outline-none"
+            placeholder="Search by customer, product, or order id"
           />
           <span className="absolute left-3 top-[0.7rem]">
             <SearchIcon className="size-5" />
