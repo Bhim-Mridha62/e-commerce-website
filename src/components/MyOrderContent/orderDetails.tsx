@@ -12,6 +12,7 @@ import { RiShoppingBag3Line } from "react-icons/ri";
 import NeedHelp from "./needHelp";
 import Loading from "../Loading/Loading";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
+import Link from "next/link";
 const OrderDetails = memo(({ order_id }: { order_id?: string }) => {
   const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -149,15 +150,17 @@ const OrderDetails = memo(({ order_id }: { order_id?: string }) => {
               {orderData?.address?.phone}
             </p>
           </div>
-          <div className="flex items-center gap-4 border border-theme-border">
+          <div className="flex items-center gap-4 border border-theme-border rounded bg-theme-grey">
             <div className="w-28 h-28 bg-gray-300 rounded overflow-hidden m-2">
-              <Image
-                src={orderData?.image}
-                alt="Product"
-                width={1000}
-                height={1000}
-                className="w-28 h-28 object-cover"
-              />
+              <Link href={`/product/${orderData?.productID}`}>
+                <Image
+                  src={orderData?.image}
+                  alt="Product"
+                  width={1000}
+                  height={1000}
+                  className="w-28 h-28 object-cover"
+                />
+              </Link>
             </div>
             <div>
               <h3 className="font-semibold">{orderData?.title}</h3>

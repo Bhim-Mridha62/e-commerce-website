@@ -270,6 +270,116 @@ textarea .form-item :focus + label,
   background-color: var(--theme-white);
   color: var(--theme-black);
 }
+
+/* Animation of confirm order buttom */
+
+/* start */
+
+/* Check Circle Animation */
+.check-circle {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  position: relative;
+}
+
+/* Loading animation when the order is being confirmed */
+.check-circle.loading {
+  animation: rotate 1.2s linear infinite;
+}
+
+/* Rotation keyframes */
+@keyframes rotate {
+  0% {
+    border-left-color: var(--theme-green);
+  }
+  100% {
+    border-left-color: var(--theme-green);
+    transform: rotate(360deg);
+  }
+}
+
+/* Check Mark Icon for Success */
+.check-icon::after {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 9px;
+  border-top: 3px solid var(--theme-green);
+  border-right: 3px solid var(--theme-green);
+  left: 5px;
+  top: 50%;
+  transform: scaleX(-1) rotate(135deg);
+  transform-origin: left top;
+  animation: icon 0.5s ease;
+}
+
+/* Keyframes for the check mark icon */
+@keyframes icon {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 1;
+  }
+  20% {
+    height: 5px;
+    width: 8px;
+    opacity: 1;
+  }
+  40% {
+    height: 10px;
+    width: 9px;
+    opacity: 1;
+  }
+  100% {
+    height: 15px;
+    width: 9px;
+    opacity: 1;
+  }
+}
+/* Cross Mark Icon for Failure */
+
+.cross-icon::before,
+.cross-icon::after {
+  position: absolute;
+  content: "";
+  height: 0; /* Start with 0 height for animation */
+  width: 0;
+  background-color: var(--theme-red); /* Use a red color variable */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg); /* Align and rotate */
+  transform-origin: center;
+  animation: cross 0.8s ease forwards;
+}
+
+.cross-icon::after {
+  transform: translate(-50%, -50%) rotate(-45deg); /* Second diagonal */
+}
+
+/* Keyframes for the cross icon */
+@keyframes cross {
+  0% {
+    height: 0;
+    opacity: 1;
+    width: 0;
+  }
+  50% {
+    height: 10px; /* Animate to half length */
+    opacity: 2;
+    width: 1px;
+  }
+  100% {
+    height: 18px; /* Final length */
+    opacity: 1;
+    width: 2px;
+  }
+}
+
+/* end */
+
 @media (max-width: 768px) {
   .ant-card-body {
     padding: 7px 10px !important;

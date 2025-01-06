@@ -2,7 +2,7 @@ import { useAuthData } from "@/service/Auth";
 import { IOrder } from "@/types/types";
 import { getDayDifference } from "@/utils/client/formatDate";
 import { Modal, notification } from "antd";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import React, { memo, useState } from "react";
 import { GiReturnArrow } from "react-icons/gi";
 import { IoStarOutline } from "react-icons/io5";
@@ -12,18 +12,15 @@ const ReactionButton = memo(
   ({
     product,
     getUserOrder,
-    handelProductDetails,
   }: {
     product: IOrder;
     getUserOrder: () => void;
-    handelProductDetails: (e: React.MouseEvent<HTMLElement>) => void;
   }) => {
     const [modalType, setModalType] = useState(""); // "cancel" or "return"
     const [cancelText, setCancelText] = useState("");
     const [isSubmitting, _] = useState<boolean>(false);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const { putorder } = useAuthData();
-    const router = useRouter();
 
     const cancelReasons = [
       "Ordered by Mistake",
@@ -76,10 +73,6 @@ const ReactionButton = memo(
     const handleCancel = () => {
       setIsModalVisible(false);
     };
-    const handelGiveRate = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-      router.push(`/product/review?productId=${product?.productID}`);
-    };
     const showModal = (type: string) => {
       setModalType(type);
       setIsModalVisible(true);
@@ -87,20 +80,20 @@ const ReactionButton = memo(
     return (
       <>
         <div className="flex gap-1 md:gap-4">
-          <button
-            onClick={(e) => handelGiveRate(e)}
+          <Link
+            href={`/product/review?productId=${product?.productID}`}
             className="border border-theme-border px-1 md:px-4 py-2 rounded flex items-center justify-center gap-1 md:gap-2 font-medium text-xs md:text-base flex-1"
           >
             <IoStarOutline className="text-theme-blue inline-flex md:text-xl" />
             Write a Review
-          </button>
-          <button
-            onClick={(e) => handelProductDetails(e)}
+          </Link>
+          <Link
+            href={`/product/${product?.productID}`}
             className="border border-theme-border px-1 md:px-4 py-2 rounded flex items-center justify-center gap-1 md:gap-2 font-medium text-xs md:text-base flex-1"
           >
             <TbReload className="text-theme-blue inline-flex md:text-xl" />
             Buy Again
-          </button>
+          </Link>
           {product?.OrderStatus === "pending" &&
             getDayDifference(
               product?.StatusOrder?.Order_Received?.time,
@@ -114,7 +107,7 @@ const ReactionButton = memo(
                 Cancle Order
               </button>
             )}
-          {product.OrderStatus === "Done" &&
+          {product?.OrderStatus === "Done" &&
             getDayDifference(
               product?.StatusOrder?.Order_Delivered?.time,
               new Date().toISOString()
