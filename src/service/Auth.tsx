@@ -86,7 +86,12 @@ const postorder = (data: any) => {
   return Apimethod(`/api/order`, "POST", data, false);
 };
 const getorder = (id: string = "") => {
-  return Apimethod(`/api/order?order_id=${id}`, "get", {}, false);
+  return Apimethod(
+    `/api/order${id ? `?order_id=${id}` : ""}`,
+    "get",
+    {},
+    false
+  );
 };
 const putorder = (data: any) => {
   return Apimethod(`/api/order`, "put", data, false);

@@ -2,11 +2,11 @@ import { IOrder } from "@/types/types";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React, { memo } from "react";
 
 import ReactionButton from "./reactionButton";
 import { PiCaretCircleRight } from "react-icons/pi";
+import Link from "next/link";
 const OrderCard = memo(
   ({
     product,
@@ -16,13 +16,6 @@ const OrderCard = memo(
     getUserOrder: () => void;
   }) => {
     const orderStatusColour = GetOrderStatusColour(product?.OrderStatus);
-    const router = useRouter();
-
-    // redirct to add review page
-    const handelProductDetails = (e: React.MouseEvent<HTMLElement>) => {
-      e.stopPropagation();
-      router.push(`/product/${product?.productID}`);
-    };
     return (
       <>
         <div className="bg-theme-grey flex justify-between px-2 md:px-4 py-4 items-center rounded-t-md">
@@ -53,19 +46,16 @@ const OrderCard = memo(
             Ship to {product?.address?.name}
           </div>
         </div>
-        <div className="flex flex-col gap-2 p-4">
-          <div
-            className="flex"
-            onClick={() => router.push(`/order/${product?._id}`)}
-          >
+        <div className="flex flex-col gap-2 p-2 md:p-4">
+          <Link href={`/order/${product?._id}`} className="flex">
             <Image
-              className="md:w-48 md:h-48 w-20 h-20 object-cover rounded"
+              className="md:w-48 md:h-48 w-24 h-24 object-cover rounded"
               src={product?.image || ""}
               alt={product?.title || ""}
               width={1000}
               height={1000}
             />
-            <div className="ml-4 w-full">
+            <div className="ml-2 md:ml-4 w-full">
               <h3 className="md:text-lg text-base font-[400] md:font-semibold text-gray-800 one-line-truncate">
                 {product.title}
               </h3>
@@ -74,12 +64,8 @@ const OrderCard = memo(
                 <PiCaretCircleRight className="text-3xl" />
               </p>
             </div>
-          </div>
-          <ReactionButton
-            product={product}
-            getUserOrder={getUserOrder}
-            handelProductDetails={handelProductDetails}
-          />
+          </Link>
+          <ReactionButton product={product} getUserOrder={getUserOrder} />
         </div>
       </>
     );
