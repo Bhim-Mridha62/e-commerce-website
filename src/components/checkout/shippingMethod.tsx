@@ -1,12 +1,12 @@
 import React, { memo, useState } from "react";
-import { message, notification } from "antd";
+import { notification } from "antd";
 import { useRouter } from "next/router";
 import { useAuthData } from "@/service/Auth";
 import { FaCreditCard, FaLandmark, FaClock } from "react-icons/fa";
 import { GiSmartphone } from "react-icons/gi";
 import { CashOnDelivery } from "@/utils/client/svg-icon";
 import { useUser } from "@/context/authContext";
-import { IAddress } from "@/types/types";
+import { IAddress, IOrderConfirmButtonLoading } from "@/types/types";
 import { FormikProps } from "formik";
 import PriceDetails from "../common/PriceDetails";
 interface AddressFormProps {
@@ -17,17 +17,22 @@ interface AddressFormProps {
 }
 const ShippingMethod = memo(
   ({ formik, priceDetails, isMobile, totalAmount }: AddressFormProps) => {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [confirmButtonLoading, setConfirmButtonLoading] =
+      useState<IOrderConfirmButtonLoading>({
+        isLoading: false,
+        status: "default",
+      });
     const { postorder } = useAuthData();
     const router = useRouter();
     const [selectedOption, setSelectedOption] = useState("");
     const { user } = useUser();
-    const HandelConfirmOrder = async () => {
+    const HandleConfirmOrder = async () => {
       if (!user) {
         notification.warning({ message: "Please login to proceed." });
         return;
       }
       if (!formik?.isValid) {
+        formik.handleSubmit();
         notification.warning({
           message: "Address Validation Error",
           description:
@@ -42,7 +47,10 @@ const ShippingMethod = memo(
         });
         return;
       }
-      setIsSubmitting(true);
+      setConfirmButtonLoading({
+        isLoading: true,
+        status: "default",
+      });
       try {
         for (const product of priceDetails) {
           let orderData = {
@@ -58,39 +66,35 @@ const ShippingMethod = memo(
             address: formik?.values,
           };
           const res = await postorder(orderData);
-          if (res?.status !== 201) {
-            openNotificationWithIcon(
-              "error",
-              "Order Failed",
-              "An error occurred while confirming your order. Please try again."
-            );
-            setIsSubmitting(false);
-            return;
+          if (res?.status === 201) {
+            notification.success({
+              message: "Order Confirmed",
+              description: "Order confirmed! Thank you for your purchase.",
+            });
+            setConfirmButtonLoading({
+              isLoading: false,
+              status: "success",
+            });
+            router.push("/order");
+          } else {
+            notification.error({
+              message: "Order Failed",
+              description:
+                "An error occurred while confirming your order. Please try again.",
+            });
           }
         }
-        openNotificationWithIcon(
-          "success",
-          "Order Confirmed",
-          "Order confirmed! Thank you for your purchase."
-        );
-
-        router.push("/order");
       } catch (error) {
-        openNotificationWithIcon(
-          "error",
-          "Order Failed",
-          "An error occurred while confirming your order. Please try again."
-        );
-        setIsSubmitting(false);
+        notification.error({
+          message: "Order Failed",
+          description:
+            "An error occurred while confirming your order. Please try again.",
+        });
+        setConfirmButtonLoading({
+          isLoading: false,
+          status: "error",
+        });
       }
-    };
-    //@ts-ignore
-    const openNotificationWithIcon = (type, message, description) => {
-      //@ts-ignore
-      notification[type]({
-        message: message,
-        description: description,
-      });
     };
     const paymentMethods = [
       {
@@ -181,11 +185,34 @@ const ShippingMethod = memo(
           />
         )}
         <button
-          className={`mx-auto py-3 px-4 w-full text-white font-medium rounded-md bg-[#1773b0] hover:bg-[#105989]`}
-          onClick={HandelConfirmOrder}
-          disabled={isSubmitting || selectedOption !== "cod"}
+          className={`flex items-center justify-center gap-3  py-2 px-4 w-full text-theme-green font-medium rounded-md bg-theme-bg-green border-2 border-theme-green ${
+            confirmButtonLoading.status === "error"
+              ? "text-theme-red bg-theme-bg-red border-theme-red"
+              : ""
+          }`}
+          onClick={HandleConfirmOrder}
+          disabled={confirmButtonLoading.isLoading} // Disable button during loading
         >
-          CONFIRM ORDER
+          <span
+            className={
+              confirmButtonLoading.isLoading
+                ? "check-circle loading"
+                : confirmButtonLoading.status === "success"
+                ? "check-circle check-icon !border-theme-green"
+                : confirmButtonLoading.status === "error"
+                ? "check-circle cross-icon !border-theme-red"
+                : ""
+            }
+          ></span>
+          <span>
+            {confirmButtonLoading.isLoading
+              ? "Processing your order..."
+              : confirmButtonLoading.status === "success"
+              ? "Order Confirmed!"
+              : confirmButtonLoading.status === "error"
+              ? "Order Failed. Please try again!"
+              : "CONFIRM ORDER"}
+          </span>
         </button>
       </>
     );
