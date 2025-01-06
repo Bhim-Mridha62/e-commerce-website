@@ -24,11 +24,23 @@ const ShippingMethod = memo(
     const { user } = useUser();
     const HandelConfirmOrder = async () => {
       if (!user) {
-        notification.error({ message: "Please login to proceed." });
+        notification.warning({ message: "Please login to proceed." });
+        return;
+      }
+      if (!formik?.isValid) {
+        notification.warning({
+          message: "Address Validation Error",
+          description:
+            Object.values(formik?.errors)[0] ||
+            "Please correct the errors in the form.",
+        });
         return;
       }
       if (selectedOption != "cod") {
-        return message.info("Please select a payment method");
+        notification.warning({
+          message: "Please select a payment method",
+        });
+        return;
       }
       setIsSubmitting(true);
       try {
@@ -130,7 +142,7 @@ const ShippingMethod = memo(
                   selectedOption === method.id
                     ? selectedOption != "cod"
                       ? "border-red-500 bg-red-50"
-                      : "border-blue-500 bg-blue-50"
+                      : "border-theme-green bg-theme-bg-green"
                     : "border-gray-200 hover:bg-gray-50"
                 }`}
               >
