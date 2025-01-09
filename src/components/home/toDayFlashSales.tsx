@@ -68,10 +68,10 @@ const ToDayFlashSales = memo(
               />
             ) : (
               <div className="swiper-navigation-buttons w-24 relative flex">
-                <button className="swiper-button-prev bg-gray rounded-full !size-8 md:!size-10 ml-[-10px] bg-theme-border">
+                <button className="swiper-button-prev-flash-sale swiper-button-prev bg-gray rounded-full !size-8 md:!size-10 ml-[-10px] bg-theme-border">
                   <GoChevronLeft className="text-black !size-6" />
                 </button>
-                <button className="swiper-button-next bg-gray rounded-full !size-8 md:!size-10 bg-theme-border ">
+                <button className="swiper-button-next-flash-sale swiper-button-next bg-gray rounded-full !size-8 md:!size-10 bg-theme-border ">
                   <GoChevronRight className="text-black !size-6" />
                 </button>
               </div>
@@ -80,8 +80,8 @@ const ToDayFlashSales = memo(
           <Swiper
             modules={[Navigation]}
             navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+              nextEl: ".swiper-button-next-flash-sale",
+              prevEl: ".swiper-button-prev-flash-sale",
             }}
             className="home-page-swiper"
             spaceBetween={16} // Space between slides
