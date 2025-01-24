@@ -1,9 +1,9 @@
 import connectDB from "@/database/db";
 import User from "@/Schemas/server/UserSchema";
 import verifyUser from "../middleware/verifyUser";
-import Product from "@/Schemas/server/ProductSchema";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ISchemaWishlist } from "@/types/backentType";
+import mongoose from "mongoose";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -28,19 +28,40 @@ const getWishlist = async (req: any, res: NextApiResponse) => {
   const { userId } = req;
 
   try {
-    const user = await User.findById(userId).select("wishlist");
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-    const AllProductId = user.wishlist.map(
-      (item: ISchemaWishlist) => item?.productID
-    );
-    const cartDetails = await Product.find({
-      _id: { $in: AllProductId },
-    }).select("_id title price discountPercentage rating thumbnail");
-    res.status(200).json({ success: true, data: cartDetails });
+    const wishlist = await User.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(userId as string) },
+      },
+      {
+        $project: { wishlist: 1 },
+      },
+      { $unwind: "$wishlist" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "wishlist.productID",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: "$productDetails",
+      },
+      {
+        $project: {
+          _id: "$productDetails._id",
+          title: "$productDetails.title",
+          price: "$productDetails.price",
+          discountPercentage: "$productDetails.discountPercentage",
+          rating: "$productDetails.rating",
+          thumbnail: "$productDetails.thumbnail",
+        },
+      },
+    ]);
+
+    return res
+      .status(200)
+      .json({ success: true, length: wishlist.length, data: wishlist });
   } catch (error: any) {
     res.status(500).json({
       success: false,

@@ -6,6 +6,18 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --theme-blue: #2874f0;
+  --theme-black: #000000;
+  --theme-white: #ffffff;
+  --theme-grey: #f5f5f5;
+  --theme-border: #d9d9d9;
+  --theme-red: #db4444;
+  --theme-green: #388e3c;
+  --theme-golden: #ffa41c;
+  --theme-text-grey: #6b7280;
+  --theme-bg-green: #e7f8ec;
+  --theme-bg-red: #fde8e8;
+  --theme-border-red: #fa9090;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,7 +29,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: var(--theme-black);
 }
 
 @layer utilities {
@@ -50,4 +62,352 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .ant-list-item-meta-title {
   margin-block-end: 0px !important;
+}
+.AccountSection-Dropdown > .ant-dropdown-menu {
+  box-shadow: 0px 0px 15px 2px #c3bfbf;
+}
+.AccountSection-Dropdown > .ant-dropdown-menu > .ant-dropdown-menu-item:hover {
+  color: var(--theme-red);
+}
+.AccountSection-Dropdown > .ant-dropdown-menu .Active_Navbar_Menu {
+  color: var(--theme-red) !important;
+}
+.custom-slide {
+  width: 200px !important; /* Fixed width for each slide */
+  height: 300px;
+}
+.custom-slide-categories {
+  width: 200px !important;
+  height: 300px;
+}
+.swiper-navigation-buttons > .swiper-button-prev::after,
+.swiper-button-next::after {
+  content: "" !important;
+}
+.Best-seller-label {
+  z-index: 1;
+  font-size: 14px;
+  padding: 2px 8px;
+  top: 0;
+  left: 0;
+  position: absolute;
+  color: var(--theme-white);
+  background-color: var(--theme-blue);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.Best-seller-label::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%; /* Start outside the span */
+  width: 200%; /* Large enough to cover the span */
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  animation: waveTransition 2s linear infinite;
+}
+@keyframes waveTransition {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+.swiper-pagination-bullet {
+  background: var(--theme-text-grey) !important;
+  opacity: inherit !important;
+}
+.swiper-pagination-bullet-active {
+  background: var(--theme-red) !important;
+  border: 1px solid var(--theme-white);
+}
+.image-with-reflection img {
+  -webkit-box-reflect: below 0px
+    linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+}
+.shop-now-buttom-banner {
+  width: fit-content;
+  margin-top: auto;
+  margin-bottom: 2rem;
+  padding: 0 4px 0 0;
+  box-shadow: 5px 4px 3px 0px var(--theme-red);
+  transition: color 0.25s ease; /* Smooth transition */
+}
+.shop-now-buttom-banner:hover {
+  color: var(--theme-red);
+}
+.shop-now-buttom-banner span {
+  margin-left: 0; /* Default position */
+  transition: margin-left 0.25s ease; /* Smooth arrow movement */
+}
+.shop-now-buttom-banner:hover span {
+  margin-left: 5px; /* Moves the arrow slightly on hover */
+}
+.form-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-item input,
+.form-item textarea,
+.form-item select {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: solid 1px #ccc;
+  transition: all 0.3s ease;
+  padding: 12px 15px;
+  border-radius: 4px;
+  outline: none;
+  font-size: 14px;
+}
+.form-item label {
+  position: absolute;
+  z-index: 2;
+  top: 13px;
+  left: 15px;
+  font-size: 14px;
+  background: #fff;
+  padding: 0 5px;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.form-item input:focus + label,
+textarea .form-item :focus + label,
+.form-item select:focus + label,
+.form-item input:not(:placeholder-shown) + label,
+.form-item textarea:not(:placeholder-shown) + label,
+.form-item select:not(:placeholder-shown) + label {
+  font-size: 12px;
+  top: -5px;
+  color: #1773b0;
+}
+.form-item input:focus,
+.form-item textarea:focus,
+.form-item select:focus {
+  border-color: #1773b0;
+  box-shadow: 0 0 0 1px #1773b0;
+}
+.checkout-page-collapse {
+  border-radius: 0;
+  background: #f5f5f5;
+}
+.checkout-page-collapse .ant-collapse-content-active {
+  border-bottom: 1px solid var(--theme-border);
+  border-radius: 0 !important;
+}
+.checkout-page-collapse .ant-collapse-header {
+  border-bottom: 1px solid var(--theme-border);
+}
+
+/* Default button styles */
+.order-filter-button {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 9999px; /* Fully rounded corners */
+  background-color: var(--theme-grey);
+  color: var(--theme-text-grey);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+
+/* Styles when the button is active */
+.order-filter-button.active {
+  background-color: var(--theme-bg-red);
+  color: var(--theme-red);
+  border-color: var(--theme-border-red);
+}
+
+/* Hover styles for inactive buttons */
+.order-filter-button:hover {
+  background-color: var(--theme-bg-red);
+  color: var(--theme-red);
+  border-color: var(--theme-border-red);
+}
+.one-line-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.button_black_border {
+  background-color: var(--theme-white);
+  color: var(--theme-black);
+  border: 2px solid var(--theme-black);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+.button_black_border:hover {
+  background-color: var(--theme-black);
+  color: var(--theme-white);
+}
+.button_black {
+  background-color: var(--theme-black);
+  color: var(--theme-white);
+  border: 2px solid var(--theme-black);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+.button_black:hover {
+  background-color: var(--theme-white);
+  color: var(--theme-black);
+}
+
+/* Animation of confirm order buttom */
+
+/* start */
+
+/* Check Circle Animation */
+.check-circle {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  position: relative;
+}
+
+/* Loading animation when the order is being confirmed */
+.check-circle.loading {
+  animation: rotate 1.2s linear infinite;
+}
+
+/* Rotation keyframes */
+@keyframes rotate {
+  0% {
+    border-left-color: var(--theme-green);
+  }
+  100% {
+    border-left-color: var(--theme-green);
+    transform: rotate(360deg);
+  }
+}
+
+/* Check Mark Icon for Success */
+.check-icon::after {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 9px;
+  border-top: 3px solid var(--theme-green);
+  border-right: 3px solid var(--theme-green);
+  left: 5px;
+  top: 50%;
+  transform: scaleX(-1) rotate(135deg);
+  transform-origin: left top;
+  animation: icon 0.5s ease;
+}
+
+/* Keyframes for the check mark icon */
+@keyframes icon {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 1;
+  }
+  20% {
+    height: 5px;
+    width: 8px;
+    opacity: 1;
+  }
+  40% {
+    height: 10px;
+    width: 9px;
+    opacity: 1;
+  }
+  100% {
+    height: 15px;
+    width: 9px;
+    opacity: 1;
+  }
+}
+/* Cross Mark Icon for Failure */
+
+.cross-icon::before,
+.cross-icon::after {
+  position: absolute;
+  content: "";
+  height: 0; /* Start with 0 height for animation */
+  width: 0;
+  background-color: var(--theme-red); /* Use a red color variable */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg); /* Align and rotate */
+  transform-origin: center;
+  animation: cross 0.8s ease forwards;
+}
+
+.cross-icon::after {
+  transform: translate(-50%, -50%) rotate(-45deg); /* Second diagonal */
+}
+
+/* Keyframes for the cross icon */
+@keyframes cross {
+  0% {
+    height: 0;
+    opacity: 1;
+    width: 0;
+  }
+  50% {
+    height: 10px; /* Animate to half length */
+    opacity: 2;
+    width: 1px;
+  }
+  100% {
+    height: 18px; /* Final length */
+    opacity: 1;
+    width: 2px;
+  }
+}
+
+/* end */
+
+@media (max-width: 768px) {
+  .ant-card-body {
+    padding: 7px 10px !important;
+  }
+
+  .ant-card-head {
+    padding: 0px 10px !important;
+  }
+  .custom-slide-categories {
+    width: 110px !important;
+    height: 300px;
+  }
+  .custom-slide {
+    width: 140px !important; /* Fixed width for each slide on smaller screens */
+    height: 250px;
+  }
+  .shop-now-buttom-banner {
+    margin-top: inherit;
+    margin-bottom: auto;
+  }
+  .order-filter-button {
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--theme-border);
+    border-radius: 9999px; /* Fully rounded corners */
+    background-color: var(--theme-grey);
+    color: var(--theme-text-grey);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    cursor: pointer;
+    font-size: 12px;
+  }
 }

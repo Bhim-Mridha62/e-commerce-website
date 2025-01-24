@@ -9,7 +9,7 @@ export default async function handler(
   await connectDB();
 
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "method not allow" });
+    return res.status(405).json({ message: "method is not allowed" });
   }
   const { emailOrPhone, otp } = req.body;
   try {
@@ -22,7 +22,6 @@ export default async function handler(
     }
     const token = CreateToken(user._id);
     user.otpVerify = true;
-    user.SecretToken = token;
     user.save();
     const sanitizedUser = {
       _id: user._id,
@@ -30,7 +29,7 @@ export default async function handler(
       emailOrPhone: user.emailOrPhone,
       cart: user.cart,
       wishlist: user.wishlist,
-      SecretToken: user.SecretToken,
+      SecretToken: token,
     };
     res
       .status(201)

@@ -82,7 +82,10 @@ export const GiveRatingSchema = Yup.object().shape({
   rating: Yup.number()
     .required("Rating is required")
     .min(1, "Rating must be at least 1"),
-  description: Yup.string().required("Description is required"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(5, "Comment must be at least 5 characters long.")
+    .max(500, "Comment cannot exceed 500 characters."),
 });
 export const ContactUsSchema = Yup.object({
   phone: Yup.string()

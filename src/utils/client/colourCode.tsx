@@ -1,54 +1,57 @@
 export function GetOrderStatusColour(status: string) {
   let colour;
+  let bgColour;
   if (status === "pending") {
-    colour = "#fd7e14"; // Blue
+    colour = "#fd7e14"; // Orange
+    bgColour = "#fff4e6"; // Light Orange
   } else if (status === "Delivered" || status === "Done") {
     colour = "#10b981"; // Green
+    bgColour = "#e6fffa"; // Light Green
   } else if (status === "cancelled") {
     colour = "#ef4444"; // Red
+    bgColour = "#ffe6e6"; // Light Red
   } else if (status === "returned") {
     colour = "#6f42c1"; // Purple
+    bgColour = "#f3e8ff"; // Light Purple
   } else {
     colour = "#6b7280"; // Gray
+    bgColour = "#f3f4f6"; // Light Gray
   }
-  return colour;
+  return { colour, bgColour };
 }
-export const getRatingSpan = (rating: number) => {
+export const getRatingColourText = (rating: number) => {
   let text = "";
   let colorCode = "";
 
   switch (rating) {
     case 1:
-      text = "Very Bad";
-      colorCode = "#DC2626"; // Tailwind color code for text-red-600
+      text = "Poor";
+      colorCode = "#f52833"; // Bright red
       break;
     case 2:
-      text = "Bad";
-      colorCode = "#EA580C"; // Tailwind color code for text-orange-600
+      text = "Average";
+      colorCode = "#ec803d"; // Vibrant orange
       break;
     case 3:
       text = "Good";
-      colorCode = "#CA8A04"; // Tailwind color code for text-yellow-600
+      colorCode = "#f4b743"; // Warm yellow
       break;
     case 4:
       text = "Very Good";
-      colorCode = "#22C55E"; // Tailwind color code for text-green-500
+      colorCode = "#0cd171"; // Bright green
       break;
     case 5:
       text = "Excellent";
-      colorCode = "#15803D"; // Tailwind color code for text-green-700
+      colorCode = "#06a759"; // Vibrant teal
       break;
     default:
       text = "Good";
-      colorCode = "#6B7280"; // Tailwind color code for text-gray-500
+      colorCode = "#f4b743"; // Neutral gray
   }
 
-  return (
-    <span style={{ color: colorCode }} className="font-semibold ml-2">
-      {text}
-    </span>
-  );
+  return { text, colorCode };
 };
+
 export const getLetterColors = (letter: string) => {
   switch (letter.toUpperCase()) {
     case "A":

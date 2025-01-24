@@ -1,96 +1,119 @@
-import React, { useState } from "react";
-import { Rate } from "antd";
-import { BsCurrencyRupee } from "react-icons/bs";
+import React, { memo, useState } from "react";
 import { FcLike } from "react-icons/fc";
-import stylehome from "./ProductCard.module.css";
 import { calculateDiscountedPrice } from "@/utils/client/discountUtils";
 import { useRouter } from "next/router";
-import isMobile from "@/utils/client/isMobile";
 import { FaRegHeart } from "react-icons/fa6";
 import { useAuthData } from "@/service/Auth";
 import Image from "next/image";
 import { Product } from "@/types/types";
-const ProductCard = ({ product, user }: { product: Product; user?: any }) => {
-  const [islike, setLslike] = useState(false);
-  const { Postwishlist } = useAuthData();
+import { Rating } from "@fluentui/react-rating";
+const ProductCard = memo(
+  ({
+    product,
+    user,
+    isBestSelling = false,
+    isMobile = false,
+  }: {
+    product: Product;
+    user?: any;
+    isBestSelling?: boolean;
+    isMobile?: boolean;
+  }) => {
+    const [islike, setLslike] = useState(false);
+    const { Postwishlist } = useAuthData();
 
-  const handleAddwishlist = async (
-    event: React.MouseEvent<HTMLSpanElement>,
-    id: string
-  ) => {
-    event.stopPropagation();
-    setLslike(!islike);
+    const handleAddwishlist = async (
+      event: React.MouseEvent<HTMLSpanElement>,
+      id: string
+    ) => {
+      event.stopPropagation();
+      setLslike(!islike);
 
-    try {
-      await Postwishlist({ productId: id });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const router = useRouter();
-  const Mobile = isMobile();
-  const Productdetails = (id: string) => {
-    router.push(`/product/${id}`);
-  };
+      try {
+        await Postwishlist({ productId: id });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const router = useRouter();
+    const Productdetails = (id: string) => {
+      router.push(`/product/${id}`);
+    };
 
-  return (
-    <div
-      onClick={() => Productdetails(product._id)}
-      className=" md:w-[200px] md:min-w-[200px] w-[150px] min-w-[150px] h-auto border border-gray-300 relative"
-    >
-      {user && (
-        <span
-          className="absolute right-1 top-1"
-          onClick={(event) => handleAddwishlist(event, product._id)}
-        >
-          {islike ? (
-            <FcLike className="text-black text-2xl" />
-          ) : (
-            <FaRegHeart className="text-black text-2xl" />
+    return (
+      <div
+        onClick={() => Productdetails(product?._id)}
+        className="w-[140px] md:w-[200px] h-[250px] md:h-[300px] relative"
+      >
+        {isBestSelling ? (
+          <span className="Best-seller-label">Best seller</span>
+        ) : product?.discountPercentage > 30 ? (
+          <span className="bg-theme-red text-theme-white rounded-tl-lg text-xs absolute left-0 top-0 py-2 px-1 rounded-br-lg">
+            -{product?.discountPercentage}%
+          </span>
+        ) : (
+          ""
+        )}
+        {user && (
+          <span
+            className="absolute right-1 top-1 bg-theme-white rounded-full p-2"
+            onClick={(event) => handleAddwishlist(event, product?._id)}
+          >
+            {islike ? (
+              <FcLike className="text-black text-xl" />
+            ) : (
+              <FaRegHeart className="text-black text-xl" />
+            )}
+          </span>
+        )}
+        <div className="w-full bg-theme-grey  rounded-lg">
+          <Image
+            className="w-full h-auto mb-2 aspect-[5/5] object-contain mix-blend-multiply"
+            src={product?.thumbnail}
+            layout="responsive"
+            height={100}
+            width={100}
+            alt="Image here"
+          />
+        </div>
+        <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">
+          {product?.title}
+        </p>
+        <p className="flex items-center">
+          <Rating
+            size={isMobile ? "medium" : "large"}
+            step={0.5}
+            className="text-theme-golden pointer-events-none cursor-default"
+            value={Number(product?.rating)}
+          />
+          <span className="text-theme-border md:px-1 rounded text-xs md:text-sm ml-1">
+            ({product?.rating}★)
+          </span>
+        </p>
+        <p className="flex gap-1 text-xs items-center">
+          <span className="text-theme-green font-semibold">
+            ₹{product?.price}
+          </span>
+          {product?.discountPercentage > 0 && (
+            <>
+              <del className="font-semibold text-theme-red text-xs md:text-sm">
+                ₹
+                {calculateDiscountedPrice(
+                  product?.price,
+                  product?.discountPercentage
+                )}
+              </del>
+              {(product?.discountPercentage <= 30 || isBestSelling) && (
+                <span className="bg-theme-green text-theme-white rounded px-1">
+                  -{product?.discountPercentage}%
+                </span>
+              )}
+            </>
           )}
-        </span>
-      )}
-      <Image
-        className={stylehome.ProductshowImg}
-        src={product.thumbnail}
-        layout="responsive"
-        height={100}
-        width={100}
-        alt="Image here"
-      />
-      <p className="w-full font-semibold md:font-bold overflow-hidden text-black truncate">
-        {product.title}
-      </p>
-      <p className="text-black text-[15px] md:text-[20px]">
-        <Rate
-          style={{ fontSize: Mobile ? 15 : 20 }}
-          allowHalf
-          disabled
-          value={product.rating}
-        />
-        <span>{product.rating}</span>
-      </p>
-      <p className="inline text-sm">
-        <span className="text-black">
-          <BsCurrencyRupee className="inline text-black" />
-          {product.price}
-        </span>
-        <del className="text-black ml-1 font-bold">
-          {/* <BsCurrencyRupee className='inline text-black'/> */}
-          {calculateDiscountedPrice(product.price, product.discountPercentage)}
-        </del>
-        <span className="text-[#26a541] font-bold">
-          {Math.round(product.discountPercentage)}%OFF
-        </span>
-      </p>
-      {/* <div className={stylehome.buyandadddiv}>
-        <button style={{ background: 'rgb(235 154 101)' }} onClick={() => buynowbutton({ product, count: 1 })}>Buy now</button>
-        <button onClick={() => HandelAddtoCart(product.id)} className={stylehome.Productaddbutton}>
-          Add to <RiShoppingCart2Fill />
-        </button>
-      </div> */}
-    </div>
-  );
-};
+        </p>
+      </div>
+    );
+  }
+);
 
 export default ProductCard;

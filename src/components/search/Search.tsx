@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import ProductCard from "../common/productcard/productcard";
 import NoResults from "./noResults";
 
-const Search = ({ product }: { product: any }) => {
+const Search = memo(({ product }: { product: any }) => {
   console.log(product, "product");
 
   return (
@@ -16,6 +16,6 @@ const Search = ({ product }: { product: any }) => {
       )}
     </div>
   );
-};
+});
 
 export default Search;

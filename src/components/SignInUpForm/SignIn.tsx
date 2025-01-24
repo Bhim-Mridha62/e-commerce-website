@@ -1,5 +1,5 @@
 import { Button, Input, Modal, Radio, message } from "antd";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useFormik } from "formik";
 import { SignInSchema } from "@/Schemas/client/FormSchema";
 import { useAuthData } from "@/service/Auth";
@@ -9,7 +9,7 @@ import { TfiEmail } from "react-icons/tfi";
 import { FiLock, FiPhone } from "react-icons/fi";
 import { useUser } from "@/context/authContext";
 import { SignInFormValues } from "@/types/types";
-const SignInForm = () => {
+const SignInForm = memo(() => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [step, setStep] = useState<number>(1);
   const [email, setEmail] = useState<string>("");
@@ -226,6 +226,6 @@ const SignInForm = () => {
       <AutoSignInUp />
     </>
   );
-};
+});
 
 export default SignInForm;

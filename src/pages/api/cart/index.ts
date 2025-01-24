@@ -39,7 +39,7 @@ const getCart = async (req: any, res: NextApiResponse) => {
     const AllProductId = user.cart.map((item: any) => item?.productID);
     const cartDetails = await Product.find({
       _id: { $in: AllProductId },
-    }).select("_id title price discountPercentage rating thumbnail");
+    }).select("_id title price discountPercentage rating thumbnail sizes");
     const mergedCart = user.cart
       .map((cartItem: any) => {
         const productDetails = cartDetails.find(

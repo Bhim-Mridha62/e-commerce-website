@@ -78,7 +78,10 @@ const handleUserData = async (
 
     if (existingUser) {
       if (password === name) {
-        res.status(201).json({ data: existingUser });
+        const jwtToken = CreateToken(existingUser?._id);
+        res
+          .status(201)
+          .json({ data: { ...existingUser, SecretToken: jwtToken } });
       } else {
         return res.status(409).json({ message: "User already exists" });
       }
@@ -92,7 +95,6 @@ const handleUserData = async (
       });
 
       const jwtToken = CreateToken(newUser._id);
-      newUser.SecretToken = jwtToken;
       newUser.profile_pic_path = picture;
 
       await newUser.save();
@@ -103,7 +105,7 @@ const handleUserData = async (
         emailOrPhone: newUser.emailOrPhone,
         cart: newUser.cart,
         wishlist: newUser.wishlist,
-        SecretToken: newUser.SecretToken,
+        SecretToken: jwtToken,
       };
 
       return res.status(200).json({ data: sanitizedUser });

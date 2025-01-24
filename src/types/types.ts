@@ -13,6 +13,7 @@ export interface Product {
   thumbnail: string;
   quantity: number;
   Size: string;
+  sizes: any;
 }
 
 // Define ProductData type as an array of Product objects
@@ -31,6 +32,7 @@ export interface UserContextType {
   // cartCountRef: RefObject<HTMLDivElement | undefined>;
   cartCountRef: React.MutableRefObject<(() => void) | null>;
   UpdateUser: () => void;
+  HandelLogout: () => void;
 }
 export interface AutoCompleteOptions {
   label: string;
@@ -48,18 +50,6 @@ export interface IClassName {
 }
 export interface Ichildren {
   children: React.ReactNode;
-}
-export interface IReview {
-  comment?: string;
-  dislike?: boolean;
-  images?: string[];
-  like?: number;
-  postdAt?: string;
-  rating?: number;
-  userId?: string;
-  userImage?: string;
-  username?: string;
-  _id?: string;
 }
 export interface IProduct {
   gender?: string;
@@ -81,11 +71,11 @@ export interface IProduct {
 export interface IOrder {
   _id?: string;
   productID?: string;
-  quantity?: number;
+  quantity: number;
   title?: string;
   size?: string;
   image?: string;
-  price?: number;
+  price: number;
   address?: IAddress;
   StatusOrder?: {
     Order_Received: {
@@ -164,4 +154,50 @@ export interface Icategory {
 export interface ICarousel {
   imageUrl: string;
   _id: string;
+  title: string;
+  description: string;
+}
+export interface IHomePageSectionHeading {
+  className: string;
+  bottomHeading: string;
+  topHeading: string;
+}
+export interface Iprofile {
+  name?: string;
+  emailOrPhone?: string;
+  profile_pic?: string;
+  address?: IAddress;
+  cart_length?: number;
+  wishlist_length?: number;
+  order_length?: number;
+  carts?: IProfileCartWishlist[];
+  wishlists?: IProfileCartWishlist[];
+  orders?: IOrder[];
+  _id?: string;
+}
+export interface IProductReview {
+  _id: string;
+  user_id: string;
+  product_id: string;
+  rating: number;
+  like: number;
+  comment: string;
+  images: string[];
+  createdAt: string;
+  name?: string; // Optional since it might not always be present
+  profile_pic?: string; // Optional since the user might not have an image
+  dislike?: boolean; // Optional for handling like/dislike actions
+}
+export interface IReviewStars {
+  averageRating: number;
+  totalRatings: number;
+  "1_star": number;
+  "2_star": number;
+  "3_star": number;
+  "4_star": number;
+  "5_star": number;
+}
+export interface IOrderConfirmButtonLoading {
+  isLoading: boolean;
+  status: "default" | "success" | "error";
 }

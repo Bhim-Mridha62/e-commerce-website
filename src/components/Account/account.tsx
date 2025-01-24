@@ -6,10 +6,10 @@ import {
   LogoutOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Tabs, Badge, Input, notification } from "antd";
+import { Button, Card, Tabs, Badge, Input, notification, Modal } from "antd";
 import ImageContent from "./imageUpload";
 import { useAuthData } from "@/service/Auth";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { GetOrderStatusColour } from "@/utils/client/colourCode";
 import { formatDate } from "@/utils/client/formatDate";
@@ -17,41 +17,68 @@ import DeliverDetails from "../common/DeliverDetails";
 import {
   IAddress,
   IOrder,
+  Iprofile,
   IProfileCartWishlist,
   NamePicId,
 } from "@/types/types";
 import { useUser } from "@/context/authContext";
-import AddressForm from "../common/addressFrom";
-import { RiShoppingCart2Fill } from "react-icons/ri";
 import { letterOnlyRegex } from "@/utils/client/regEx";
-export default function Account() {
+import { useFormik } from "formik";
+import { DeliveryAddressSchema } from "@/Schemas/client/FormSchema";
+import AddressFrom from "../checkout/addressFrom";
+import Image from "next/image";
+import { scrollToElement } from "@/utils/client/scrollDown";
+const Account = React.memo(() => {
   const { getProfile, putProfile } = useAuthData();
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [address, setAddress] = useState<IAddress>({});
+  const [activeTab, setActiveTab] = useState("orders");
   const [name_pic_id, setName_pic_id] = useState({
     name: "",
     profile_pic: "",
     _id: "",
   });
-  const [profile, setProfile] = useState<any>({});
+  const [profile, setProfile] = useState<Iprofile>({});
   const { user } = useUser();
   useEffect(() => {
     if (user) {
       getProfileData();
     }
   }, [user]);
+  useEffect(() => {
+    if (address?.name) {
+      formik.setValues(address);
+    }
+  }, [address]);
+  const formik = useFormik<IAddress>({
+    initialValues: {
+      name: "",
+      phone: "",
+      alternatePhone: "",
+      pincode: "",
+      state: "Odisha",
+      district: "",
+      village: "",
+      buildingAddress: "",
+    },
+    validationSchema: DeliveryAddressSchema,
+    onSubmit: (values) => {
+      //@ts-ignore
+      updateProfile(values, false, {});
+    },
+  });
   const getProfileData = async () => {
     try {
       const res = await getProfile();
       if (res?.status === 200) {
-        console.log(res);
-        setAddress(res?.data?.user?.address);
+        console.log(res, "profile");
+        setAddress(res?.data?.data?.address);
         setName_pic_id({
-          name: res.data?.user.name,
-          profile_pic: res.data?.user.profile_pic,
-          _id: res.data?.user?._id,
+          name: res.data?.data?.name,
+          profile_pic: res.data?.data.profile_pic,
+          _id: res.data?.data?._id,
         });
-        setProfile(res?.data);
+        setProfile(res?.data?.data);
       }
     } catch (error) {
       console.log(error);
@@ -95,7 +122,10 @@ export default function Account() {
   const handleFormClose = () => {
     setIsFormOpen(!isFormOpen);
   };
-
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+    scrollToElement("tabs-container");
+  };
   // name update
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -107,7 +137,7 @@ export default function Account() {
     }
   };
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="mx-auto px-2 md:px-20 py-8">
       <div className="grid gap-6 lg:grid-cols-4">
         <Card className="lg:col-span-1 text-center">
           <div className="">
@@ -127,20 +157,36 @@ export default function Account() {
             />
           </div>
           <div className="space-y-2 mt-4">
-            <Button block icon={<ShoppingOutlined />} className="justify-start">
+            <Button
+              onClick={() => handleTabChange("orders")}
+              block
+              icon={<ShoppingOutlined />}
+              className="justify-start"
+            >
               Orders
             </Button>
-            <Button block icon={<HeartOutlined />} className="justify-start">
+            <Button
+              onClick={() => handleTabChange("wishlist")}
+              block
+              icon={<HeartOutlined />}
+              className="justify-start"
+            >
               Wishlist
             </Button>
             <Button
+              onClick={() => handleTabChange("cart")}
               block
               icon={<CreditCardOutlined />}
               className="justify-start"
             >
               Cart
             </Button>
-            <Button block icon={<HomeOutlined />} className="justify-start">
+            <Button
+              onClick={() => handleTabChange("addresses")}
+              block
+              icon={<HomeOutlined />}
+              className="justify-start"
+            >
               Addresses
             </Button>
             <Button block icon={<SettingOutlined />} className="justify-start">
@@ -159,7 +205,7 @@ export default function Account() {
         </Card>
 
         <div className="lg:col-span-3 space-y-6">
-          <Card title="Account Settings">
+          <Card title="Account Settings" type="inner">
             <div className="space-y-4">
               <div>
                 <label
@@ -189,7 +235,7 @@ export default function Account() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder={profile?.user?.emailOrPhone}
+                  placeholder={profile?.emailOrPhone}
                   disabled
                 />
               </div>
@@ -203,20 +249,23 @@ export default function Account() {
                 <Input id="password" type="password" placeholder="••••••••" />
               </div>
             </div>
-            <Button
+            <button
               onClick={() => updateProfile({}, true, name_pic_id)}
-              block
-              className="mt-4"
+              className="mt-4 button_black w-full"
             >
               Save Changes
-            </Button>
+            </button>
           </Card>
-          <Tabs defaultActiveKey="orders">
+          <Tabs
+            activeKey={activeTab}
+            id="tabs-container"
+            onChange={(key) => setActiveTab(key)}
+          >
             <Tabs.TabPane
               tab={
                 <Badge
                   color="#334155"
-                  count={profile?.orderLength || 0}
+                  count={profile?.order_length || 0}
                   offset={[0, -6]}
                 >
                   <p>Orders</p>
@@ -224,16 +273,21 @@ export default function Account() {
               }
               key="orders"
             >
-              <Card title="Recent Orders">
+              <Card title="Orders" type="inner">
                 <div className="space-y-4">
-                  {profile?.order?.map((order: IOrder) => (
+                  {profile?.orders?.map((order: IOrder) => (
                     <div
                       key={order?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <ShoppingOutlined className="text-gray-500 text-2xl" />
+                          <Image
+                            src={order?.image || ""}
+                            alt="Order"
+                            width={1000}
+                            height={1000}
+                          />
                         </div>
                         <div>
                           <p className="font-medium">{order?.title}</p>
@@ -243,15 +297,15 @@ export default function Account() {
                         </div>
                       </div>
                       <Badge
-                        color={GetOrderStatusColour(order?.OrderStatus)}
+                        color={GetOrderStatusColour(order?.OrderStatus).colour}
                         text={order?.OrderStatus}
                       />
                     </div>
                   ))}
                 </div>
-                <Button block className="mt-4">
+                <button className="button_black mt-4 w-full">
                   View All Orders
-                </Button>
+                </button>
               </Card>
             </Tabs.TabPane>
 
@@ -259,7 +313,7 @@ export default function Account() {
               tab={
                 <Badge
                   color="#334155"
-                  count={profile?.user?.wishlistLength || 0}
+                  count={profile?.wishlist_length || 0}
                   offset={[0, -6]}
                 >
                   <p>Wishlist</p>
@@ -267,16 +321,21 @@ export default function Account() {
               }
               key="wishlist"
             >
-              <Card title="Wishlist">
+              <Card title="Wishlists" type="inner">
                 <div className="space-y-4">
-                  {profile?.user?.wishlist.map((item: IProfileCartWishlist) => (
+                  {profile?.wishlists?.map((item: IProfileCartWishlist) => (
                     <div
                       key={item?._id}
                       className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <HeartOutlined className="text-gray-500 text-2xl" />
+                          <Image
+                            src={item?.thumbnail}
+                            alt="Wishlist"
+                            width={1000}
+                            height={1000}
+                          />
                         </div>
                         <div>
                           <p className="font-medium">{item?.title}</p>
@@ -286,13 +345,15 @@ export default function Account() {
                           </p>
                         </div>
                       </div>
-                      <Button size="small">Add to Cart</Button>
+                      <button className="py-2 px-3 button_black_border text-sm">
+                        Add to Cart
+                      </button>
                     </div>
                   ))}
                 </div>
-                <Button block className="mt-4">
-                  View All Wishlist Items
-                </Button>
+                <button className="button_black mt-4 w-full">
+                  View All Wishlists
+                </button>
               </Card>
             </Tabs.TabPane>
 
@@ -300,24 +361,29 @@ export default function Account() {
               tab={
                 <Badge
                   color="#334155"
-                  count={profile?.user?.cartLength || 0}
+                  count={profile?.cart_length || 0}
                   offset={[0, -6]}
                 >
                   <p>Cart</p>
                 </Badge>
               }
-              key="Cart"
+              key="cart"
             >
-              <Card title="Cart">
+              <Card title="Carts" type="inner">
                 <div className="space-y-4">
-                  {profile?.user?.cart.map((item: IProfileCartWishlist) => (
+                  {profile?.carts?.map((item: IProfileCartWishlist) => (
                     <div
                       key={item?._id}
-                      className="flex items-center justify-start border-b pb-4 last:border-0 last:pb-0"
+                      className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center">
-                          <RiShoppingCart2Fill className="text-gray-500 text-2xl" />
+                          <Image
+                            src={item?.thumbnail}
+                            alt="Cart"
+                            width={1000}
+                            height={1000}
+                          />
                         </div>
                         <div>
                           <p className="font-medium">Product {item?.title}</p>
@@ -327,13 +393,15 @@ export default function Account() {
                           </p>
                         </div>
                       </div>
-                      <Button size="small">Add to Cart</Button>
+                      <button className="py-2 px-3 button_black_border text-sm">
+                        Add to Cart
+                      </button>
                     </div>
                   ))}
                 </div>
-                <Button block className="mt-4">
-                  View All Cart Items
-                </Button>
+                <button className="button_black mt-4 w-full">
+                  View All Carts
+                </button>
               </Card>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Addresses" key="addresses">
@@ -341,9 +409,12 @@ export default function Account() {
                 <div className="space-y-4">
                   <div className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0">
                     <DeliverDetails addressDetails={address} isAccount={true} />
-                    <Button onClick={handleFormClose} size="small">
-                      {address.name === "" ? "Add Address" : "Update Address"}
-                    </Button>
+                    <button
+                      onClick={handleFormClose}
+                      className="py-2 px-3 button_black_border text-sm"
+                    >
+                      {address?.name === "" ? "Add Address" : "Update Address"}
+                    </button>
                   </div>
                 </div>
               </Card>
@@ -351,12 +422,20 @@ export default function Account() {
           </Tabs>
         </div>
       </div>
-      <AddressForm
-        isFormOpen={isFormOpen}
-        handleFormClose={handleFormClose}
-        address={address}
-        updateProfile={updateProfile}
-      />
+      <Modal
+        maskClosable={false}
+        title="Update Delivery Address"
+        open={isFormOpen}
+        onCancel={handleFormClose}
+        onOk={(e: any) => {
+          formik.handleSubmit(e); // Pass the event to Formik's handleSubmit
+        }}
+        okButtonProps={{ style: { background: "black" } }}
+        okText="Update"
+      >
+        <AddressFrom formik={formik} isAccountPage={true} />
+      </Modal>
     </div>
   );
-}
+});
+export default Account;

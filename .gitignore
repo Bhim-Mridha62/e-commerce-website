@@ -36,3 +36,4 @@ tasks.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+tasks.json
