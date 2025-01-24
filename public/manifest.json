@@ -5,6 +5,7 @@
   "short_name": "Fashion Shop",
   "id": "7655883526",
   "start_url": "/",
+  "display": "standalone",
   "description": "Discover the latest fashion trends and shop at SD FASHION SHOP.",
   "icons": [
     {
