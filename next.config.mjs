@@ -28,6 +28,9 @@ const nextConfig = {
   publicRuntimeConfig: {
     env: process.env,
   },
+  pwa: {
+    disable: true,
+  },
 };
 
 export default nextConfig;
