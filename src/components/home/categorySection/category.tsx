@@ -39,10 +39,10 @@ const Categories = memo(() => {
             bottomHeading="Browse By Category"
           />
           <div className="swiper-navigation-buttons w-24 relative flex">
-            <button className="swiper-button-prev bg-gray rounded-full !size-8 md:!size-10 ml-[-10px] bg-theme-border">
+            <button className="swiper-button-prev-home-category swiper-button-prev bg-gray rounded-full !size-8 md:!size-10 ml-[-10px] bg-theme-border">
               <GoChevronLeft className="text-black !size-6" />
             </button>
-            <button className="swiper-button-next bg-gray rounded-full !size-8 md:!size-10 bg-theme-border ">
+            <button className="swiper-button-next-home-category swiper-button-next  bg-gray rounded-full !size-8 md:!size-10 bg-theme-border ">
               <GoChevronRight className="text-black !size-6" />
             </button>
           </div>
@@ -50,8 +50,8 @@ const Categories = memo(() => {
         <Swiper
           modules={[Navigation]}
           navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            nextEl: ".swiper-button-next-home-category",
+            prevEl: ".swiper-button-prev-home-category",
           }}
           className="home-page-swiper"
           spaceBetween={16} // Space between slides
