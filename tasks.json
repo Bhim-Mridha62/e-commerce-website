@@ -1,0 +1,132 @@
+// Used for: To store the tasks data
+{
+  "category": [
+    { "name": "mobile", "search_key": ["mobile", "phone", "smartPhone"] },
+    {
+      "name": "airboat",
+      "search_key": ["blooth", "airboat", "neackband", "airphone"]
+    },
+    {
+      "name": "T-shirt",
+      "search_key": ["T-shirt", "shirt", "oversized t shirt"]
+    },
+    {
+      "name": "shirt",
+      "search_key": ["shirt", "formal shirt", "check shirt"]
+    },
+    {
+      "name": "Watch",
+      "search_key": ["watch", "smartwatch"]
+    },
+    {
+      "name": "jines pant"
+    },
+    {
+      "name": "Full Pant",
+      "search_key": ["jines", "paint", "jines-paint"]
+    },
+    {
+      "name": "Half Pant ",
+      "search_key": ["half pant", "short", "half short"]
+    },
+    { "name": "jacket", "search_key": ["jacket", "coat", "outerwear"] },
+    {
+      "name": "hoodies",
+      "search_key": ["hoodies", "sweatshirt", "pullover"]
+    },
+    {
+      "name": "shoes",
+      "search_key": ["shoes", "men shoes", "women shose"]
+    },
+    {
+      "name": "sharee",
+      "search_key": ["sharee", "saree", "traditional wear"]
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": 2,
+      "task": "add smart coin in product details page get design from messo app",
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "task": "create order date add 5 hours",
+      "status": "pending"
+    }
+  ],
+  "products_common_field": {
+    "id": 1,
+    "name": "",
+    "price": 0,
+    "quantity": 0,
+    "thumbnail": "",
+    "description": "",
+    "category": "",
+    "images": [],
+    "gender": ""
+  },
+  "mobile_filed": {
+    "ram": "",
+    "rom": "",
+    "battery": "",
+    "processor": "",
+    "display": "",
+    "camera": "",
+    "Dimensions": {
+      "Width": "", //in mm
+      "Height": "", //in mm
+      "Depth": "", //in mm
+      "Weight": "" //in gm
+    }
+  },
+  "shoes_filed": {
+    "size": "",
+    "color": "",
+    "material": "",
+    "sole": "",
+    "type": ""
+  },
+  "chat_gpt": [
+    "Kurti",
+    "Chunni",
+    "Naira",
+    "Sharara",
+    "Jeans",
+    "Tops",
+    "Lehenga",
+    "Jeggings",
+    "Long Dress",
+    "Hot Pants",
+    "Churidar Pants",
+    "Jacket",
+    "Mobile",
+    "Airboat",
+    "T-Shirt",
+    "Shirt",
+    "Watch",
+    "Jeans Pant",
+    "Half Pant",
+    "Hoodies",
+    "Shoes",
+    "Sharee"
+  ],
+  "categpty": {
+    "men fashion": [
+      {
+        "shirt": {
+          "style": ["formal", "casual", "party wear", "check"] // check shirt
+        }
+      },
+      "t-shirt",
+      "kurta",
+      "jacket",
+      "hoodies",
+      "jeans pant",
+      "half pant",
+      ""
+    ],
+    "shose": ["sports", "casual", "formal", "sandal", "slipper", "flip-flop"]
+  }
+}
