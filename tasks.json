@@ -44,89 +44,73 @@
     }
   ],
 
-  "tasks": [
+  "tasks": [],
+  "categories": [
     {
-      "id": 2,
-      "task": "add smart coin in product details page get design from messo app",
-      "status": "pending"
+      "category": "Women's Clothing",
+      "subcategories": [
+        "Kurti",
+        "Chunni",
+        "Naira",
+        "Sharara",
+        "Tops",
+        "Lehenga",
+        "Jeggings",
+        "Long Dress",
+        "Hot Pants",
+        "Churidar Pants",
+        "Sharee",
+        "Jeans",
+        "T-Shirt",
+        "Shirt",
+        "Jacket",
+        "Hoodies"
+      ]
     },
     {
-      "id": 5,
-      "task": "create order date add 5 hours",
-      "status": "pending"
+      "category": "Men's Clothing",
+      "subcategories": [
+        "Jeans",
+        "T-Shirt",
+        "Shirt",
+        "Jacket",
+        "Half Pant",
+        "Hoodies"
+      ]
+    },
+    {
+      "category": "Footwear",
+      "subcategories": ["Shoes"]
+    },
+    {
+      "category": "Watch",
+      "subcategories": [
+        "Smartwatch",
+        "Analog Watch",
+        "Digital Watch",
+        "Fitness Tracker"
+      ]
+    },
+    {
+      "category": "Mobile",
+      "subcategories": [
+        "Smartphones",
+        "Feature Phones",
+        "Keypad Phones",
+        "Tablets",
+        "Mobile Accessories"
+      ]
+    },
+    {
+      "category": "Audio Devices",
+      "subcategories": [
+        "Earbuds",
+        "Earbuds",
+        "Earphones",
+        "Noise Cancelling Earbuds",
+        "Headphones",
+        "Neckband"
+      ]
     }
-  ],
-  "products_common_field": {
-    "id": 1,
-    "name": "",
-    "price": 0,
-    "quantity": 0,
-    "thumbnail": "",
-    "description": "",
-    "category": "",
-    "images": [],
-    "gender": ""
-  },
-  "mobile_filed": {
-    "ram": "",
-    "rom": "",
-    "battery": "",
-    "processor": "",
-    "display": "",
-    "camera": "",
-    "Dimensions": {
-      "Width": "", //in mm
-      "Height": "", //in mm
-      "Depth": "", //in mm
-      "Weight": "" //in gm
-    }
-  },
-  "shoes_filed": {
-    "size": "",
-    "color": "",
-    "material": "",
-    "sole": "",
-    "type": ""
-  },
-  "chat_gpt": [
-    "Kurti",
-    "Chunni",
-    "Naira",
-    "Sharara",
-    "Jeans",
-    "Tops",
-    "Lehenga",
-    "Jeggings",
-    "Long Dress",
-    "Hot Pants",
-    "Churidar Pants",
-    "Jacket",
-    "Mobile",
-    "Airboat",
-    "T-Shirt",
-    "Shirt",
-    "Watch",
-    "Jeans Pant",
-    "Half Pant",
-    "Hoodies",
-    "Shoes",
-    "Sharee"
-  ],
-  "categpty": {
-    "men fashion": [
-      {
-        "shirt": {
-          "style": ["formal", "casual", "party wear", "check"] // check shirt
-        }
-      },
-      "t-shirt",
-      "kurta",
-      "jacket",
-      "hoodies",
-      "jeans pant",
-      "half pant",
-      ""
-    ],
-    "shose": ["sports", "casual", "formal", "sandal", "slipper", "flip-flop"]
-  }
+  ]
 }

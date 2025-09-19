@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const commonFields = {
   title: { type: String, default: "" },
-  stock: { type: Number, default: 0 },
   soldCount: { type: Number, default: 0 },
   // category: {
   //   type: String,
@@ -39,9 +38,43 @@ const commonFields = {
 const mobileFields = {
   Brand: { type: String, default: "" },
   Model: { type: String, default: "" },
-  Storage: { type: String, default: "" },
-  RAM: { type: String, default: "" },
-  ROM: { type: String, default: "" },
+  variants: [
+    {
+      color: {
+        type: String,
+        required: [true, "Color is required"],
+        trim: true,
+        enum: ["Black", "Blue", "Red", "White", "Green"], // Add colors as needed
+      },
+      images: { type: [String], default: [] },
+      thumbnail: { type: String, default: "" },
+      sub_variants: [
+        {
+          storage: {
+            type: String,
+            enum: ["64GB", "128GB", "256GB", "512GB"],
+            required: [true, "Storage size is required"],
+          },
+          ram: {
+            type: String,
+            enum: ["4GB", "6GB", "8GB", "12GB", "16GB"],
+            required: [true, "RAM size is required"],
+          },
+          price: {
+            type: Number,
+            required: [true, "Price is required"],
+            min: [1, "Price must be at least 1"],
+          },
+          quantity: {
+            type: Number,
+            required: [true, "Quantity is required"],
+            default: 0,
+            min: [0, "Quantity cannot be less than 0"],
+          },
+        },
+      ],
+    },
+  ],
   Os_And_Processor_Features: {
     Processor_Type: { type: String, default: "" },
     Operating_System: { type: String, default: "" },
@@ -133,7 +166,7 @@ const shirtFields = {
       "Slim",
       "Spread",
       "Tie up",
-      "Wingtip"
+      "Wingtip",
     ],
     required: true,
   },
@@ -164,7 +197,7 @@ const shirtFields = {
       "Work",
       "Wedding",
       "Travel",
-      "Other"
+      "Other",
     ],
     required: true,
   },
@@ -199,7 +232,7 @@ const shirtFields = {
       "Satin",
       "Silk Blend",
       "Viscose Rayon",
-      "Wool Blend"
+      "Wool Blend",
     ],
     required: true,
   },
@@ -231,7 +264,7 @@ const shirtFields = {
 const variantFields = {
   variants: [
     {
-      color_name: { type: String, default: "" },
+      color: { type: String, default: "" },
       required: [true, "Color name is required"],
       trim: true,
       images: { type: [String], default: [] },
