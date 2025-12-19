@@ -4,6 +4,7 @@ import LimitedEdition from "@/components/home/limitedEdition";
 import NewArrival from "@/components/home/newArrival";
 import ToDayFlashSales from "@/components/home/toDayFlashSales";
 import dynamic from "next/dynamic";
+import GoogleAd from "../components/common/GoogleAd";
 // import { Inter } from "next/font/google";
 const Categories = dynamic(
   () => import("@/components/home/categorySection/category"),
@@ -27,6 +28,7 @@ export default function Home() {
         {/* <Homecarousel /> */}
         <ToDayFlashSales topHeading="Today's" bottomHeading="Flash Sales" />
         <Categories />
+        <GoogleAd slot="8498475458" />
         {/* <Homecard /> */}
         <LimitedEdition />
         <ToDayFlashSales
