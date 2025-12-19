@@ -2,9 +2,10 @@
 
 import { useEffect } from "react";
 
-export default function GoogleAd({ slot }) {
+export default function GoogleAd({ slot }: any) {
     useEffect(() => {
         try {
+            //@ts-ignore
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch (err) {
             console.error("AdSense error:", err);
