@@ -11,6 +11,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import { TbArrowNarrowDown } from "react-icons/tb";
 import { IoCartOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const WishlistContent = memo(() => {
   const [wishlist, setWishlist] = useState<IProduct[]>([]);
@@ -83,22 +84,25 @@ const WishlistContent = memo(() => {
           >
             <button
               className="absolute top-3 right-3 bg-theme-grey h-10 w-10 rounded-full flex justify-center items-center"
-              onClick={() => handleRemove(item?._id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove(item?._id);
+              }}
             >
               <IoIosClose className="inline-flex text-4xl m-auto" />
             </button>
-            <div
+            <Link
               className=" h-48 cursor-pointer"
-              onClick={() => Productdetails(item?._id)}
+              href={`/product/${item?._id}`}
             >
               <Image
                 src={item?.thumbnail || ""}
                 alt={item?.title || ""}
                 width={1000}
                 height={1000}
-                className="transition-transform w-full h-full object-contain duration-300 hover:scale-105"
+                className="transition-transform w-full  h-48 object-contain duration-300 hover:scale-105"
               />
-            </div>
+            </Link>
             <div className="py-2 flex flex-col justify-between gap-2">
               <h2 className="text-xl font-semibold text-gray-800 line-clamp-1">
                 {item?.title}
@@ -149,7 +153,7 @@ const WishlistContent = memo(() => {
                   onClick={() => Productdetails(item?._id)}
                 >
                   <MdKeyboardDoubleArrowRight className="inline-flex text-2xl mb-1" />{" "}
-                  Add to Cart
+                  Buy Now
                 </button>
               </div>
             </div>
